@@ -1,0 +1,26 @@
+/* Basic animation styles for nav links */
+.nav-animated {
+    position: relative;
+    transition: color 1s ease, transform 1s ease;
+  }
+  
+  .nav-animated:hover {
+    color: #ff5757;
+    transform: scale(1.1);
+  }
+  
+  .nav-animated::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ff5757;
+    transition: width 1s ease;
+  }
+  
+  .nav-animated:hover::after {
+    width: 100%; /* Expand underline on hover */
+  }
+  
