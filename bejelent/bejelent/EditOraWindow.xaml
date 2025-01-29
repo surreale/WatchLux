@@ -1,0 +1,163 @@
+﻿<Window x:Class="BejelentkezesApp.EditOraWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Óra Módosítása" Height="800" Width="600" Background="#1E1E1E"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Óra Módosítása" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,20" />
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="10">
+               
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Megnevezés:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <TextBox x:Name="MegnevezesTextBox" Width="300" Height="25" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Kép 1:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <TextBox x:Name="Kep1TextBox" Width="300" Height="25" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Kép 2:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <TextBox x:Name="Kep2TextBox" Width="300" Height="25" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Kép 3:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <TextBox x:Name="Kep3TextBox" Width="300" Height="25" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Raktár:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="RaktarComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Ár:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <TextBox x:Name="ArTextBox" Width="300" Height="25" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Cikkszám:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <TextBox x:Name="CikkszamTextBox" Width="300" Height="25" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Márka:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="MarkaComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+               
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Nem:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="NemComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Meghajtás:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="MeghajtasComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Vízállóság:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="VizallosagComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Jótállás:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="JotallasComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Méret (mm):" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <TextBox x:Name="MeretMillimeterbenTextBox" Width="300" Height="25" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Súly (gramm):" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="SulyGrammbanComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Típus:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="TipusComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Dátumkijelzés:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="DatumKijelzesComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Extrafunkció:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="ExtraFunkcioComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Tok színe:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="AtokSzineComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Számlap színe:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="AszamLapSzineComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Óraforma:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="OraFormaComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Szíj színe:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="SzijSzineComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="A tok:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="AtokComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Kristályüveg:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="KristalyUvegComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Számlap típusa:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="SzamLapTipusComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Szíj:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="SzijComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Max. csuklóméret:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <ComboBox x:Name="MaxCsukloMiliComboBox" Width="300" Height="25" Foreground="Black" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5">
+                    <TextBlock Text="Darabszám:" Width="150" Foreground="White" VerticalAlignment="Center" />
+                    <TextBox x:Name="DbTextBox" Width="300" Height="25" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Mentés" Width="100" Height="30" Margin="5" Click="SaveButton_Click" />
+            <Button Content="Mégse" Width="100" Height="30" Margin="5" Click="CancelButton_Click" />
+        </StackPanel>
+    </Grid>
+</Window>
