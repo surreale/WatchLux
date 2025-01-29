@@ -31,6 +31,23 @@ body {
   height: 40px;
 }
 
+/* NAVBAR LINK STÍLUSOK */
+.navbar-nav .nav-link {
+  font-weight: 500;
+  font-size: 16px;
+  color: #495057;
+  padding: 8px 16px;
+  transition: transform 0.2s ease, border 0.3s ease-in-out;
+  border-radius: 50px; /* Lekerekített sarkok */
+  border: 1px solid transparent; /* Alapértelmezett átlátszó keret */
+}
+
+.navbar-nav .nav-link:hover {
+  transform: scale(1.1); /* Kisebb nagyítás hover állapotban */
+  border-color: #838383; /* Csak a keret színe változik */
+}
+
+
 /* KERESŐ SÁV */
 .search-bar {
   display: flex;
@@ -92,6 +109,11 @@ body {
   opacity: 0.9;
 }
 
+.user-menu-container {
+  position: relative;
+}
+
+/* Alapállapot: Rejtett legördülősáv */
 .user-menu-dropdown {
   top: 100%;
   right: 0;
@@ -102,17 +124,54 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 10px 0;
+  opacity: 0; /* Alapértelmezés szerint láthatatlan */
+  transform: scaleY(0); /* Alapértelmezés szerint összehúzva */
+  transform-origin: top; /* Az animáció fentről indul */
+  visibility: hidden; /* Láthatatlanná teszi */
+  transition: opacity 0.2s ease-in, transform 0.2s ease-in; /* Gyors megnyitás */
 }
 
+/* Amikor a menü aktív, és látható */
+.user-menu-container .user-menu-dropdown {
+  opacity: 1; /* Láthatóvá válik */
+  transform: scaleY(1); /* Kibontakozik */
+  visibility: visible; /* Láthatóvá teszi */
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Lassabb eltűnés */
+}
+
+/* Hover vagy kattintás esetén láthatóvá válik */
+.user-menu-container:hover .user-menu-dropdown,
+.user-menu-container:focus-within .user-menu-dropdown {
+  opacity: 1; /* Láthatóvá válik */
+  transform: scaleY(1); /* Kibontakozik */
+  visibility: visible; /* Láthatóvá teszi */
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Lassabb eltűnés */
+}
+
+/* Hover állapot a legördülősáv elemein */
 .user-menu-dropdown li {
   padding: 10px;
   text-align: center;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
+  transition: background 0.3s ease, transform 0.2s ease;
+  border-radius: 8px;
 }
 
 .user-menu-dropdown li:hover {
-  background: #ffcba4;
+  background: #ffcba4; /* Hover szín */
+  transform: scale(1.05); /* Kisebb nagyítás */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Árnyék */
+}
+
+/* Linkek hover stílusa (pl. Profil és Kijelentkezés) */
+.user-menu-dropdown li a {
+  color: inherit; /* Örökli a hover szövegszínt */
+  text-decoration: none; /* Alapértelmezett link aláhúzás eltávolítása */
+  transition: color 0.3s ease; /* Szövegszín animáció */
+}
+
+.user-menu-dropdown li a:hover {
+  color: #000; /* Szöveg színe fekete lesz hover állapotban */
 }
 
 /* KOSÁR IKON */
