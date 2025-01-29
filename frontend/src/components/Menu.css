@@ -1,26 +1,155 @@
-/* Basic animation styles for nav links */
-.nav-animated {
-    position: relative;
-    transition: color 1s ease, transform 1s ease;
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Lexend', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* NAVBAR */
+.navbar-custom {
+  position: relative;
+  z-index: 1000; /* Biztosítja, hogy a Navbar elöl legyen */
+  padding: 10px 15px;
+  background-color: #f8f9fa;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+}
+
+/* KERESŐ SÁV */
+.search-bar {
+  display: flex;
+  justify-content: center; /* Középre igazítás */
+  align-items: center;
+  margin: 0 auto; /* Középre helyezés */
+  max-width: 600px; /* Maximális szélesség */
+  width: 200%; /* Teljes szélesség */
+  margin-right: 35em;
+}
+
+.search-bar .search-input {
+  width: 100%; /* Rugalmas szélesség */
+  max-width: 400px; /* Maximális szélesség */
+  border-radius: 50px; /* Kör alakú sarkok */
+  padding: 12px 50px 12px 40px; /* Margók a kereső ikon számára */
+  border: 1px solid #ced4da; /* Szürke szegély */
+  background-color: #f8f9fa; /* Világos háttér */
+  font-size: 14px; /* Szöveg mérete */
+  color: #495057; /* Szöveg színe */
+  transition: all 0.3s ease;
+}
+
+.search-bar .search-input:focus {
+  border-color: #e4d5b7; /* Halvány barna fókusz szegély */
+  box-shadow: 0 0 8px rgba(255, 87, 87, 0.5); /* Árnyék fókuszban */
+  background-color: #ffffff; /* Fehér háttér fókuszban */
+}
+
+.search-icon-container {
+  position: absolute;
+  left: 15px; /* Pozíció ikonhoz */
+  top: 50%;
+  transform: translateY(-50%); /* Vertikális középre igazítás */
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+}
+
+/* FELHASZNÁLÓ MENÜ */
+.user-cart-container {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Távolság az ikonok között */
+}
+
+.user-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.user-icon:hover {
+  transform: scale(1.1); /* Kisebb nagyítás hover állapotban */
+  opacity: 0.9;
+}
+
+.user-menu-dropdown {
+  top: 100%;
+  right: 0;
+  z-index: 1050;
+  min-width: 200px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 10px 0;
+}
+
+.user-menu-dropdown li {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.user-menu-dropdown li:hover {
+  background: #ffcba4;
+}
+
+/* KOSÁR IKON */
+.kosar-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.kosar-icon:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+/* MOBILBARÁT NÉZET */
+@media (max-width: 768px) {
+  .search-bar {
+    margin: 10px auto;
+    max-width: 90%; /* Mobilon kisebb szélesség */
   }
-  
-  .nav-animated:hover {
-    color: #ff5757;
-    transform: scale(1.1);
+
+  .search-bar .search-input {
+    max-width: 100%; /* Mobilon teljes szélesség */
+    padding: 10px 40px 10px 35px; /* Csökkentett margók */
   }
-  
-  .nav-animated::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #ff5757;
-    transition: width 1s ease;
+
+  .search-icon {
+    width: 16px; /* Kisebb ikon mobilon */
+    height: 16px;
   }
-  
-  .nav-animated:hover::after {
-    width: 100%; /* Expand underline on hover */
+
+  .user-cart-container {
+    gap: 10px; /* Kevesebb távolság ikonok között */
   }
-  
+
+  .navbar-toggler {
+    margin-left: auto;
+  }
+}

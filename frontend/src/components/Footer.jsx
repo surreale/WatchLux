@@ -24,7 +24,7 @@ return(
           <p>
             Mezőtúr, Stormfeld Aurél u. 7.<br />
             Email: service@watchlux.hu<br />
-            Phone: +36 20 627 0071
+            Telefon: +36 20 627 0071
           </p>
         </div>
       </div>
