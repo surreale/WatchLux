@@ -41,3 +41,8 @@ body{
     transform: rotate(360deg);
   }
 }
+.product-image {
+  max-width: 100%; /* A kép maximális szélessége */
+  border-radius: 10px; /* Lekerekített sarkok */
+  margin-bottom: 10px; /* Alsó margó */
+}

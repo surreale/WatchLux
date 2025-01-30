@@ -1,19 +1,20 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Menu from './components/Menu';
 import Footer from './components/Footer';
-import filmImage from './assets/film.jpg';
+import Products from './components/Products'; // Termékek oldal importálása
+import filmImage from './assets/film.jpg'; // Háttérkép importálása
 
 function App() {
-
   const appStyle = {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100vh',
   };
+
   const mainStyle = {
-    backgroundImage: `url(${filmImage})`,
+    backgroundImage: `url(${filmImage})`, // Template string a háttérképhez
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -22,16 +23,18 @@ function App() {
   };
 
   return (
-    <div style={appStyle}>
-      <Menu />
-      <main style={mainStyle}>
-       <h1 style={{ color: 'white', textAlign: 'center' }}>
-        
-       </h1>
-
-      </main>
-      <Footer />
-    </div>
+    <Router>
+      <div style={appStyle}>
+        <Menu />
+        <Routes>
+          {/* Főoldal */}
+          <Route path="/" element={<main style={mainStyle} />} />
+          {/* Termékek oldal */}
+          <Route path="/products" element={<Products />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

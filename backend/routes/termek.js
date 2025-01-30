@@ -1,15 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var Db = require('../db/dboperations');
+const express = require('express');
+const router = express.Router();
+const { selectTermek } = require('../db/dboperations'); // Importáljuk a függvényt
 
-router.get('/', async function(req, res, next) {
- try{
-  const termek = await Db.selectTermek();
-  res.json(termek);
- }
- catch(error){
-  res.status(500).send('Szever hiba!');
- }
+// Oralekerdezes végpont
+router.get('/oralekerdezes', async (req, res) => {
+  try {
+    const termekek = await selectTermek(); // Lekérdezés az adatbázisból
+    res.json(termekek); // JSON válasz a frontendnek
+  } catch (error) {
+    console.error('Hiba történt az oralekerdezes lekérdezésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor');
+  }
 });
 
 module.exports = router;

@@ -26,4 +26,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/ora',termekRouter)
 
+
+
 module.exports = app;
