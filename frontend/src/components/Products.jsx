@@ -1,107 +1,121 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Products.css'; // CSS importálása
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import './Products.css';
 
 function Products() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); // Aktuális oldal
-  const itemsPerPage = 25; // Termékek száma oldalanként
-  const pagesToShow = 3; // Egyszerre megjelenő oldalszámok száma
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState({
+    minPrice: 10000,
+    maxPrice: 150000,
+    brand: '',
+    model: '',
+    type: '',
+  });
+  const itemsPerPage = 25;
+  const navigate = useNavigate();
 
   useEffect(() => {
+    loadProducts();
+  }, [filters]);
+
+  const loadProducts = () => {
+    if (!hasMore) return;
+
+    setLoading(true);
     axios
-      .get('http://localhost:8080/ora/oralekerdezes') // Backend API hívása
+      .get(`http://localhost:8080/ora/oralekerdezes`, {
+        params: {
+          page: currentPage,
+          limit: itemsPerPage,
+          minPrice: filters.minPrice,
+          maxPrice: filters.maxPrice,
+          brand: filters.brand,
+          model: filters.model,
+          type: filters.type,
+        },
+      })
       .then((response) => {
-        setProducts(response.data); // Adatok állapotba mentése
-        setLoading(false);
+        if (response.data.length < itemsPerPage) {
+          setHasMore(false);
+        }
+        setProducts(response.data);
       })
       .catch((error) => {
         console.error('Hiba történt az adatok lekérésekor:', error);
+      })
+      .finally(() => {
         setLoading(false);
       });
-  }, []);
-
-  if (loading) {
-    return <div>Adatok betöltése...</div>;
-  }
-
-  // Lapozáshoz szükséges adatok
-  const totalPages = Math.ceil(products.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Aktív oldalszámok kiszámítása
-  const startPage = Math.max(1, currentPage - Math.floor(pagesToShow / 2));
-  const endPage = Math.min(totalPages, startPage + pagesToShow - 1);
-  const visiblePages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
   };
 
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const handleFirst = () => {
-    setCurrentPage(1);
-  };
-
-  const handleLast = () => {
-    setCurrentPage(totalPages);
+  const handleFilterChange = (e) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
   return (
-    <div className="products-container">
-      <h2 className="products-title">Termékek</h2>
-      <div className="products-grid">
-        {currentItems.map((product, index) => (
-          <div key={index} className="product-card">
-            <img
-              src={`/images/${product.kep1}`} // Kép URL-je
-              alt={product.megnevezes}
-              className="product-image"
-            />
-            <h3 className="product-name">{product.megnevezes}</h3>
-            <p className="product-price">Ár: {product.ar} Ft</p>
-            <p className="product-stock">Raktár: {product.raktar}</p>
-          </div>
-        ))}
-      </div>
+    <div className="products-page">
+      <aside className="filters">
+        <h3>Szűrés</h3>
+        <label>Árkategória:</label>
+        <Slider
+          range
+          min={10000}
+          max={150000}
+          value={[filters.minPrice, filters.maxPrice]}
+          onChange={(value) => setFilters({ ...filters, minPrice: value[0], maxPrice: value[1] })}
+        />
+        <div className="price-inputs">
+          <input
+            type="number"
+            name="minPrice"
+            value={filters.minPrice}
+            onChange={handleFilterChange}
+            min="10000"
+          />
+          <span>-</span>
+          <input
+            type="number"
+            name="maxPrice"
+            value={filters.maxPrice}
+            onChange={handleFilterChange}
+            max="150000"
+          />
+        </div>
+        <label>Márka:</label>
+        <input type="text" name="brand" value={filters.brand} onChange={handleFilterChange} />
+        <label>Modell:</label>
+        <input type="text" name="model" value={filters.model} onChange={handleFilterChange} />
+        <label>Óratípus:</label>
+        <input type="text" name="type" value={filters.type} onChange={handleFilterChange} />
+      </aside>
+      <div className="products-container">
+        <h2 className="products-title">Termékek</h2>
+        <div className="products-grid">
+          {products.map((product) => (
+            <LazyLoadProduct key={product.id} product={product} navigate={navigate} />
+          ))}
+        </div>
 
-      <div className="pagination">
-        <button onClick={handleFirst} disabled={currentPage === 1} className="arrow">
-          ⏮
-        </button>
-        <button onClick={handlePrevious} disabled={currentPage === 1} className="arrow">
-          ◀
-        </button>
-        {visiblePages.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => handlePageChange(pageNumber)}
-            className={currentPage === pageNumber ? 'active' : ''}
-          >
-            {pageNumber}
-          </button>
-        ))}
-        <button onClick={handleNext} disabled={currentPage === totalPages} className="arrow">
-          ▶
-        </button>
-        <button onClick={handleLast} disabled={currentPage === totalPages} className="arrow">
-          ⏭
-        </button>
+        {loading && <div className="loading">Betöltés...</div>}
       </div>
+    </div>
+  );
+}
+
+function LazyLoadProduct({ product, navigate }) {
+  return (
+    <div className="product-card">
+      <img src={`/images/${product.kep1}`} alt={product.megnevezes} className="product-image" />
+      <h3 className="product-name">{product.megnevezes}</h3>
+      <p className="product-price">Ár: {product.ar} Ft</p>
+      <p className="product-stock">Raktár: {product.raktar}</p>
+      <button className="view-button" onClick={() => navigate(`/product/${product.id}`)}>Megtekintés</button>
     </div>
   );
 }

@@ -1,99 +1,175 @@
+/* Általános stílusok */
+.products-page {
+  display: flex; /* Flexbox elrendezés a szűrők és a termékek mellett */
+  align-items: flex-start;
+}
+
+.filters {
+  margin-top: 80px;
+  width: 300px; /* Fix szélesség a szűrőpanelhez */
+  padding: 20px;
+  background-color: #2a2a2d; /* Sötét háttér a szűrőpanelhez */
+  color: #eaeaea; /* Világos szöveg */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  margin-right: 20px; /* Távolság a terméklistától */
+  position: sticky;
+  top: 20px; /* Az oldalon marad görgetés közben */
+  height: fit-content;
+}
+
+.filters h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.filters label {
+  display: block;
+  font-size: 1rem;
+  margin: 15px 0 5px;
+}
+
+.filters input[type="text"],
+.filters input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #444;
+  border-radius: 5px;
+  background: #1c1c1e;
+  color: #eaeaea;
+}
+
+.filters .price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filters .price-inputs input {
+  flex: 1;
+}
+
 .products-container {
-    padding: 40px;
-    background-color: #1c1c1e; /* Mély fekete háttér */
-    color: #eaeaea; /* Világos szöveg */
-  }
-  
-  .products-title {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 30px;
-    color: #ffd700; /* Arany szöveg */
-    text-transform: uppercase;
-  }
-  
+  flex: 1; /* A terméklista a fennmaradó helyet foglalja el */
+}
+
+.products-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Rugalmas oszlopok */
+  gap: 30px; /* Távolság a termékek között */
+}
+
+.product-card {
+  border: none;
+  border-radius: 20px; /* Lekerekített sarkok */
+  padding: 25px;
+  text-align: center;
+  background: linear-gradient(145deg, #2a2a2d, #1a1a1c); /* Sötét átmenetes háttér */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Mély árnyék */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.05); /* Enyhe nagyítás hover állapotban */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); /* Erősebb árnyék hover esetén */
+}
+
+.product-image {
+  max-width: 200px; /* Kisebb képméret */
+  max-height: 200px;
+  margin: 0 auto 20px; /* Középre igazítás és margó */
+  display: block;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Kép árnyéka */
+}
+
+.product-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff; /* Fehér szöveg */
+  margin: 15px 0;
+}
+
+.product-price {
+  font-weight: bold;
+  color: #ff6f61; /* Narancs ár */
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.product-stock {
+  font-size: 1rem;
+  color: #dddddd; /* Halvány szürke */
+}
+
+/* Megtekintés gomb */
+.view-button {
+  background-color: #cbcbcb;
+  color: black;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 50px; /* Jobban lekerekített gomb */
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.view-button:hover {
+  background-color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* Lazy Loading - Kép helykitöltő */
+.image-placeholder {
+  width: 200px;
+  height: 200px;
+  background: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  border-radius: 15px;
+}
+
+/* Betöltés animáció */
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ffd700; /* Arany szín */
+  margin-top: 20px;
+}
+
+/* Reszponzivitás */
+@media screen and (max-width: 768px) {
   .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Rugalmas oszlopok */
-    gap: 30px; /* Távolság a boxok között */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-  
-  .product-card {
-    border: none;
-    border-radius: 20px; /* Lekerekített sarkok */
-    padding: 25px;
-    text-align: center;
-    background: linear-gradient(145deg, #2a2a2d, #1a1a1c); /* Sötét átmenetes háttér */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Mély árnyék */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .product-card:hover {
-    transform: scale(1.05); /* Enyhe nagyítás hover állapotban */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); /* Erősebb árnyék hover esetén */
-  }
-  
+
   .product-image {
-    max-width: 200px; /* Kisebb képméret */
-    max-height: 200px;
-    margin: 0 auto 20px; /* Középre igazítás és margó */
-    display: block;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Kép árnyéka */
+    max-width: 150px;
+    max-height: 150px;
   }
-  
-  .product-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffd700; /* Arany szöveg */
-    margin: 15px 0;
+
+  .filters {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+    position: static;
   }
-  
-  .product-price {
-    font-weight: bold;
-    color: #ff6f61; /* Narancs ár */
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-  
-  .product-stock {
-    font-size: 1rem;
-    color: #cccccc; /* Halvány szürke */
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 40px;
-    gap: 15px; /* Távolság a gombok között */
-  }
-  
-  .pagination button {
-    background: linear-gradient(145deg, #2a2a2d, #1a1a1c); /* Sötét átmenetes gombok */
-    color: #ffd700; /* Arany szöveg */
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-  }
-  
-  .pagination button.active {
-    background-color: #ffd700;
-    color: #1c1c1e; /* Fekete szöveg */
-  }
-  
-  .pagination button:hover {
-    background: #ffd700; /* Arany hover */
-    color: #1c1c1e;
-  }
-  
-  .pagination .arrow {
-    font-size: 20px; /* Nagyobb méret a nyilakhoz */
-  }
-  
+}

@@ -5,6 +5,7 @@ import Menu from './components/Menu';
 import Footer from './components/Footer';
 import Products from './components/Products'; // Termékek oldal importálása
 import filmImage from './assets/film.jpg'; // Háttérkép importálása
+import ProductDetails from './components/ProductDetails';
 
 function App() {
   const appStyle = {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/" element={<main style={mainStyle} />} />
           {/* Termékek oldal */}
           <Route path="/products" element={<Products />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
         </Routes>
         <Footer />
       </div>
