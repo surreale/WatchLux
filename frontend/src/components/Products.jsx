@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Slider from 'rc-slider';
@@ -10,6 +10,7 @@ function Products() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [brands, setBrands] = useState([]);
   const [filters, setFilters] = useState({
     minPrice: 10000,
     maxPrice: 150000,
@@ -23,6 +24,10 @@ function Products() {
   useEffect(() => {
     loadProducts();
   }, [filters]);
+
+  useEffect(() => {
+    loadBrands();
+  }, []);
 
   const loadProducts = () => {
     if (!hasMore) return;
@@ -51,6 +56,21 @@ function Products() {
       })
       .finally(() => {
         setLoading(false);
+      });
+  };
+
+  const loadBrands = () => {
+    axios
+      .get(`http://localhost:8080/ora/markalekerdezes`)
+      .then((response) => {
+        const uniqueBrands = response.data.map((brand) => ({
+          markaaz: brand.markaaz,
+          marka: brand.marka,
+        }));
+        setBrands(uniqueBrands);
+      })
+      .catch((error) => {
+        console.error('Hiba történt a márkák lekérésekor:', error);
       });
   };
 
@@ -88,11 +108,14 @@ function Products() {
           />
         </div>
         <label>Márka:</label>
-        <input type="text" name="brand" value={filters.brand} onChange={handleFilterChange} />
-        <label>Modell:</label>
-        <input type="text" name="model" value={filters.model} onChange={handleFilterChange} />
-        <label>Óratípus:</label>
-        <input type="text" name="type" value={filters.type} onChange={handleFilterChange} />
+        <select name="brand" value={filters.brand} onChange={handleFilterChange}>
+          <option value="">Összes</option>
+          {brands.map((brand) => (
+            <option key={brand.markaaz} value={brand.marka}>
+              {brand.marka}
+            </option>
+          ))}
+        </select>
       </aside>
       <div className="products-container">
         <h2 className="products-title">Termékek</h2>

@@ -6,6 +6,7 @@
 
 .filters {
   margin-top: 80px;
+  text-align: center;
   width: 300px; /* Fix szélesség a szűrőpanelhez */
   padding: 20px;
   background-color: #2a2a2d; /* Sötét háttér a szűrőpanelhez */
@@ -61,6 +62,7 @@
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 30px;
+  margin-top: 30px;
   color: #ffffff;
   text-transform: uppercase;
 }
@@ -72,18 +74,19 @@
 }
 
 .product-card {
+  margin-right: 20px;
   border: none;
-  border-radius: 20px; /* Lekerekített sarkok */
-  padding: 25px;
+  border-radius: 70px; /* Lekerekített sarkok */
+  padding: 20px;
   text-align: center;
-  background: linear-gradient(145deg, #2a2a2d, #1a1a1c); /* Sötét átmenetes háttér */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Mély árnyék */
+  background: linear-gradient(145deg, #ffffff, #000000); /* Sötét átmenetes háttér */
+  box-shadow: 0 10px 20px rgba(177, 177, 177, 0.5); /* Mély árnyék */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
   transform: scale(1.05); /* Enyhe nagyítás hover állapotban */
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); /* Erősebb árnyék hover esetén */
+  box-shadow: 0 15px 30px rgba(243, 242, 242, 0.7); /* Erősebb árnyék hover esetén */
 }
 
 .product-image {
@@ -105,7 +108,7 @@
 
 .product-price {
   font-weight: bold;
-  color: #ff6f61; /* Narancs ár */
+  color: #ffffff; /* Narancs ár */
   font-size: 1.2rem;
   margin-bottom: 10px;
 }

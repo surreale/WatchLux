@@ -9,15 +9,17 @@ function ProductDetails() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('Betöltött id:', id); // Ellenőrzésre az id értéke
     axios
       .get(`http://localhost:8080/ora/oralekerdezes/${id}`)
       .then((response) => {
+        console.log('API válasz:', response.data); // Ellenőrizd, hogy mit küld vissza az API
         setProduct(response.data);
       })
       .catch((error) => {
         console.error('Hiba történt az adatlekérés során:', error);
       });
-  }, [id]);
+  }, [id]);  
 
   if (!product) {
     return <div>Adatok betöltése...</div>;
