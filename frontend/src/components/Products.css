@@ -1,4 +1,7 @@
 /* Általános stílusok */
+body{
+  background-color: #000000;
+}
 .products-page {
   display: flex; /* Flexbox elrendezés a szűrők és a termékek mellett */
   align-items: flex-start;

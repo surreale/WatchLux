@@ -1,39 +1,22 @@
 const express = require('express');
-const mysql = require('mysql');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const cors = require('cors');
 
+const indexRouter = require('./routes/index');
+const termekRouter = require('./routes/termek');
+
 const app = express();
-app.use(cors());
 
+app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'ora',
-});
+app.use('/', indexRouter);
+app.use('/ora', termekRouter);
 
-db.connect((err) => {
-  if (err) {
-    console.error('Hiba a MySQL kapcsolódáskor:', err);
-    return;
-  }
-  console.log('Kapcsolódás a MySQL adatbázishoz sikeres!');
-});
-
-app.get('/api/oralekerdezesek', (req, res) => {
-  const query = 'SELECT * FROM oralekerdezesek';
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error('Hiba a lekérdezés során:', err);
-      res.status(500).send('Adatbázis hiba');
-      return;
-    }
-    res.json(results);
-  });
-});
-
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Backend szerver fut a ${PORT} porton.`);
-});
+module.exports = app;
