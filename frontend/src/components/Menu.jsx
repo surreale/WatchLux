@@ -40,7 +40,8 @@ function Menu() {
   return (
     <>
       {/* HeroText csak akkor jelenjen meg, ha nem a "/products" oldalon vagyunk */}
-      {location.pathname !== "/products" && <HeroText />} 
+      {!location.pathname.startsWith("/product/") && location.pathname !== "/products" && <HeroText />}
+
 
       <Navbar expand="lg" className="bg-light navbar-custom" collapseOnSelect>
         <Container fluid>

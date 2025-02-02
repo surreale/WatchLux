@@ -43,7 +43,11 @@ function Products() {
         <h2 className="products-title">Termékek</h2>
         <div className="products-grid">
           {products.map((product) => (
-            <div key={product.oraaz} className="product-card">
+            <div
+              key={product.oraaz}
+              className="product-card"
+              onClick={() => navigate(`/product/${product.oraaz}`)} // Kattintás az egész dobozra
+            >
               <img
                 src={`/images/${product.kep1}`}
                 alt={product.megnevezes}
@@ -54,7 +58,10 @@ function Products() {
               <p className="product-stock">Raktáron: {product.raktar}</p>
               <button
                 className="view-button"
-                onClick={() => navigate(`/product/${product.oraaz}`)}
+                onClick={(event) => {
+                  event.stopPropagation(); // Megakadályozza a dupla navigációt
+                  navigate(`/product/${product.oraaz}`);
+                }}
               >
                 Megtekintés
               </button>

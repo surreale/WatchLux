@@ -27,6 +27,7 @@ function App() {
     <Router>
       <div style={appStyle}>
         <Menu />
+        
         <Routes>
           {/* Főoldal */}
           <Route path="/" element={<main style={mainStyle} />} />
