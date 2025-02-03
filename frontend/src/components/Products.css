@@ -1,6 +1,6 @@
 /* Általános stílusok */
 body{
-  background-color: #000000;
+  background-image: url(hatter_pd.gif);
 }
 .products-page {
   display: flex; /* Flexbox elrendezés a szűrők és a termékek mellett */
@@ -82,7 +82,7 @@ body{
   border-radius: 70px; /* Lekerekített sarkok */
   padding: 20px;
   text-align: center;
-  background: linear-gradient(145deg, #ffffff, #000000); /* Sötét átmenetes háttér */
+  background: linear-gradient(145deg, #ffffff27, #00000022); /* Sötét átmenetes háttér */
   box-shadow: 0 10px 20px rgba(177, 177, 177, 0.5); /* Mély árnyék */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

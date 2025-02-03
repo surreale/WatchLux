@@ -95,14 +95,27 @@
 .product-price {
   font-size: 2rem;
   font-weight: bold;
-  color: #d32f2f;
+  color: #f01f1f;
   margin: 10px 0;
 }
 
 /* Raktár státusz */
 .product-stock {
   font-size: 1rem;
-  color: #4caf50;
+  color: #69c46c;
+}
+
+.product-ar {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 10px 0;
+}
+
+/* Raktár státusz */
+.raktar {
+  font-size: 1rem;
+  color: #ffffff;
 }
 
 /* === GOMBOK (Kosárba, Kedvencek) === */
@@ -123,13 +136,13 @@
 }
 
 .buy-button {
-  background-color: #d32f2f;
+  background-color: #f01f1f;
   color: white;
   border: none;
 }
 
 .buy-button:hover {
-  background-color: #b71c1c;
+  background-color: #850909;
 }
 
 .wishlist-button {
@@ -152,7 +165,7 @@
   font-size: 1.5rem;
   margin-bottom: 15px;
   color: #333;
-  border-bottom: 2px solid #d32f2f;
+  border-bottom: 2px solid #f01f1f;
   padding-bottom: 5px;
 }
 
