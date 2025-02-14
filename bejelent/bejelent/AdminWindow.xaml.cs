@@ -160,7 +160,7 @@ namespace BejelentkezesApp
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    MessageBox.Show("Az adatok betöltése eltarthat egy kis ideig! (30mp)", "Figyelem", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    
                     connection.Open();
 
                     string query = "SELECT * FROM oralekerdezes ORDER BY oraaz ASC"; 

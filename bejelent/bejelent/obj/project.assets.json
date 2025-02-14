@@ -1614,11 +1614,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\bejelent\\bejelent\\bejelent.csproj",
+      "projectUniqueName": "C:\\Users\\13d\\Desktop\\bejelent\\bejelent\\bejelent.csproj",
       "projectName": "bejelent",
-      "projectPath": "E:\\bejelent\\bejelent\\bejelent.csproj",
+      "projectPath": "C:\\Users\\13d\\Desktop\\bejelent\\bejelent\\bejelent.csproj",
       "packagesPath": "C:\\Users\\13d\\.nuget\\packages\\",
-      "outputPath": "E:\\bejelent\\bejelent\\obj\\",
+      "outputPath": "C:\\Users\\13d\\Desktop\\bejelent\\bejelent\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\13d\\AppData\\Roaming\\NuGet\\NuGet.Config",
