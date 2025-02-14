@@ -5,6 +5,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./Products.css";
 
+
 function Products() {
   const [products, setProducts] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState([]); // Látható órák

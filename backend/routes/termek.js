@@ -28,4 +28,36 @@ router.get('/oralekerdezes/:id', async (req, res) => {
   }
 });
 
+//http://localhost:8080/adatok/filtered?marka=ford&tipus=autó&szijszine=sötét
+router.get('/filtered2', async (req, res) => {
+  try{
+    const filters={
+      marka: req.query.marka,
+      tipus: req.query.tipus,
+      szijszine: req.query.szijszine,
+      aszamlapszine: req.query.aszamlapszine,
+      atok: req.query.atok,
+      atokszine: req.query.atokszine,
+      kristalyuveg: req.query.kristalyuveg,
+      oraforma: req.query.oraforma,
+      szij: req.query.szij,
+      maxcsuklomili: req.query.maxcsuklomili,
+      datumkijelzes: req.query.datumkijelzes,
+      vizallosag: req.query.vizallosag,
+      nem: req.query.nem,
+      sulygrammban: req.query.sulygrammban,
+      extrafunkcio: req.query.extrafunkcio,
+      raktar: req.query.raktar,
+      ar: req.query.ar,
+      meghajtas: req.query.meghajtas,
+    };
+    const results = await db.getFilterData(filters);
+    res.json(results);
+
+  }
+  catch (error) {
+    res.status(500).json({ error: 'Hiba történt az adatok lekérésekor.' });
+  }
+});
+
 module.exports = router;
