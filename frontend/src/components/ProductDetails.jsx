@@ -5,13 +5,15 @@ import './ProductDetails.css';
 
 function ProductDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [mainImage, setMainImage] = useState('');
   const [isZoomed, setIsZoomed] = useState(false);
-  const navigate = useNavigate();
 
+  // 🔹 Adatok betöltése
   useEffect(() => {
     axios
       .get(`http://localhost:8080/ora/oralekerdezes/${id}`)
@@ -26,30 +28,38 @@ function ProductDetails() {
       });
   }, [id]);
 
+  // 🔹 Görgetési pozíció mentése visszalépéskor
+  const handleBack = () => {
+    sessionStorage.setItem('scrollPosition', window.scrollY);
+    navigate(-1);
+  };
+
+  // 🔹 Betöltési állapot
   if (loading) {
     return <div className="loading">Betöltés...</div>;
   }
 
+  // 🔹 Hiba állapot
   if (error) {
     return <div className="error-message">{error}</div>;
   }
 
+  // 🔹 Kép kiválasztás
   const handleImageClick = (image) => {
     setMainImage(`/images/${image}`);
   };
 
+  // 🔹 Kép nagyítás
   const toggleZoom = () => {
     setIsZoomed(!isZoomed);
   };
 
   return (
     <div className="product-details-container">
-      <button className="back-button" onClick={() => navigate(-1)}>
-        Vissza
-      </button>
+      <button className="back-button" onClick={handleBack}>Vissza</button>
 
       <div className="product-details">
-        {/* Bal oldali kép szekció */}
+        {/* 🔹 Bal oldali kép szekció */}
         <div className="image-section">
           <img 
             src={mainImage} 
@@ -70,20 +80,20 @@ function ProductDetails() {
           </div>
         </div>
 
-        {/* Jobb oldali információk */}
+        {/* 🔹 Jobb oldali információk */}
         <div className="info-section">
           <h1 className="product-title">{product.megnevezes}</h1>
           <p className="product-brand">{product.marka}</p>
           <p className="product-price">{product.ar.toLocaleString()} Ft</p>
           <p className="product-stock">Raktáron: {product.raktar}</p>
 
-          {/* Vásárlás és kedvencek gomb */}
+          {/* 🔹 Vásárlás és kedvencek gomb */}
           <div className="buttons">
             <button className="buy-button">🛒 Kosárba</button>
             <button className="wishlist-button">🤍 Kedvencekhez</button>
           </div>
 
-          {/* Részletes termék adatok */}
+          {/* 🔹 Részletes termék adatok */}
           <div className="product-info">
             <h2>Termék részletei</h2>
             <div className="info-grid">

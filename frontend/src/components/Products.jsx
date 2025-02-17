@@ -5,50 +5,36 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./Products.css";
 
-
 function Products() {
   const [products, setProducts] = useState([]);
-  const [visibleProducts, setVisibleProducts] = useState([]); // Látható órák
-  const [error, setError] = useState("");
-  const [loadCount, setLoadCount] = useState(10); // Kezdetben 10 óra
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
+
+  const productsPerPage = 20;
+  const maxPageButtons = 5;
 
   useEffect(() => {
     axios
       .get("http://localhost:8080/ora/oralekerdezes")
       .then((response) => {
         setProducts(response.data);
-        setVisibleProducts(response.data.slice(0, 10)); // Kezdő 10 elem betöltése
+        setTotalPages(Math.ceil(response.data.length / productsPerPage));
       })
       .catch(() => {
-        setError("Hiba történt a termékek lekérésekor.");
+        console.error("Hiba történt a termékek lekérésekor.");
       });
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
-      ) {
-        loadMoreProducts();
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [visibleProducts]); // Figyelje a változásokat
-
-  const loadMoreProducts = () => {
-    if (visibleProducts.length < products.length) {
-      const nextLoad = Math.min(loadCount + 10, products.length);
-      setVisibleProducts(products.slice(0, nextLoad));
-      setLoadCount(nextLoad);
-    }
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
+  const startIndex = (currentPage - 1) * productsPerPage;
+  const visibleProducts = products.slice(startIndex, startIndex + productsPerPage);
+
+  const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+  const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
 
   return (
     <div className="products-page">
@@ -79,8 +65,8 @@ function Products() {
                 className="product-image"
               />
               <h3 className="product-name">{product.megnevezes}</h3>
-              <p className="product-price product-ar">Ár: {product.ar} Ft</p>
-              <p className="product-stock raktar">Raktáron: {product.raktar}</p>
+              <p className="product-price">Ár: {product.ar} Ft</p>
+              <p className="product-stock">Raktáron: {product.raktar}</p>
               <button
                 className="view-button"
                 onClick={(event) => {
@@ -92,6 +78,23 @@ function Products() {
               </button>
             </div>
           ))}
+        </div>
+
+        {/* Lapozás */}
+        <div className="pagination">
+          <button className="double-arrow" onClick={() => handlePageChange(1)}>&laquo;</button>
+          <button className="arrow" onClick={() => handlePageChange(Math.max(1, currentPage - 1))}>&lt;</button>
+          {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
+            <button
+              key={startPage + index}
+              className={`page-button ${currentPage === startPage + index ? "active" : ""}`}
+              onClick={() => handlePageChange(startPage + index)}
+            >
+              {startPage + index}
+            </button>
+          ))}
+          <button className="arrow" onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}>&gt;</button>
+          <button className="double-arrow" onClick={() => handlePageChange(totalPages)}>&raquo;</button>
         </div>
       </div>
     </div>
