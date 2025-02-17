@@ -11,6 +11,8 @@ const cors = require('cors'); //Cross-Origin Resource Sharing
 
 var app = express();
 
+
+
 var corsOptions = {
     origin: "http://localhost:3000"  //frontend URL és port
 }

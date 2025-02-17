@@ -1,10 +1,14 @@
+require('dotenv').config();
+
 const config = require('./dbconfig');
 const sql = require('mysql2/promise');
+
 
 let pool = sql.createPool(config);
 
 async function getProducts() {
   try {
+    console.log(config);
     const [rows] = await pool.query('SELECT * FROM oralekerdezes');
     return rows;
   } catch (error) {

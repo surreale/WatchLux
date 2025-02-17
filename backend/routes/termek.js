@@ -9,7 +9,7 @@ router.get('/oralekerdezes', async (req, res) => {
     res.json(products);
   } catch (error) {
     console.error('Hiba történt a termékek lekérdezésekor:', error);
-    res.status(500).send('Hiba történt az adatok lekérésekor.');
+    res.status(500).send(error);
   }
 });
 
