@@ -5,10 +5,11 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var termekRouter = require('./routes/termek');
+
+const termekRouter = require("./routes/termek");
 
 const cors = require('cors'); //Cross-Origin Resource Sharing 
-
+const filtersRouter = require("./routes/filters"); // Új filter route
 var app = express();
 
 
@@ -27,6 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/ora',termekRouter)
+
+
+app.use("/filters", filtersRouter); // A frontend innen fogja lekérni az adatokat
 
 
 
