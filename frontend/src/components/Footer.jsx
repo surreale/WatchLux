@@ -22,7 +22,7 @@ return(
         <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
           <h5 className="text-uppercase">Kapcsolat</h5>
           <p>
-            Mezőtúr, Stormfeld Aurél u. 7.<br />
+            Mezőtúr, Stromfeld Aurél u. 7.<br />
             Email: service@watchlux.hu<br />
             Telefon: +36 20 627 0071
           </p>

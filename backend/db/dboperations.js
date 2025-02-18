@@ -118,8 +118,20 @@ async function getFilterData(filters){
   }
 }
 
+async function getUniqueValues(column, table) {
+  try {
+    const [rows] = await pool.query(`SELECT DISTINCT ${column} FROM ${table}`);
+    return rows.map(row => row[column]); // Csak az értékeket küldjük vissza
+  } catch (error) {
+    console.error(`Hiba történt a ${column} adatok lekérésekor a ${table} táblából:`, error);
+    throw error;
+  }
+}
+
 module.exports = {
   getProducts,
   getProductById,
-  getFilterData
+  getFilterData,
+  getUniqueValues
 };
+

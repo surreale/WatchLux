@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
+import Filter from "./Filter"; // Az új szűrő importálása
 import "./Products.css";
 
 function Products() {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [filterVisible, setFilterVisible] = useState(false);
   const navigate = useNavigate();
 
   const productsPerPage = 20;
@@ -19,6 +20,7 @@ function Products() {
       .get("http://localhost:8080/ora/oralekerdezes")
       .then((response) => {
         setProducts(response.data);
+        setFilteredProducts(response.data);
         setTotalPages(Math.ceil(response.data.length / productsPerPage));
       })
       .catch(() => {
@@ -31,24 +33,19 @@ function Products() {
   };
 
   const startIndex = (currentPage - 1) * productsPerPage;
-  const visibleProducts = products.slice(startIndex, startIndex + productsPerPage);
-
-  const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
-  const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+  const visibleProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
 
   return (
     <div className="products-page">
-      <aside className="filters">
-        <h3>Szűrés</h3>
-        <label>Árkategória:</label>
-        <Slider range min={10000} max={150000} defaultValue={[10000, 150000]} />
-        <label>Márka:</label>
-        <input type="text" name="brand" />
-        <label>Modell:</label>
-        <input type="text" name="model" />
-        <label>Óratípus:</label>
-        <input type="text" name="type" />
-      </aside>
+      {/* Alternatív navbar szűrő gombbal */}
+      <div className="filter-navbar">
+        <button className="filter-toggle-button" onClick={() => setFilterVisible(!filterVisible)}>
+          {filterVisible ? "Szűrő összecsukása" : "Szűrő megjelenítése"}
+        </button>
+      </div>
+
+      {/* Szűrő megjelenítése feltételesen */}
+      {filterVisible && <Filter setFilteredProducts={setFilteredProducts} />}
 
       <div className="products-container">
         <h2 className="products-title">Termékek</h2>
@@ -65,7 +62,7 @@ function Products() {
                 className="product-image"
               />
               <h3 className="product-name">{product.megnevezes}</h3>
-              <p className="product-price">Ár: {product.ar} Ft</p>
+              <p className="product-price product-ar">Ár: {product.ar} Ft</p>
               <p className="product-stock">Raktáron: {product.raktar}</p>
               <button
                 className="view-button"
@@ -84,15 +81,18 @@ function Products() {
         <div className="pagination">
           <button className="double-arrow" onClick={() => handlePageChange(1)}>&laquo;</button>
           <button className="arrow" onClick={() => handlePageChange(Math.max(1, currentPage - 1))}>&lt;</button>
-          {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
-            <button
-              key={startPage + index}
-              className={`page-button ${currentPage === startPage + index ? "active" : ""}`}
-              onClick={() => handlePageChange(startPage + index)}
-            >
-              {startPage + index}
-            </button>
-          ))}
+          {Array.from({ length: maxPageButtons }, (_, index) => {
+            const pageNumber = Math.max(1, currentPage - Math.floor(maxPageButtons / 2)) + index;
+            return pageNumber <= totalPages ? (
+              <button
+                key={pageNumber}
+                className={`page-button ${currentPage === pageNumber ? "active" : ""}`}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            ) : null;
+          })}
           <button className="arrow" onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}>&gt;</button>
           <button className="double-arrow" onClick={() => handlePageChange(totalPages)}>&raquo;</button>
         </div>
