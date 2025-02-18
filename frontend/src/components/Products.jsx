@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Filter from "./Filter"; // Az új szűrő importálása
 import "./Products.css";
 
 function Products() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filterVisible, setFilterVisible] = useState(false);
-  const navigate = useNavigate();
 
   const productsPerPage = 20;
   const maxPageButtons = 5;
+
+  // **1. Olvasd ki az oldalszámot az URL query paraméterből**
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const page = parseInt(params.get("page")) || 1;
+    setCurrentPage(page);
+  }, [location.search]);
 
   useEffect(() => {
     axios
@@ -28,7 +37,9 @@ function Products() {
       });
   }, []);
 
+  // **2. Oldalváltásnál frissítsd az URL-t**
   const handlePageChange = (page) => {
+    navigate(`?page=${page}`);
     setCurrentPage(page);
   };
 
@@ -54,7 +65,7 @@ function Products() {
             <div
               key={product.oraaz}
               className="product-card"
-              onClick={() => navigate(`/product/${product.oraaz}`)}
+              onClick={() => navigate(`/product/${product.oraaz}?page=${currentPage}`)}
             >
               <img
                 src={`/images/${product.kep1}`}
@@ -68,7 +79,7 @@ function Products() {
                 className="view-button"
                 onClick={(event) => {
                   event.stopPropagation();
-                  navigate(`/product/${product.oraaz}`);
+                  navigate(`/product/${product.oraaz}?page=${currentPage}`);
                 }}
               >
                 Megtekintés
