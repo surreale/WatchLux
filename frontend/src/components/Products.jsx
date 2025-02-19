@@ -8,9 +8,8 @@ function Products() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 🔹 TERMÉKLISTÁK (Eredeti + Szűrt lista)
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [forceUpdate, setForceUpdate] = useState(false);
+  
   
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -52,18 +51,30 @@ function Products() {
   const handleBrandChange = (event) => {
     const brand = event.target.value;
     setSelectedBrand(brand);
-
-    axios.get("http://localhost:8080/ora/filtered", {
-      params: { marka: brand }
-    })
-    .then((response) => {
-      setFilteredProducts(response.data);
-      setTotalPages(Math.ceil(response.data.length / productsPerPage));
-      setCurrentPage(1);
-    })
-    .catch(() => {
-      console.error("❌ Hiba történt a szűrés során.");
-    });
+  
+    if (brand === "") {
+      axios.get("http://localhost:8080/ora/oralekerdezes")
+        .then((response) => {
+          setFilteredProducts(response.data);
+          setTotalPages(Math.ceil(response.data.length / productsPerPage));
+          setCurrentPage(1);
+        })
+        .catch(() => {
+          console.error("❌ Hiba történt az összes termék betöltésekor.");
+        });
+    } else {
+      axios.get("http://localhost:8080/ora/filtered", {
+        params: { marka: brand }
+      })
+      .then((response) => {
+        setFilteredProducts(response.data);
+        setTotalPages(Math.ceil(response.data.length / productsPerPage));
+        setCurrentPage(1);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a szűrés során.");
+      });
+    }
   };
 
   const handlePageChange = (page) => {
@@ -77,23 +88,32 @@ function Products() {
   return (
     <div className="products-page">
       <h2 className="products-title">Termékek szűrése</h2>
-      <select className="brand-dropdown" value={selectedBrand} onChange={handleBrandChange}>
-        <option value="">Válassz márkát</option>
-        {brands.map((brand) => (
-          <option key={brand.markaaz} value={brand.marka}>{brand.marka}</option>
-        ))}
-      </select>
+      
       <div className="filter-navbar">
         <button className="filter-toggle-button" onClick={() => setFilterVisible(!filterVisible)}>
           {filterVisible ? "Szűrő összecsukása" : "Szűrő megjelenítése"}
         </button>
       </div>
 
-      
+      {filterVisible && (
+        <div className="filters-container">
+          <h3>Szűrés</h3>
+          <label htmlFor="brand-filter">Márka:</label>
+          <div className="dropdown-container">
+  <select id="brand-filter" className="brand-dropdown" value={selectedBrand} onChange={handleBrandChange}>
+    <option value="">Válassz márkát</option>
+    {brands.map((brand) => (
+      <option key={brand.markaaz} value={brand.marka}>{brand.marka}</option>
+    ))}
+  </select>
+</div>
+
+        </div>
+      )}
 
       <div className="products-container">
         <h2 className="products-title">Termékek</h2>
-        <div className="products-grid" key={forceUpdate ? "update-yes" : "update-no"}>
+        <div className="products-grid">
           {visibleProducts.length > 0 ? (
             visibleProducts.map((product) => (
               <div
@@ -109,15 +129,6 @@ function Products() {
                 <h3 className="product-name">{product.megnevezes}</h3>
                 <p className="product-price product-ar">Ár: {product.ar} Ft</p>
                 <p className="product-stock">Raktáron: {product.raktar}</p>
-                <button
-                  className="view-button"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    navigate(`/product/${product.oraaz}?page=${currentPage}`);
-                  }}
-                >
-                  Megtekintés
-                </button>
               </div>
             ))
           ) : (
@@ -127,13 +138,8 @@ function Products() {
 
         {totalPages > 1 && (
           <div className="pagination">
-            <button className="double-arrow" onClick={() => handlePageChange(1)} disabled={currentPage === 1}>
-              &laquo;
-            </button>
-            <button className="arrow" onClick={() => handlePageChange(Math.max(1, currentPage - 1))} disabled={currentPage === 1}>
-              &lt;
-            </button>
-
+            <button className="double-arrow" onClick={() => handlePageChange(1)} disabled={currentPage === 1}>&laquo;</button>
+            <button className="arrow" onClick={() => handlePageChange(Math.max(1, currentPage - 1))} disabled={currentPage === 1}>&lt;</button>
             {Array.from({ length: maxPageButtons }, (_, index) => {
               const pageNumber = Math.max(1, currentPage - Math.floor(maxPageButtons / 2)) + index;
               return pageNumber <= totalPages ? (
@@ -146,13 +152,8 @@ function Products() {
                 </button>
               ) : null;
             })}
-
-            <button className="arrow" onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages}>
-              &gt;
-            </button>
-            <button className="double-arrow" onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages}>
-              &raquo;
-            </button>
+            <button className="arrow" onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages}>&gt;</button>
+            <button className="double-arrow" onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages}>&raquo;</button>
           </div>
         )}
       </div>

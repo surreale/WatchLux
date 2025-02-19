@@ -225,3 +225,81 @@ body {
     padding: 15px;
   }
 }
+.filters-container {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  margin: 10px auto;
+  text-align: left;
+  position: relative;
+}
+
+.filters-container h3 {
+  font-size: 1.4rem;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.filters-container label {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 600;
+}
+
+.dropdown-container {
+  position: relative;
+  width: 100%;
+}
+
+.brand-dropdown {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  direction: ltr;
+  overflow-y: auto;
+  position: relative;
+  z-index: 10;
+}
+
+.brand-dropdown:focus {
+  outline: none;
+  border-color: #0056b3;
+  box-shadow: 0px 0px 5px rgba(0, 91, 187, 0.5);
+}
+
+.brand-dropdown::-ms-expand {
+  display: none;
+}
+
+.filters-container::after {
+  content: "▼";
+  font-size: 14px;
+  color: #007bff;
+  position: absolute;
+  top: 48px;
+  right: 15px;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.brand-dropdown:focus + .filters-container::after {
+  transform: rotate(180deg);
+}
+
+.brand-dropdown option {
+  position: relative;
+  background: white;
+  z-index: 20;
+}
+
