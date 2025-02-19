@@ -6,6 +6,9 @@ import Footer from './components/Footer';
 import Products from './components/Products'; // Termékek oldal importálása
 import filmImage from './assets/film.jpg'; // Háttérkép importálása
 import ProductDetails from './components/ProductDetails';
+import { CartProvider } from "./components/CartContext";
+import Cart from "./components/Cart";
+import { FavoritesProvider } from './components/FavoritesContext';
 
 function App() {
   const appStyle = {
@@ -24,8 +27,10 @@ function App() {
   };
 
   return (
+    <FavoritesProvider>
+    <CartProvider>
     <Router>
-      <div style={appStyle}>
+      <div style={appStyle} className="main-content">
         <Menu />
         
         <Routes>
@@ -34,10 +39,13 @@ function App() {
           {/* Termékek oldal */}
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart/" element={<Cart />} />
         </Routes>
         <Footer />
       </div>
     </Router>
+    </CartProvider>
+    </FavoritesProvider>
   );
 }
 

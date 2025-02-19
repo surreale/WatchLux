@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './ProductDetails.css';
+import React, { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { CartContext } from "./CartContext"; // 🔹 Kosár importálása
+import { FavoritesContext } from "./FavoritesContext"; // 🔹 Kedvencek importálása
+import "./ProductDetails.css";
 
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+  const { addToCart } = useContext(CartContext);
+  const { favorites, addToFavorites, removeFromFavorites } = useContext(FavoritesContext);
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [mainImage, setMainImage] = useState('');
   const [isZoomed, setIsZoomed] = useState(false);
 
-  // 🔹 Adatok betöltése
+  // 🔹 Termékadatok betöltése az API-ból
   useEffect(() => {
     axios
       .get(`http://localhost:8080/ora/oralekerdezes/${id}`)
@@ -28,35 +32,41 @@ function ProductDetails() {
       });
   }, [id]);
 
-  // 🔹 Görgetési pozíció mentése visszalépéskor
-  const handleBack = () => {
-    sessionStorage.setItem('scrollPosition', window.scrollY);
-    navigate(-1);
+  // 🔹 Kosárba rakás eseménykezelő
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart({
+        oraaz: product.oraaz,
+        megnevezes: product.megnevezes,
+        ar: product.ar,
+        kep1: product.kep1
+      });
+    }
   };
 
-  // 🔹 Betöltési állapot
-  if (loading) {
-    return <div className="loading">Betöltés...</div>;
-  }
+  // 🔹 Kedvencek kezelése
+  const isFavorite = product ? favorites.some((item) => item.oraaz === product.oraaz) : false;
+  const handleToggleFavorite = () => {
+    if (!product) return;
 
-  // 🔹 Hiba állapot
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
-
-  // 🔹 Kép kiválasztás
-  const handleImageClick = (image) => {
-    setMainImage(`/images/${image}`);
+    if (isFavorite) {
+      removeFromFavorites(product.oraaz);
+    } else {
+      addToFavorites({
+        oraaz: product.oraaz,
+        megnevezes: product.megnevezes,
+        ar: product.ar,
+        kep1: product.kep1
+      });
+    }
   };
 
-  // 🔹 Kép nagyítás
-  const toggleZoom = () => {
-    setIsZoomed(!isZoomed);
-  };
+  if (loading) return <div className="loading">Betöltés...</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="product-details-container">
-      <button className="back-button" onClick={handleBack}>Vissza</button>
+      <button className="back-button" onClick={() => navigate(-1)}>Vissza</button>
 
       <div className="product-details">
         {/* 🔹 Bal oldali kép szekció */}
@@ -65,17 +75,19 @@ function ProductDetails() {
             src={mainImage} 
             alt={product.megnevezes} 
             className={`main-image ${isZoomed ? 'zoomed' : ''}`} 
-            onClick={toggleZoom}
+            onClick={() => setIsZoomed(!isZoomed)}
           />
           <div className="thumbnail-section">
             {[product.kep1, product.kep2, product.kep3].map((image, index) => (
-              <img
-                key={index}
-                src={`/images/${image}`}
-                alt={`${product.megnevezes} ${index + 1}`}
-                className="thumbnail-image"
-                onClick={() => handleImageClick(image)}
-              />
+              image && (
+                <img
+                  key={index}
+                  src={`/images/${image}`}
+                  alt={`${product.megnevezes} ${index + 1}`}
+                  className="thumbnail-image"
+                  onClick={() => setMainImage(`/images/${image}`)}
+                />
+              )
             ))}
           </div>
         </div>
@@ -87,10 +99,16 @@ function ProductDetails() {
           <p className="product-price">{product.ar.toLocaleString()} Ft</p>
           <p className="product-stock">Raktáron: {product.raktar}</p>
 
-          {/* 🔹 Vásárlás és kedvencek gomb */}
+          {/* 🔹 Kosár és Kedvencek gombok */}
           <div className="buttons">
-            <button className="buy-button">🛒 Kosárba</button>
-            <button className="wishlist-button">🤍 Kedvencekhez</button>
+            <button className="buy-button" onClick={handleAddToCart}>🛒 Kosárba</button>
+
+            <button 
+              className={`wishlist-button ${isFavorite ? "favorited" : ""}`} 
+              onClick={handleToggleFavorite}
+            >
+              {isFavorite ? "❤️ Kedvencekből eltávolítás" : "🤍 Kedvencekhez"}
+            </button>
           </div>
 
           {/* 🔹 Részletes termék adatok */}

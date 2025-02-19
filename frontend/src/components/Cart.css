@@ -1,0 +1,95 @@
+/* A kosár oldal teljes magasságot kap és nem lehet görgetni */
+.cart-page {
+    height: 100vh; /* Az oldal teljes magasságot foglal el */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* A tartalom középre kerül */
+    overflow: hidden; /* Tilos a görgetés */
+}
+
+body.no-scroll {
+    overflow: hidden;
+}
+  
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .cart-item {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgb(144, 216, 255);
+  }
+  
+  .cart-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-right: 10px;
+  }
+  
+  .cart-details {
+    flex-grow: 1;
+    text-align: left;
+  }
+  
+  .remove-button {
+    background: red;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .checkout-button {
+    background: rgb(0, 77, 128);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+    border: none;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Gombra hover állapotban egy pulzáló árnyék animáció */
+.checkout-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 77, 128, 0.6);
+}
+
+/* Animált fényhatás */
+@keyframes glowing {
+    0% {
+        box-shadow: 0 0 10px rgba(0, 77, 128, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 77, 128, 0.9);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(0, 77, 128, 0.6);
+    }
+}
+
+/* A gomb folyamatosan pulzál */
+.checkout-button:active {
+    animation: glowing 1s infinite;
+    transform: scale(0.95);
+}
+
+.cen {
+    color: beige;
+    font-size: 300%;
+}
+  
