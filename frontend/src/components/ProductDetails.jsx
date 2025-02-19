@@ -8,8 +8,8 @@ import "./ProductDetails.css";
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useContext(CartContext);
-  const { favorites, addToFavorites, removeFromFavorites } = useContext(FavoritesContext);
+  const { cart, addToCart } = useContext(CartContext);
+  const { favorites, addToFavorites } = useContext(FavoritesContext);
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,14 +34,14 @@ function ProductDetails() {
 
   // 🔹 Kosárba rakás eseménykezelő
   const handleAddToCart = () => {
-    if (product) {
-      addToCart({
-        oraaz: product.oraaz,
-        megnevezes: product.megnevezes,
-        ar: product.ar,
-        kep1: product.kep1
-      });
-    }
+    if (!product) return;
+
+    addToCart({
+      oraaz: product.oraaz,
+      megnevezes: product.megnevezes,
+      ar: product.ar,
+      kep1: product.kep1
+    });
   };
 
   // 🔹 Kedvencek kezelése
@@ -49,16 +49,12 @@ function ProductDetails() {
   const handleToggleFavorite = () => {
     if (!product) return;
 
-    if (isFavorite) {
-      removeFromFavorites(product.oraaz);
-    } else {
-      addToFavorites({
-        oraaz: product.oraaz,
-        megnevezes: product.megnevezes,
-        ar: product.ar,
-        kep1: product.kep1
-      });
-    }
+    addToFavorites({
+      oraaz: product.oraaz,
+      megnevezes: product.megnevezes,
+      ar: product.ar,
+      kep1: product.kep1
+    });
   };
 
   if (loading) return <div className="loading">Betöltés...</div>;
@@ -101,7 +97,9 @@ function ProductDetails() {
 
           {/* 🔹 Kosár és Kedvencek gombok */}
           <div className="buttons">
-            <button className="buy-button" onClick={handleAddToCart}>🛒 Kosárba</button>
+            <button className="buy-button" onClick={handleAddToCart}>
+              {cart.some((item) => item.oraaz === product.oraaz) ? "Kivétel a kosárból" : "Kosárba"}
+            </button>
 
             <button 
               className={`wishlist-button ${isFavorite ? "favorited" : ""}`} 
