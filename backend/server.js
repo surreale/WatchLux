@@ -18,5 +18,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/ora', termekRouter);
-
+app.use(bodyParser.json()); // 🔥 Engedélyezi a JSON adatokat a POST kérésekhez
+app.use(bodyParser.urlencoded({ extended: true }));
 module.exports = app;
