@@ -3,7 +3,7 @@
 
 /* Általános stílusok */
 body {
-  background-image: url(hatter_pd.gif);
+  background-image: url(wallpaper.jpeg);
   background-size: cover;
   background-attachment: fixed;
   font-family: 'Lexend', sans-serif;
@@ -96,7 +96,7 @@ body {
 
 /* Termékkártya */
 .product-card {
-  background: linear-gradient(145deg, #ffffff27, #00000022);
+  background: linear-gradient(145deg, #ffffff62, #0000007e);
   border-radius: 40px;
   padding: 20px;
   text-align: center;
