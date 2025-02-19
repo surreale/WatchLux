@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import Filter from "./Filter"; 
+
 import "./Products.css";
 
 function Products() {
@@ -10,7 +10,7 @@ function Products() {
 
   // 🔹 TERMÉKLISTÁK (Eredeti + Szűrt lista)
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [forceUpdate, setForceUpdate] = useState(false); // 🔥 Új állapotváltozó a frissítéshez
+  const [forceUpdate, setForceUpdate] = useState(false);
   
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -19,14 +19,15 @@ function Products() {
   const productsPerPage = 20;
   const maxPageButtons = 5;
 
-  // ✅ **1️⃣ OLDALSZÁM FRISSÍTÉSE**
+  const [brands, setBrands] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState("");
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const page = parseInt(params.get("page")) || 1;
     setCurrentPage(page);
   }, [location.search]);
 
-  // ✅ **2️⃣ TERMÉKEK BETÖLTÉSE**
   useEffect(() => {
     axios.get("http://localhost:8080/ora/oralekerdezes")
       .then((response) => {
@@ -38,59 +39,61 @@ function Products() {
       });
   }, []);
 
-  // ✅ **3️⃣ SZŰRÉS MEGOLDÁSA**
-  const applyFilters = async (filters) => {
-    console.log("🔍 Aktív szűrők:", filters);
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/brands")
+      .then((response) => {
+        setBrands(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a márkák betöltésekor.");
+      });
+  }, []);
 
-    try {
-        const response = await axios.get("http://localhost:8080/ora/filtered2", {
-            params: filters,
-        });
+  const handleBrandChange = (event) => {
+    const brand = event.target.value;
+    setSelectedBrand(brand);
 
-        console.log("✅ SZŰRT ADATOK A BACKENDTŐL:", response.data);
+    axios.get("http://localhost:8080/ora/filtered", {
+      params: { marka: brand }
+    })
+    .then((response) => {
+      setFilteredProducts(response.data);
+      setTotalPages(Math.ceil(response.data.length / productsPerPage));
+      setCurrentPage(1);
+    })
+    .catch(() => {
+      console.error("❌ Hiba történt a szűrés során.");
+    });
+  };
 
-        if (Array.isArray(response.data) && response.data.length > 0) {
-            setFilteredProducts(response.data); // 🔥 Frissítés
-            setTotalPages(Math.ceil(response.data.length / productsPerPage));
-            setCurrentPage(1); // 🔹 Szűrés után az 1. oldalra ugrunk
-            setForceUpdate(prev => !prev); // 🔥 Kikényszerítjük a frissítést!
-        } else {
-            console.warn("⚠️ Üres lista érkezett, nincs találat!");
-            setFilteredProducts([]);
-            setForceUpdate(prev => !prev);
-        }
-    } catch (error) {
-        console.error("❌ Hiba történt a szűrés során:", error);
-    }
-};
-
-
-  // ✅ **4️⃣ OLDALVÁLTÁS**
   const handlePageChange = (page) => {
     navigate(`?page=${page}`);
     setCurrentPage(page);
   };
 
-  // ✅ **5️⃣ KIJAVÍTOTT MEGJELENÍTÉS – VÉGRE A SZŰRT ADATOKAT MUTATJA**
   const startIndex = (currentPage - 1) * productsPerPage;
   const visibleProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
 
   return (
     <div className="products-page">
-      {/* SZŰRŐ GOMB */}
+      <h2 className="products-title">Termékek szűrése</h2>
+      <select className="brand-dropdown" value={selectedBrand} onChange={handleBrandChange}>
+        <option value="">Válassz márkát</option>
+        {brands.map((brand) => (
+          <option key={brand.markaaz} value={brand.marka}>{brand.marka}</option>
+        ))}
+      </select>
       <div className="filter-navbar">
         <button className="filter-toggle-button" onClick={() => setFilterVisible(!filterVisible)}>
           {filterVisible ? "Szűrő összecsukása" : "Szűrő megjelenítése"}
         </button>
       </div>
 
-      {filterVisible && <Filter setFilteredProducts={applyFilters} />} 
+      
 
-      {/* TERMÉKEK LISTÁJA */}
       <div className="products-container">
         <h2 className="products-title">Termékek</h2>
         <div className="products-grid" key={forceUpdate ? "update-yes" : "update-no"}>
-
           {visibleProducts.length > 0 ? (
             visibleProducts.map((product) => (
               <div
@@ -122,7 +125,6 @@ function Products() {
           )}
         </div>
 
-        {/* 🔹 LAPOZÁS */}
         {totalPages > 1 && (
           <div className="pagination">
             <button className="double-arrow" onClick={() => handlePageChange(1)} disabled={currentPage === 1}>

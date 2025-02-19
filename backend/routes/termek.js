@@ -3,25 +3,7 @@ const router = express.Router();
 const db = require("../db/dboperations");
 
 // 🔹 Szűrés API (POST metódussal)
-router.post('/filtered2', async (req, res) => {
-  try {
-    console.log("📩 Beérkezett POST kérés a /filtered2 végpontra!");
-    console.log("🔍 Kapott szűrők:", req.body);
 
-    const filters = req.body;
-    if (!filters || Object.keys(filters).length === 0) {
-      return res.status(400).json({ error: "Hiányzó szűrők a kérésben!" });
-    }
-
-    const results = await db.getFilterData(filters);
-    console.log("✅ Szűrt adatok:", results);
-
-    res.json(results);
-  } catch (error) {
-    console.error("❌ Hiba történt a szűrt adatok lekérésekor:", error);
-    res.status(500).json({ error: "Hiba történt az adatok lekérésekor." });
-  }
-});
 
 // 🔹 Összes termék lekérése
 router.get('/oralekerdezes', async (req, res) => {
@@ -49,4 +31,30 @@ router.get('/oralekerdezes/:id', async (req, res) => {
   }
 });
 
+router.get('/brands', async (req, res) => {
+  try {
+    const brands = await db.getBrands();
+    res.json(brands);
+  } catch (error) {
+    console.error('Hiba történt a márkák lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/filtered', async (req, res) => {
+  try {
+    const { marka } = req.query;
+
+    if (!marka) {
+      return res.status(400).json({ error: "Márka paraméter hiányzik!" });
+    }
+
+    const filteredProducts = await db.getFilterData({ marka });
+
+    res.json(filteredProducts);
+  } catch (error) {
+    console.error('❌ Hiba történt a szűrés során:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
 module.exports = router;

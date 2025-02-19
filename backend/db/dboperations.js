@@ -66,11 +66,22 @@ async function getUniqueValues(column, table) {
   }
 }
 
-
+async function getBrands() {
+  try {
+    console.log("🔍 Márkák lekérdezése az adatbázisból...");
+    const [rows] = await pool.query("SELECT markaaz, marka FROM marka");
+    console.log("✅ Lekérdezett márkák:", rows);
+    return rows;
+  } catch (error) {
+    console.error("❌ Hiba történt a márkák lekérésekor:", error);
+    throw error;
+  }
+}
 module.exports = {
   getProducts,
   getProductById,
   getFilterData,
-  getUniqueValues
+  getUniqueValues,
+  getBrands,
 };
 
