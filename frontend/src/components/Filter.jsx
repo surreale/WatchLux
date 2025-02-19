@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Filter.css"; // Stílusfájl
+import "./Filter.css";
 
 const Filter = ({ setFilteredProducts }) => {
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({ marka: "" });
   const [options, setOptions] = useState({ marka: [] });
 
-  // **1️⃣ Adatok lekérése az API-ból**
+  // 🔹 1️⃣ Márkák lekérése
   useEffect(() => {
     const fetchMarkak = async () => {
       try {
@@ -20,7 +20,7 @@ const Filter = ({ setFilteredProducts }) => {
     fetchMarkak();
   }, []);
 
-  // **2️⃣ Szűrési feltételek kezelése**
+  // 🔹 2️⃣ Szűrés küldése POST metódussal
   const handleChange = async (e) => {
     const { name, value } = e.target;
     console.log(`✅ Kiválasztott ${name}: ${value}`);
@@ -28,15 +28,23 @@ const Filter = ({ setFilteredProducts }) => {
     const updatedFilters = { ...filters, [name]: value };
     setFilters(updatedFilters);
 
+    console.log("🔴 Küldeni akarom a kérést a backendnek POST metódussal!");
+    console.log("📡 Küldött adatok:", updatedFilters);
+
     try {
-      const response = await axios.get("http://localhost:8080/ora/filtered2", {
-        params: updatedFilters,
+      const response = await axios.post("http://localhost:8080/ora/filtered2", updatedFilters, {
+        headers: { "Content-Type": "application/json" }
       });
 
-      console.log("✅ Szűrt termékek a backendből:", response.data);
-      setFilteredProducts(response.data); // 🔹 A szűrt termékek beállítása
+      console.log("✅ Backend válasza:", response.data);
+
+      if (Array.isArray(response.data)) {
+        setFilteredProducts(response.data);
+      } else {
+        console.error("❌ HIBA: A backend nem tömböt küldött!", response.data);
+      }
     } catch (error) {
-      console.error("❌ Hiba a szűrt termékek lekérésekor:", error);
+      console.error("❌ Hiba történt a szűrt adatok lekérésekor:", error);
     }
   };
 
@@ -46,7 +54,7 @@ const Filter = ({ setFilteredProducts }) => {
       <div className="filter-form">
         <div className="filter-group">
           <label htmlFor="marka">Márka</label>
-          <select id="marka" name="marka" onChange={handleChange}>
+          <select id="marka" name="marka" onChange={handleChange} value={filters.marka}>
             <option value="">-- Válassz márkát --</option>
             {options.marka.length > 0 ? (
               options.marka.map((value, index) => (

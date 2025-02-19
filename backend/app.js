@@ -1,38 +1,36 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
 const termekRouter = require("./routes/termek");
+const filtersRouter = require("./routes/filters");
 
-const cors = require('cors'); //Cross-Origin Resource Sharing 
-const filtersRouter = require("./routes/filters"); // Új filter route
-var app = express();
+const app = express();
 
+// 🔹 CORS engedélyezése
+const corsOptions = {
+    origin: "http://localhost:3000",  // A frontend URL-je
+    methods: "GET, POST, PUT, DELETE",
+    allowedHeaders: "Content-Type"
+};
+app.use(cors(corsOptions));
 
-
-var corsOptions = {
-    origin: "http://localhost:3000"  //frontend URL és port
-}
-app.use( cors(corsOptions) );
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// 🔹 Middleware-ek
+app.use(logger("dev"));
+app.use(express.json()); // JSON adatok engedélyezése
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/ora',termekRouter)
-
-
-app.use("/filters", filtersRouter); // A frontend innen fogja lekérni az adatokat
-
-
-
+// 🔹 API végpontok
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/ora", termekRouter);
+app.use("/filters", filtersRouter);
 
 module.exports = app;
