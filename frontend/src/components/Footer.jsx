@@ -7,6 +7,7 @@ return(
       <div className="row">
         <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
           <h5 className="text-uppercase">Rólunk</h5>
+          <hr />
           <p>
           Webshopunkban stílusos és minőségi karórák széles választékával várjuk, hogy mindenki megtalálja az idő mérésének tökéletes módját.
           </p>
@@ -14,15 +15,17 @@ return(
 
         <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
           <h5 className="text-uppercase">Szolgáltatások</h5>
+          <hr />
           <ul className="list-unstyled">
-            <li><a href="#!" className="text-dark">Web Design</a></li>
-            <li><a href="#!" className="text-dark">Development</a></li>
-            <li><a href="#!" className="text-dark">Hosting</a></li>
+            <li className="text-dark">Órajavítás</li>
+            <li className="text-dark">Egyedi óra készítése</li>
+            <li className="text-dark">Egyedi óraszíj készítése</li>
           </ul>
         </div>
 
         <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
           <h5 className="text-uppercase">Kapcsolat</h5>
+          <hr />
           <p>
             Mezőtúr, Stromfeld Aurél u. 7.<br />
             Email: service@watchlux.hu<br />

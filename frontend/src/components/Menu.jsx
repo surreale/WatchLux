@@ -14,10 +14,29 @@ import "./Menu.css";
 
 function Menu() {
   const location = useLocation();
-  const { cart } = useContext(CartContext); // Kosár állapot lekérése
+  const { cart } = useContext(CartContext);
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        setShowNavbar(false); // Ha lefelé görget, elrejti a Navbar-t
+      } else {
+        setShowNavbar(true); // Ha felfelé görget, megjeleníti
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
 
   const handleRegisterClose = () => setShowRegister(false);
   const handleRegisterShow = () => setShowRegister(true);
@@ -25,26 +44,17 @@ function Menu() {
   const handleLoginShow = () => setShowLogin(true);
   const toggleUserMenu = () => setShowUserMenu((prev) => !prev);
 
-  useEffect(() => {
-    const handleClickOutside = () => {
-      setShowUserMenu(false);
-    };
-
-    if (showUserMenu) {
-      document.addEventListener("click", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [showUserMenu]);
-
   return (
     <>
-      {!location.pathname.startsWith("/product/") && location.pathname !== "/products" &&
-      location.pathname !== "/products" && 
-      location.pathname !== "/cart" && <HeroText />}
+      {!location.pathname.startsWith("/product/") &&
+        location.pathname !== "/products" &&
+        location.pathname !== "/cart" && <HeroText />}
 
-      <Navbar expand="lg" className="bg-light navbar-custom" collapseOnSelect>
+      <Navbar
+        expand="lg"
+        className={`bg-light navbar-custom ${showNavbar ? "show" : "hide"}`}
+        collapseOnSelect
+      >
         <Container fluid>
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
             <img src={Logo} alt="Logo" className="logo" />
@@ -93,9 +103,7 @@ function Menu() {
               </div>
               <Nav.Link as={Link} to="/kedvencek" className="position-relative">
                 <img src={Kedvencek} alt="Kedvencek" className="kosar-icon" />
-                {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
               </Nav.Link>
-
               <Nav.Link as={Link} to="/cart" className="position-relative">
                 <img src={Kosar} alt="Kosár" className="kosar-icon" />
                 {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
@@ -104,6 +112,7 @@ function Menu() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
       <Login showLogin={showLogin} handleLoginClose={handleLoginClose} />
       <Register showRegister={showRegister} handleRegisterClose={handleRegisterClose} />
     </>

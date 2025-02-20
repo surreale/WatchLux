@@ -8,12 +8,23 @@ body {
 }
 
 /* NAVBAR */
+/* NAVBAR MEGJELENÉSE ÉS ELTŰNÉSE */
 .navbar-custom {
-  position: relative;
-  z-index: 1000; /* Biztosítja, hogy a Navbar elöl legyen */
-  padding: 10px 15px;
-  background-color: #f8f9fa;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
 }
+
+.navbar-custom.hide {
+  transform: translateY(-100%);
+}
+
+.navbar-custom.show {
+  transform: translateY(0);
+}
+
 
 .navbar-brand {
   display: flex;
@@ -212,3 +223,4 @@ body {
     margin-left: auto;
   }
 }
+

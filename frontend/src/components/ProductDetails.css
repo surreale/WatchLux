@@ -1,7 +1,9 @@
 /* === ALAP KONFIGURÁCIÓ === */
 .product-details-container {
+  top: 10px;
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 80px auto;
+  margin-bottom: 20px;
   padding: 20px;
   background: #ffffff;
   border-radius: 10px;

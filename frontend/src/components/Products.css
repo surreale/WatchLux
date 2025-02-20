@@ -134,7 +134,7 @@ body {
 .product-ar {
   font-weight: bold;
   color: white;
-  font-size: 1.2rem;
+  font-size: 30%;
   margin-bottom: 10px;
 }
 
@@ -146,8 +146,10 @@ body {
 
 /* Megtekintés gomb */
 .view-button {
-  background-color: #cbcbcb;
-  color: black;
+  background-color: #545454;
+  border: 2px;
+  border-color: rgba(112, 191, 255, 0.31);
+  color: rgb(255, 255, 255);
   border: none;
   padding: 12px 20px;
   border-radius: 50px;
@@ -159,7 +161,7 @@ body {
 }
 
 .view-button:hover {
-  background-color: #ffffff;
+  background-color: #828282;
   transform: scale(1.05);
 }
 
@@ -169,10 +171,12 @@ body {
   justify-content: center;
   align-items: center;
   margin-top: 30px;
+  border: 2px solid;
+  border-color: rgba(112, 191, 255, 0.31);
   border-radius: 50px;
   gap: 8px;
   padding: 15px;
-  background: rgba(66, 137, 181, 0.089);
+  background: rgba(66, 137, 181, 0);
   backdrop-filter: blur(8px);
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }

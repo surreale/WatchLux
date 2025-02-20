@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -9,8 +9,6 @@ function Products() {
   const location = useLocation();
 
   const [filteredProducts, setFilteredProducts] = useState([]);
-  
-  
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filterVisible, setFilterVisible] = useState(false);
@@ -100,14 +98,13 @@ function Products() {
           <h3>Szűrés</h3>
           <label htmlFor="brand-filter">Márka:</label>
           <div className="dropdown-container">
-  <select id="brand-filter" className="brand-dropdown" value={selectedBrand} onChange={handleBrandChange}>
-    <option value="">Válassz márkát</option>
-    {brands.map((brand) => (
-      <option key={brand.markaaz} value={brand.marka}>{brand.marka}</option>
-    ))}
-  </select>
-</div>
-
+            <select id="brand-filter" className="brand-dropdown" value={selectedBrand} onChange={handleBrandChange}>
+              <option value="">Válassz márkát</option>
+              {brands.map((brand) => (
+                <option key={brand.markaaz} value={brand.marka}>{brand.marka}</option>
+              ))}
+            </select>
+          </div>
         </div>
       )}
 
@@ -116,11 +113,7 @@ function Products() {
         <div className="products-grid">
           {visibleProducts.length > 0 ? (
             visibleProducts.map((product) => (
-              <div
-                key={product.oraaz}
-                className="product-card"
-                onClick={() => navigate(`/product/${product.oraaz}?page=${currentPage}`)}
-              >
+              <div key={product.oraaz} className="product-card">
                 <img
                   src={`/images/${product.kep1}`}
                   alt={product.megnevezes}
@@ -129,6 +122,14 @@ function Products() {
                 <h3 className="product-name">{product.megnevezes}</h3>
                 <p className="product-price product-ar">Ár: {product.ar} Ft</p>
                 <p className="product-stock">Raktáron: {product.raktar}</p>
+
+                {/* 🔹 Megtekintés gomb hozzáadva */}
+                <button
+                  className="view-button"
+                  onClick={() => navigate(`/product/${product.oraaz}`)}
+                >
+                  Megtekintés
+                </button>
               </div>
             ))
           ) : (
