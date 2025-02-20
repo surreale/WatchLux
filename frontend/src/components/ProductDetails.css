@@ -16,7 +16,7 @@
   color: black;
   border: none;
   padding: 10px 15px;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
   transition: background 0.3s;
   margin-bottom: 20px;
@@ -24,6 +24,7 @@
 
 .back-button:hover {
   background-color: #bbb;
+  color: rgb(180, 73, 73);
 }
 
 /* Két oszlopos elrendezés */
@@ -130,7 +131,7 @@
 .buy-button,
 .wishlist-button {
   padding: 12px 20px;
-  border-radius: 5px;
+  border-radius: 50px;
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;

@@ -1,3 +1,7 @@
+body {
+  background-color: black;
+}
+
 /* A kosár oldal teljes magasságot kap és nem lehet görgetni */
 .cart-page {
     height: 100vh; /* Az oldal teljes magasságot foglal el */
@@ -6,6 +10,10 @@
     align-items: center;
     justify-content: center; /* A tartalom középre kerül */
     overflow: hidden; /* Tilos a görgetés */
+}
+
+.cl {
+  color: white;
 }
 
 body.no-scroll {
@@ -24,7 +32,7 @@ body.no-scroll {
     background: white;
     padding: 10px;
     margin: 10px;
-    border-radius: 10px;
+    border-radius: 30px;
     box-shadow: 0px 5px 10px rgb(144, 216, 255);
   }
   
@@ -43,11 +51,19 @@ body.no-scroll {
   .remove-button {
     background: red;
     color: white;
-    border: none;
     padding: 8px;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
+
+  .remove-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgb(154, 215, 255);
+}
   
   .checkout-button {
     background: rgb(0, 77, 128);

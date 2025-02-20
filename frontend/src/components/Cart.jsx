@@ -9,9 +9,9 @@ const Cart = () => {
 
   return (
     <div className="cart-page">
-      <h2>Kosár</h2>
+      <h2 className="cl">Kosár</h2>
       {cart.length === 0 ? (
-        <p>A kosár üres.</p>
+        <p className="cl">A kosár üres.</p>
       ) : (
         <div className="cart-items">
           {cart.map((item) => (
@@ -19,14 +19,15 @@ const Cart = () => {
               <img src={`/images/${item.kep1}`} alt={item.megnevezes} className="cart-image" />
               <div className="cart-details">
                 <h3>{item.megnevezes}</h3>
+                <hr />
                 <p>Ár: {item.ar} Ft</p>
-                <button className="remove-button" onClick={() => removeFromCart(item.oraaz)}>❌ Eltávolítás</button>
+                <button className="remove-button" onClick={() => removeFromCart(item.oraaz)}>Törlés</button>
               </div>
             </div>
           ))}
         </div>
       )}
-      <button className="checkout-button" onClick={() => navigate("/")}>Vásárlás folytatása</button>
+      <button className="checkout-button" onClick={() => navigate("/products")}>Vásárlás folytatása</button>
     </div>
   );
 };

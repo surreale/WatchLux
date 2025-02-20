@@ -34,6 +34,12 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  // 🔹 Termék eltávolítása a kosárból (külön gombhoz)
+  const removeFromCart = (oraaz) => {
+    setCart((prevCart) => prevCart.filter((item) => item.oraaz !== oraaz));
+    addNotification("Termék eltávolítva a kosárból");
+  };
+
   // 🔹 Új értesítés hozzáadása és automatikus törlése 3 másodperc után
   const addNotification = (message) => {
     const id = Date.now(); // Egyedi ID minden értesítéshez
@@ -45,7 +51,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
       {children}
       <div className="notification-container">
         {notifications.map((notif) => (
