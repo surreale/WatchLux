@@ -63,42 +63,22 @@ body.no-scroll {
 }
   
   .checkout-button {
-    background: rgb(0, 77, 128);
-    color: white;
-    padding: 12px 20px;
+    color: black;
+    border: 1px solid black;
     border-radius: 50px;
-    font-size: 1.2rem;
+    padding: 10px;
+    background-color: ghostwhite;
     cursor: pointer;
-    margin-top: 20px;
-    border: none;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    width: 15%;
+    text-align: center;
+    transition: background 0.3s;
 }
 
 /* Gombra hover állapotban egy pulzáló árnyék animáció */
 .checkout-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 77, 128, 0.6);
-}
-
-/* Animált fényhatás */
-@keyframes glowing {
-    0% {
-        box-shadow: 0 0 10px rgba(0, 77, 128, 0.6);
-    }
-    50% {
-        box-shadow: 0 0 20px rgba(0, 77, 128, 0.9);
-    }
-    100% {
-        box-shadow: 0 0 10px rgba(0, 77, 128, 0.6);
-    }
-}
-
-/* A gomb folyamatosan pulzál */
-.checkout-button:active {
-    animation: glowing 1s infinite;
-    transform: scale(0.95);
+  background-color: #49bf8c;
+  color: rgb(255, 255, 255);
 }
 
 .cen {
