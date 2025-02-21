@@ -1,14 +1,22 @@
 .favorites-page {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .favorite-items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: ghostwhite;
+}
+
+.cl {
+  color: rgb(0, 0, 0);
+}
+
+.favorite-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1; /* Kitölti a rendelkezésre álló helyet */
+}
   
   .favorite-item {
     border: 1px solid #ddd;
@@ -26,7 +34,6 @@
   }
   
   .favorite-button {
-    background: gold;
     color: black;
     border: none;
     padding: 10px;
@@ -38,17 +45,28 @@
     background: red;
     color: white;
     border: none;
+    border-radius: 50px;
     padding: 10px;
     cursor: pointer;
     font-size: 16px;
   }
-  
-  .back-button {
-    margin-top: 20px;
-    background: black;
-    color: white;
-    border: none;
+
+.back {
+    color: black;
+    border: 1px solid black;
+    border-radius: 50px;
     padding: 10px;
+    background-color: ghostwhite;
     cursor: pointer;
     font-size: 16px;
+    width: 30%;
+    margin-top: auto; /* A gomb az aljára kerül */
+    margin-bottom: 20px; /* Ad egy kis távolságot az oldal aljától */
+    text-align: center;
+    transition: background 0.3s;
+}
+
+  .back:hover {
+    background-color: #8a54f5;
+    color: rgb(255, 255, 255);
   }

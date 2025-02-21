@@ -48,7 +48,8 @@ function Menu() {
     <>
       {!location.pathname.startsWith("/product/") &&
         location.pathname !== "/products" &&
-        location.pathname !== "/cart" && <HeroText />}
+        location.pathname !== "/cart" &&
+        location.pathname !== "/kedvencek" && <HeroText />}
 
       <Navbar
         expand="lg"

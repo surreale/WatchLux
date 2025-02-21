@@ -9,9 +9,9 @@ const Favorites = () => {
 
   return (
     <div className="favorites-page">
-      <h2>Kedvencek</h2>
+      <h1 className="cl fav">Kedvencek</h1>
       {favorites.length === 0 ? (
-        <p>Nincsenek kedvenc termékek.</p>
+        <p className="cl">Nincsenek kedvenc termékek.</p>
       ) : (
         <div className="favorite-items">
           {favorites.map((item) => (
@@ -20,13 +20,14 @@ const Favorites = () => {
               <div className="favorite-details">
                 <h3>{item.megnevezes}</h3>
                 <p>Ár: {item.ar} Ft</p>
-                <button className="remove-favorite" onClick={() => addToFavorites(item)}>❌ Eltávolítás</button>
+                <button className="remove-favorite" onClick={() => addToFavorites(item)}>Eltávolítás</button>
               </div>
             </div>
           ))}
         </div>
       )}
-      <button className="back-button" onClick={() => navigate("/products")}>Vissza</button>
+      <button className="back" onClick={() => navigate("/products")}>Vissza</button>
+      <br />
     </div>
   );
 };

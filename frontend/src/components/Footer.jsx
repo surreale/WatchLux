@@ -35,7 +35,7 @@ return(
       </div>
     </div>
 
-    <div className="text-center p-3 bg-dark text-info">
+    <div className="text-center p-3 bg-dark clr">
       &copy; 2025 WatchLux | Minden jog fenntartva.
     </div>
   </footer>
