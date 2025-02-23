@@ -3,7 +3,6 @@ require('dotenv').config();
 const config = require('./dbconfig');
 const sql = require('mysql2/promise');
 
-
 let pool = sql.createPool(config);
 
 async function getProducts() {
@@ -35,6 +34,18 @@ async function getFilterData(filters) {
     values.push(filters.marka);
   }
 
+  if (filters.nem) {
+    conditions.push("nem = ?");
+    values.push(filters.nem);
+  }
+
+  if (filters.meghajtas) {
+    conditions.push("meghajtas = ?");
+    values.push(filters.meghajtas);
+  }
+
+ 
+
   if (conditions.length > 0) {
     sql += " WHERE " + conditions.join(" AND ");
   }
@@ -51,25 +62,10 @@ async function getFilterData(filters) {
   }
 }
 
-
-async function getUniqueValues(column, table) {
-  try {
-    console.log(`🔍 SQL lekérdezés: SELECT DISTINCT ?? FROM ??`, [column, table]);
-
-    const [rows] = await pool.query(`SELECT DISTINCT ?? FROM ??`, [column, table]);
-
-    console.log("✅ Lekérdezett értékek:", rows);
-    return rows.map(row => row[column]); 
-  } catch (error) {
-    console.error(`❌ Hiba a ${column} oszlop lekérésekor a ${table} táblából:`, error);
-    throw error;
-  }
-}
-
 async function getBrands() {
   try {
     console.log("🔍 Márkák lekérdezése az adatbázisból...");
-    const [rows] = await pool.query("SELECT markaaz, marka FROM marka");
+    const [rows] = await pool.query("SELECT DISTINCT marka FROM oralekerdezes");
     console.log("✅ Lekérdezett márkák:", rows);
     return rows;
   } catch (error) {
@@ -77,11 +73,41 @@ async function getBrands() {
     throw error;
   }
 }
+
+async function getGenders() {
+  try {
+    console.log("🔍 Nemek lekérdezése az adatbázisból...");
+    const [rows] = await pool.query("SELECT DISTINCT nem FROM oralekerdezes");
+    console.log("✅ Lekérdezett nemek:", rows);
+    return rows;
+  } catch (error) {
+    console.error("❌ Hiba történt a nemek lekérésekor:", error);
+    throw error;
+  }
+}
+
+async function getMeghajtasok() {
+  try {
+    console.log("🔍 Meghajtások lekérdezése az adatbázisból...");
+    const [rows] = await pool.query("SELECT DISTINCT meghajtas FROM oralekerdezes");
+    console.log("✅ Lekérdezett meghajtások:", rows);
+    return rows;
+  } catch (error) {
+    console.error("❌ Hiba történt a meghajtások lekérésekor:", error);
+    throw error;
+  }
+}
+
+
+
+
 module.exports = {
   getProducts,
   getProductById,
   getFilterData,
-  getUniqueValues,
   getBrands,
+  getGenders,
+  getMeghajtasok,
+  
+  
 };
-

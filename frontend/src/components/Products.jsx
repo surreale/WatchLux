@@ -12,12 +12,18 @@ function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filterVisible, setFilterVisible] = useState(false);
-  
+
   const productsPerPage = 20;
   const maxPageButtons = 5;
 
   const [brands, setBrands] = useState([]);
   const [selectedBrand, setSelectedBrand] = useState("");
+  const [genders, setGenders] = useState([]);
+  const [selectedGender, setSelectedGender] = useState("");
+  const [selectedMeghajtas, setSelectedMeghajtas] = useState("");
+  const [meghajtasok, setMeghajtasok] = useState([]);
+  
+  
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -46,24 +52,38 @@ function Products() {
       });
   }, []);
 
-  const handleBrandChange = (event) => {
-    const brand = event.target.value;
-    setSelectedBrand(brand);
-  
-    if (brand === "") {
-      axios.get("http://localhost:8080/ora/oralekerdezes")
-        .then((response) => {
-          setFilteredProducts(response.data);
-          setTotalPages(Math.ceil(response.data.length / productsPerPage));
-          setCurrentPage(1);
-        })
-        .catch(() => {
-          console.error("❌ Hiba történt az összes termék betöltésekor.");
-        });
-    } else {
-      axios.get("http://localhost:8080/ora/filtered", {
-        params: { marka: brand }
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/nemek")
+      .then((response) => {
+        setGenders(response.data);
       })
+      .catch(() => {
+        console.error("❌ Hiba történt a nemek betöltésekor.");
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/meghajtasok")
+      .then((response) => {
+        setMeghajtasok(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a meghajtások betöltésekor.");
+      });
+  }, []);
+
+  
+  
+
+  const handleFilterChange = () => {
+    const params = {};
+    if (selectedBrand) params.marka = selectedBrand;
+    if (selectedGender) params.nem = selectedGender;
+    if (selectedMeghajtas) params.meghajtas = selectedMeghajtas;
+    
+    
+
+    axios.get("http://localhost:8080/ora/filtered", { params })
       .then((response) => {
         setFilteredProducts(response.data);
         setTotalPages(Math.ceil(response.data.length / productsPerPage));
@@ -72,7 +92,6 @@ function Products() {
       .catch(() => {
         console.error("❌ Hiba történt a szűrés során.");
       });
-    }
   };
 
   const handlePageChange = (page) => {
@@ -98,13 +117,44 @@ function Products() {
           <h3>Szűrés</h3>
           <label htmlFor="brand-filter">Márka:</label>
           <div className="dropdown-container">
-            <select id="brand-filter" className="brand-dropdown" value={selectedBrand} onChange={handleBrandChange}>
+            <select id="brand-filter" className="brand-dropdown" value={selectedBrand} onChange={(e) => setSelectedBrand(e.target.value)}>
               <option value="">Válassz márkát</option>
               {brands.map((brand) => (
-                <option key={brand.markaaz} value={brand.marka}>{brand.marka}</option>
+                <option key={brand.marka} value={brand.marka}>{brand.marka}</option>
               ))}
             </select>
           </div>
+
+          <label htmlFor="gender-filter">Nem:</label>
+          <div className="dropdown-container">
+            <select id="gender-filter" className="brand-dropdown" value={selectedGender} onChange={(e) => setSelectedGender(e.target.value)}>
+              <option value="">Válassz nemet</option>
+              {genders.map((gender) => (
+                <option key={gender.nem} value={gender.nem}>{gender.nem}</option>
+              ))}
+            </select>
+          </div>
+
+          <label htmlFor="meghajtas-filter">Meghajtás:</label>
+          <div className="dropdown-container">
+            <select id="meghajtas-filter" className="brand-dropdown" value={selectedMeghajtas} onChange={(e) => setSelectedMeghajtas(e.target.value)}>
+              <option value="">Válassz meghajtást</option>
+              {meghajtasok.map((meghajtas) => (
+                <option key={meghajtas.meghajtas} value={meghajtas.meghajtas}>{meghajtas.meghajtas}</option>
+              ))}
+            </select>
+          </div> 
+          
+          
+          
+          
+          
+          
+          <br/>
+
+
+
+          <button className="filter-apply-button" onClick={handleFilterChange}>Szűrés alkalmazása</button>
         </div>
       )}
 
@@ -123,7 +173,6 @@ function Products() {
                 <p className="product-price product-ar">Ár: {product.ar} Ft</p>
                 <p className="product-stock">Raktáron: {product.raktar}</p>
 
-                {/* 🔹 Megtekintés gomb hozzáadva */}
                 <button
                   className="view-button"
                   onClick={() => navigate(`/product/${product.oraaz}`)}

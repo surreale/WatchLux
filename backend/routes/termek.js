@@ -2,10 +2,6 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db/dboperations");
 
-// 🔹 Szűrés API (POST metódussal)
-
-
-// 🔹 Összes termék lekérése
 router.get('/oralekerdezes', async (req, res) => {
   try {
     const products = await db.getProducts();
@@ -16,7 +12,6 @@ router.get('/oralekerdezes', async (req, res) => {
   }
 });
 
-// 🔹 Egy adott termék lekérése az ID alapján
 router.get('/oralekerdezes/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -41,15 +36,37 @@ router.get('/brands', async (req, res) => {
   }
 });
 
+router.get('/nemek', async (req, res) => {
+  try {
+    const genders = await db.getGenders();
+    res.json(genders);
+  } catch (error) {
+    console.error('Hiba történt a nemek lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/meghajtasok', async (req, res) => {
+  try {
+    const meghajtasok = await db.getMeghajtasok();
+    res.json(meghajtasok);
+  } catch (error) {
+    console.error('Hiba történt a meghajtások lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+
+
 router.get('/filtered', async (req, res) => {
   try {
-    const { marka } = req.query;
+    const { marka, nem, meghajtas} = req.query;
 
-    if (!marka) {
-      return res.status(400).json({ error: "Márka paraméter hiányzik!" });
+    if (!marka && !nem && !meghajtas ) {
+      return res.status(400).json({ error: "Legalább egy szűrési feltétel megadása kötelező!" });
     }
 
-    const filteredProducts = await db.getFilterData({ marka });
+    const filteredProducts = await db.getFilterData({ marka, nem, meghajtas });
 
     res.json(filteredProducts);
   } catch (error) {
