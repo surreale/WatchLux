@@ -92,7 +92,7 @@ function ProductDetails() {
         <div className="info-section">
           <h1 className="product-title">{product.megnevezes}</h1>
           <p className="product-brand">{product.marka}</p>
-          <p className="product-price">{product.ar.toLocaleString()} Ft</p>
+          <p className="product-price"> Ár: {Number(product.ar).toLocaleString('hu-HU')} Ft</p>
           <p className="product-stock">Raktáron: {product.raktar}</p>
 
           {/* 🔹 Kosár és Kedvencek gombok */}

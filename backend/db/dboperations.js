@@ -113,7 +113,11 @@ async function getFilterData(filters) {
     conditions.push("maxcsuklomili = ?");
     values.push(filters.maxcsuklomili);
   }
-  
+  if (filters.minAr && filters.maxAr) {
+    conditions.push("ar BETWEEN ? AND ?");
+    values.push(filters.minAr, filters.maxAr);
+  }
+
 
   if (conditions.length > 0) {
     sql += " WHERE " + conditions.join(" AND ");
@@ -337,6 +341,18 @@ async function getMaxCsuklomili() {
   }
 }
 
+async function getPriceRange() {
+  try {
+    console.log("🔍 Árintervallum lekérdezése az adatbázisból...");
+    const [rows] = await pool.query("SELECT MIN(ar) AS minAr, MAX(ar) AS maxAr FROM oralekerdezes");
+    console.log("✅ Lekérdezett árintervallum:", rows[0]);
+    return rows[0]; // Egyetlen objektumot adunk vissza { minAr, maxAr }
+  } catch (error) {
+    console.error("❌ Hiba történt az árintervallum lekérésekor:", error);
+    throw error;
+  }
+}
+
 
 
 module.exports = {
@@ -359,6 +375,7 @@ module.exports = {
   getOraformak,
   getSzijszinek,
   getSzijk,
-  getMaxCsuklomili
+  getMaxCsuklomili,
+  getPriceRange
   
 };

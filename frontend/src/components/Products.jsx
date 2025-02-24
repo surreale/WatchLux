@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-
+import { Range } from 'react-range';
 import "./Products.css";
 
 function Products() {
@@ -51,6 +51,12 @@ function Products() {
   const [selectedMaxCsuklomili, setSelectedMaxCsuklomili] = useState("");
   const [maxCsuklomilik, setMaxCsuklomilik] = useState([]);
   
+
+const [minPrice, setMinPrice] = useState(0);
+const [maxPrice, setMaxPrice] = useState(100000);
+const [priceRange, setPriceRange] = useState([0, 100000]);
+
+
   
 
 
@@ -250,6 +256,23 @@ function Products() {
       });
   }, []);
   
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/ar-tartomany")
+      .then((response) => {
+        if (response.data.minAr !== null && response.data.maxAr !== null) {
+          const min = response.data.minAr;
+          const max = response.data.maxAr;
+          setMinPrice(min);
+          setMaxPrice(max);
+          setPriceRange([min, max]); // Alapértelmezett árintervallum
+        }
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt az árak lekérésekor.");
+      });
+  }, []);
+  
+  
   
   
 
@@ -272,7 +295,13 @@ function Products() {
     if (selectedSzijszine) params.szijszine = selectedSzijszine;
     if (selectedSzij) params.szij = selectedSzij;
     if (selectedMaxCsuklomili) params.maxcsuklomili = selectedMaxCsuklomili;
-
+    if (priceRange[0] > minPrice || priceRange[1] < maxPrice) {
+      params.minAr = priceRange[0];
+      params.maxAr = priceRange[1];
+    }
+    
+    
+    
     
 
     axios.get("http://localhost:8080/ora/filtered", { params })
@@ -483,6 +512,40 @@ function Products() {
           </select>
           </div>
 
+          <div className="price-filter">
+  <label htmlFor="price-slider">
+    Ár: {priceRange[0].toLocaleString()} Ft - {priceRange[1].toLocaleString()} Ft
+  </label>
+  <Range
+    step={100}
+    min={minPrice}
+    max={maxPrice}
+    values={priceRange}
+    onChange={(values) => setPriceRange(values)}
+    renderTrack={({ props, children }) => (
+      <div {...props} style={{ 
+        height: '6px', 
+        width: '100%', 
+        background: '#ddd', 
+        borderRadius: '4px', 
+        position: 'relative'
+      }}>
+        {children}
+      </div>
+    )}
+    renderThumb={({ props }) => (
+      <div {...props} style={{
+        height: '16px',
+        width: '16px',
+        backgroundColor: '#007bff',
+        borderRadius: '50%',
+        cursor: 'pointer'
+      }} />
+    )}
+  />
+</div>
+
+
 
           <br/>
 
@@ -504,7 +567,8 @@ function Products() {
                   className="product-image"
                 />
                 <h3 className="product-name">{product.megnevezes}</h3>
-                <p className="product-price product-ar">Ár: {product.ar} Ft</p>
+                <p className="product-price product-ar">Ár: {Number(product.ar).toLocaleString('hu-HU')} Ft</p>
+
                 <p className="product-stock">Raktáron: {product.raktar}</p>
 
                 <button
