@@ -22,8 +22,38 @@ function Products() {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedMeghajtas, setSelectedMeghajtas] = useState("");
   const [meghajtasok, setMeghajtasok] = useState([]);
+  const [selectedVizallosag, setSelectedVizallosag] = useState("");
+  const [vizallosagok, setVizallosagok] = useState([]);
+  const [selectedSuly, setSelectedSuly] = useState("");
+  const [sulyok, setSulyok] = useState([]);
+  const [selectedTipus, setSelectedTipus] = useState("");
+  const [tipusok, setTipusok] = useState([]);
+  const [selectedDatumkijelzes, setSelectedDatumkijelzes] = useState("");
+  const [datumkijelzesek, setDatumkijelzesek] = useState([]);
+  const [selectedExtrafunkcio, setSelectedExtrafunkcio] = useState("");
+  const [extrafunkciok, setExtrafunkciok] = useState([]);
+  const [selectedAtokszine, setSelectedAtokszine] = useState("");
+  const [atokszinek, setAtokszinek] = useState([]);
+  const [selectedAszamlapszine, setSelectedAszamlapszine] = useState("");
+  const [aszamlapszinek, setAszamlapszinek] = useState([]);
+  const [selectedAtok, setSelectedAtok] = useState("");
+  const [atokList, setAtokList] = useState([]);
+  const [selectedKristalyuveg, setSelectedKristalyuveg] = useState("");
+  const [kristalyuvegek, setKristalyuvegek] = useState([]);
+  const [selectedSzamlaptipus, setSelectedSzamlaptipus] = useState("");
+  const [szamlaptipusok, setSzamlaptipusok] = useState([]);
+  const [selectedOraforma, setSelectedOraforma] = useState("");
+  const [oraformak, setOraformak] = useState([]);
+  const [selectedSzijszine, setSelectedSzijszine] = useState("");
+  const [szijszinek, setSzijszinek] = useState([]);
+  const [selectedSzij, setSelectedSzij] = useState("");
+  const [szijak, setSzijak] = useState([]);
+  const [selectedMaxCsuklomili, setSelectedMaxCsuklomili] = useState("");
+  const [maxCsuklomilik, setMaxCsuklomilik] = useState([]);
   
   
+
+
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -72,6 +102,154 @@ function Products() {
       });
   }, []);
 
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/vizallosagok")
+      .then((response) => {
+        setVizallosagok(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a vízállóságok betöltésekor.");
+      });
+  }, []);
+  
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/sulyok")
+      .then((response) => {
+        setSulyok(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a súlyok betöltésekor.");
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/tipusok")
+      .then((response) => {
+        setTipusok(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a típusok betöltésekor.");
+      });
+  }, []);
+  
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/datumkijelzesek")
+      .then((response) => {
+        setDatumkijelzesek(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a dátumkijelzések betöltésekor.");
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/extrafunkciok")
+      .then((response) => {
+        setExtrafunkciok(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt az extrafunkciók betöltésekor.");
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/atokszinek")
+      .then((response) => {
+        setAtokszinek(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a tok színek betöltésekor.");
+      });
+  }, []);
+  
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/aszamlapszinek")
+      .then((response) => {
+        console.log("🔍 Számlap színek API válasza:", response.data);
+        setAszamlapszinek(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a számlap színek betöltésekor.");
+      });
+  }, []);
+   
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/atok")
+      .then((response) => {
+        console.log("🔍 Tok anyagok API válasza:", response.data);
+        setAtokList(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a tok anyagok betöltésekor.");
+      });
+  }, []);
+  
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/kristalyuvegek")
+      .then((response) => {
+        console.log("🔍 Kristályüveg típusok API válasza:", response.data);
+        setKristalyuvegek(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a kristályüveg típusok betöltésekor.");
+      });
+  }, []);
+  
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/szamlaptipusok")
+      .then((response) => {
+        console.log("🔍 Számlaptípusok API válasza:", response.data);
+        setSzamlaptipusok(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a számlaptípusok betöltésekor.");
+      });
+  }, []);
+  
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/oraformak")
+      .then((response) => {
+        console.log("🔍 Óraformák API válasza:", response.data);
+        setOraformak(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt az óraformák betöltésekor.");
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/szijszinek")
+      .then((response) => {
+        console.log("🔍 Szíjak színeinek API válasza:", response.data);
+        setSzijszinek(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a szíjak színeinek betöltésekor.");
+      });
+  }, []);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/szijak")
+      .then((response) => {
+        console.log("🔍 Szíjak anyagának API válasza:", response.data);
+        setSzijak(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a szíjak anyagának betöltésekor.");
+      });
+  }, []);
+  
+  useEffect(() => {
+    axios.get("http://localhost:8080/ora/maxcsuklomili")
+      .then((response) => {
+        console.log("🔍 Maximális csuklóméretek API válasza:", response.data);
+        setMaxCsuklomilik(response.data);
+      })
+      .catch(() => {
+        console.error("❌ Hiba történt a maximális csuklóméretek betöltésekor.");
+      });
+  }, []);
+  
   
   
 
@@ -80,7 +258,21 @@ function Products() {
     if (selectedBrand) params.marka = selectedBrand;
     if (selectedGender) params.nem = selectedGender;
     if (selectedMeghajtas) params.meghajtas = selectedMeghajtas;
-    
+    if (selectedVizallosag) params.vizallosag = selectedVizallosag;
+    if (selectedSuly) params.sulygrammban = selectedSuly;
+    if (selectedTipus) params.tipus = selectedTipus;
+    if (selectedDatumkijelzes) params.datumkijelzes = selectedDatumkijelzes;
+    if (selectedExtrafunkcio) params.extrafunkcio = selectedExtrafunkcio;
+    if (selectedAtokszine) params.atokszine = selectedAtokszine;
+    if (selectedAszamlapszine) params.aszamlapszine = selectedAszamlapszine;
+    if (selectedAtok) params.atok = selectedAtok;
+    if (selectedKristalyuveg) params.kristalyuveg = selectedKristalyuveg;
+    if (selectedSzamlaptipus) params.szamlaptipus = selectedSzamlaptipus;
+    if (selectedOraforma) params.oraforma = selectedOraforma;
+    if (selectedSzijszine) params.szijszine = selectedSzijszine;
+    if (selectedSzij) params.szij = selectedSzij;
+    if (selectedMaxCsuklomili) params.maxcsuklomili = selectedMaxCsuklomili;
+
     
 
     axios.get("http://localhost:8080/ora/filtered", { params })
@@ -146,10 +338,152 @@ function Products() {
           </div> 
           
           
-          
-          
-          
-          
+          <label htmlFor="vizallosag-filter">Vízállóság:</label>
+          <div className="dropdown-container">
+            <select id="vizallosag-filter" className="brand-dropdown" value={selectedVizallosag} onChange={(e) => setSelectedVizallosag(e.target.value)}>
+              <option value="">Válassz vízállóságot</option>
+              {vizallosagok.map((vizallosag) => (
+                <option key={vizallosag.vizallosag} value={vizallosag.vizallosag}>{vizallosag.vizallosag}</option>
+              ))}
+              </select>
+          </div>
+
+          <label htmlFor="suly-filter">Súly (grammban):</label>
+          <div className="dropdown-container">
+            <select id="suly-filter" className="brand-dropdown" value={selectedSuly} onChange={(e) => setSelectedSuly(e.target.value)}>
+             <option value="">Válassz súlyt</option>
+            {sulyok.map((suly) => (
+              <option key={suly.sulygrammban} value={suly.sulygrammban}>{suly.sulygrammban} g</option>
+            ))}
+            </select>
+          </div>
+
+          <label htmlFor="tipus-filter">Típus:</label>
+          <div className="dropdown-container">
+            <select id="tipus-filter" className="brand-dropdown" value={selectedTipus} onChange={(e) => setSelectedTipus(e.target.value)}>
+              <option value="">Válassz típust</option>
+            {tipusok.map((tipus) => (
+              <option key={tipus.tipus} value={tipus.tipus}>{tipus.tipus}</option>
+            ))}
+            </select>
+          </div>
+
+          <label htmlFor="datumkijelzes-filter">Dátumkijelzés:</label>
+          <div className="dropdown-container">
+            <select id="datumkijelzes-filter" className="brand-dropdown" value={selectedDatumkijelzes} onChange={(e) => setSelectedDatumkijelzes(e.target.value)}>
+              <option value="">Válassz dátumkijelzést</option>
+            {datumkijelzesek.map((datumkijelzes) => (
+              <option key={datumkijelzes.datumkijelzes} value={datumkijelzes.datumkijelzes}>{datumkijelzes.datumkijelzes}</option>
+            ))}
+            </select>
+          </div>
+
+          <label htmlFor="extrafunkcio-filter">Extrafunkció:</label>
+          <div className="dropdown-container">
+           <select id="extrafunkcio-filter" className="brand-dropdown" value={selectedExtrafunkcio} onChange={(e) => setSelectedExtrafunkcio(e.target.value)}>
+            <option value="">Válassz extrafunkciót</option>
+          {extrafunkciok.map((extrafunkcio) => (
+            <option key={extrafunkcio.extrafunkcio} value={extrafunkcio.extrafunkcio}>{extrafunkcio.extrafunkcio}</option>
+          ))}
+          </select>
+          </div>
+
+          <label htmlFor="atokszine-filter">Tok színe:</label>
+          <div className="dropdown-container">
+            <select id="atokszine-filter" className="brand-dropdown" value={selectedAtokszine} onChange={(e) => setSelectedAtokszine(e.target.value)}>
+              <option value="">Válassz tok színt</option>
+            {atokszinek.map((atokszine) => (
+              <option key={atokszine.atokszine} value={atokszine.atokszine}>{atokszine.atokszine}</option>
+          ))}
+          </select>
+          </div>
+
+          <label htmlFor="aszamlapszine-filter">Számlap színe:</label>
+          <div className="dropdown-container">
+            <select id="aszamlapszine-filter" className="brand-dropdown" value={selectedAszamlapszine} onChange={(e) => setSelectedAszamlapszine(e.target.value)}>
+              <option value="">Válassz számlap színt</option>
+            {aszamlapszinek.map((aszamlapszineObj, index) => (
+              <option key={index} value={aszamlapszineObj.aszamlapszine}>{aszamlapszineObj.aszamlapszine}</option>
+          ))}
+          </select>
+          </div>
+
+
+
+          <label htmlFor="atok-filter">Tok anyaga:</label>
+          <div className="dropdown-container">
+            <select id="atok-filter" className="brand-dropdown" value={selectedAtok} onChange={(e) => setSelectedAtok(e.target.value)}>
+              <option value="">Válassz tok anyagot</option>
+            {atokList.map((atokObj, index) => (
+              <option key={index} value={atokObj.atok}>{atokObj.atok}</option>
+            ))}
+            </select>
+          </div>
+
+
+          <label htmlFor="kristalyuveg-filter">Kristályüveg típusa:</label>
+          <div className="dropdown-container">
+            <select id="kristalyuveg-filter" className="brand-dropdown" value={selectedKristalyuveg} onChange={(e) => setSelectedKristalyuveg(e.target.value)}>
+              <option value="">Válassz kristályüveg típust</option>
+            {kristalyuvegek.map((kristalyuvegObj, index) => (
+              <option key={index} value={kristalyuvegObj.kristalyuveg}>{kristalyuvegObj.kristalyuveg}</option>
+            ))}
+          </select>
+          </div>
+
+
+
+          <label htmlFor="szamlaptipus-filter">Számlaptípus:</label>
+          <div className="dropdown-container">
+            <select id="szamlaptipus-filter" className="brand-dropdown" value={selectedSzamlaptipus} onChange={(e) => setSelectedSzamlaptipus(e.target.value)}>
+              <option value="">Válassz számlaptípust</option>
+            {szamlaptipusok.map((szamlaptipusObj, index) => (
+              <option key={index} value={szamlaptipusObj.szamlaptipus}>{szamlaptipusObj.szamlaptipus}</option>
+            ))}
+            </select>
+            </div>
+
+            <label htmlFor="oraforma-filter">Óraforma:</label>
+            <div className="dropdown-container">
+              <select id="oraforma-filter" className="brand-dropdown" value={selectedOraforma} onChange={(e) => setSelectedOraforma(e.target.value)}>
+                <option value="">Válassz óraformát</option>
+              {oraformak.map((oraformaObj, index) => (
+                <option key={index} value={oraformaObj.oraforma}>{oraformaObj.oraforma}</option>
+              ))}
+            </select>
+            </div>
+
+            <label htmlFor="szijszine-filter">Szíj színe:</label>
+            <div className="dropdown-container">
+              <select id="szijszine-filter" className="brand-dropdown" value={selectedSzijszine} onChange={(e) => setSelectedSzijszine(e.target.value)}>
+                <option value="">Válassz szíj színt</option>
+              {szijszinek.map((szijszineObj, index) => (
+                <option key={index} value={szijszineObj.szijszine}>{szijszineObj.szijszine}</option>
+              ))}
+            </select>
+          </div>
+
+          <label htmlFor="szij-filter">Szíj anyaga:</label>
+          <div className="dropdown-container">
+            <select id="szij-filter" className="brand-dropdown" value={selectedSzij} onChange={(e) => setSelectedSzij(e.target.value)}>
+              <option value="">Válassz szíj anyagot</option>
+            {szijak.map((szijObj, index) => (
+              <option key={index} value={szijObj.szij}>{szijObj.szij}</option>
+            ))}
+          </select>
+          </div>
+
+          <label htmlFor="maxcsuklomili-filter">Maximális csuklóméret (mm):</label>
+          <div className="dropdown-container">
+            <select id="maxcsuklomili-filter" className="brand-dropdown" value={selectedMaxCsuklomili} onChange={(e) => setSelectedMaxCsuklomili(e.target.value)}>
+              <option value="">Válassz maximális csuklóméretet</option>
+            {maxCsuklomilik.map((maxcsuklomiliObj, index) => (
+              <option key={index} value={maxcsuklomiliObj.maxcsuklomili}>{maxcsuklomiliObj.maxcsuklomili} mm</option>
+            ))}
+          </select>
+          </div>
+
+
           <br/>
 
 

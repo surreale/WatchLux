@@ -56,17 +56,157 @@ router.get('/meghajtasok', async (req, res) => {
   }
 });
 
+router.get('/vizallosagok', async (req, res) => {
+  try {
+    const vizallosagok = await db.getVizallosagok();
+    res.json(vizallosagok);
+  } catch (error) {
+    console.error('❌ Hiba történt a vízállóságok lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/sulyok', async (req, res) => {
+  try {
+    const sulyok = await db.getSulyok();
+    res.json(sulyok);
+  } catch (error) {
+    console.error('❌ Hiba történt a súlyok lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/tipusok', async (req, res) => {
+  try {
+    const tipusok = await db.getTipusok();
+    res.json(tipusok);
+  } catch (error) {
+    console.error('❌ Hiba történt a típusok lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/datumkijelzesek', async (req, res) => {
+  try {
+    const datumkijelzesek = await db.getDatumkijelzesek();
+    res.json(datumkijelzesek);
+  } catch (error) {
+    console.error('❌ Hiba történt a dátumkijelzések lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/extrafunkciok', async (req, res) => {
+  try {
+    const extrafunkciok = await db.getExtrafunkciok();
+    res.json(extrafunkciok);
+  } catch (error) {
+    console.error('❌ Hiba történt az extrafunkciók lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/atokszinek', async (req, res) => {
+  try {
+    const atokszinek = await db.getAtokszinek();
+    res.json(atokszinek);
+  } catch (error) {
+    console.error('❌ Hiba történt a tok színek lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/aszamlapszinek', async (req, res) => {
+  try {
+    const aszamlapszinek = await db.getAszamlapszinek();
+    res.json(aszamlapszinek);
+  } catch (error) {
+    console.error('❌ Hiba történt a számlap színek lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/atok', async (req, res) => {
+  try {
+    const atok = await db.getAtok();
+    res.json(atok);
+  } catch (error) {
+    console.error('❌ Hiba történt a tok anyagok lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/kristalyuvegek', async (req, res) => {
+  try {
+    const kristalyuvegek = await db.getKristalyuvegek();
+    res.json(kristalyuvegek);
+  } catch (error) {
+    console.error('❌ Hiba történt a kristályüveg típusok lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/szamlaptipusok', async (req, res) => {
+  try {
+    const szamlaptipusok = await db.getSzamlaptipusok();
+    res.json(szamlaptipusok);
+  } catch (error) {
+    console.error('❌ Hiba történt a számlaptípusok lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/oraformak', async (req, res) => {
+  try {
+    const oraformak = await db.getOraformak();
+    res.json(oraformak);
+  } catch (error) {
+    console.error('❌ Hiba történt az óraformák lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/szijszinek', async (req, res) => {
+  try {
+    const szijszinek = await db.getSzijszinek();
+    res.json(szijszinek);
+  } catch (error) {
+    console.error('❌ Hiba történt a szíjak színének lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/szijak', async (req, res) => {
+  try {
+    const szijak = await db.getSzijk();
+    res.json(szijak);
+  } catch (error) {
+    console.error('❌ Hiba történt a szíjak anyagának lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
+router.get('/maxcsuklomili', async (req, res) => {
+  try {
+    const maxcsuklomili = await db.getMaxCsuklomili();
+    res.json(maxcsuklomili);
+  } catch (error) {
+    console.error('❌ Hiba történt a maximális csuklóméret lekérésekor:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
+
 
 
 router.get('/filtered', async (req, res) => {
   try {
-    const { marka, nem, meghajtas} = req.query;
+    const { marka, nem, meghajtas, vizallosag, sulygrammban, tipus, datumkijelzes, extrafunkcio, atokszine, aszamlapszine, atok, kristalyuveg, szamlaptipus,oraforma , szijszine, szij, maxcsuklomili} = req.query; // 🔥 JAVÍTVA: vizallosagok → vizallosag
 
-    if (!marka && !nem && !meghajtas ) {
+    if (!marka && !nem && !meghajtas && !vizallosag &&!sulygrammban && !tipus && !datumkijelzes && !extrafunkcio && !atokszine && !aszamlapszine && !atok && !kristalyuveg &&!szamlaptipus && !oraforma &&!szijszine &&!szij &&!maxcsuklomili) {
       return res.status(400).json({ error: "Legalább egy szűrési feltétel megadása kötelező!" });
     }
 
-    const filteredProducts = await db.getFilterData({ marka, nem, meghajtas });
+    const filteredProducts = await db.getFilterData({ marka, nem, meghajtas, vizallosag, sulygrammban, tipus, datumkijelzes, extrafunkcio, atokszine, aszamlapszine, atok, kristalyuveg, szamlaptipus, oraforma, szijszine, szij, maxcsuklomili });
 
     res.json(filteredProducts);
   } catch (error) {
@@ -74,4 +214,7 @@ router.get('/filtered', async (req, res) => {
     res.status(500).send('Hiba történt az adatok lekérésekor.');
   }
 });
+
+
+
 module.exports = router;
