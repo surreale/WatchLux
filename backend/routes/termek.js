@@ -198,13 +198,14 @@ router.get('/maxcsuklomili', async (req, res) => {
 
 router.get('/ar-tartomany', async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT MIN(ar) AS minAr, MAX(ar) AS maxAr FROM oralekerdezes");
-    res.json(rows);
+    const priceRange = await db.getPriceRange();
+    res.json(priceRange);
   } catch (error) {
     console.error("❌ Hiba történt az árintervallum lekérésekor:", error);
     res.status(500).send("Hiba történt az adatok lekérésekor.");
   }
 });
+
 
 
 router.get('/filtered', async (req, res) => {

@@ -264,13 +264,14 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
           const max = response.data.maxAr;
           setMinPrice(min);
           setMaxPrice(max);
-          setPriceRange([min, max]); // Alapértelmezett árintervallum
+          setPriceRange([min, max]); // Beállítjuk a csúszka kezdőértékeit
         }
       })
       .catch(() => {
         console.error("❌ Hiba történt az árak lekérésekor.");
       });
   }, []);
+  
   
   
   

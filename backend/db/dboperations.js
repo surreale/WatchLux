@@ -345,13 +345,19 @@ async function getPriceRange() {
   try {
     console.log("🔍 Árintervallum lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT MIN(ar) AS minAr, MAX(ar) AS maxAr FROM oralekerdezes");
-    console.log("✅ Lekérdezett árintervallum:", rows[0]);
-    return rows[0]; // Egyetlen objektumot adunk vissza { minAr, maxAr }
+    
+    if (rows.length > 0) {
+      console.log("✅ Lekérdezett árintervallum:", rows[0]);
+      return { minAr: rows[0].minAr, maxAr: rows[0].maxAr }; // Visszaad egy objektumot
+    } else {
+      return { minAr: 0, maxAr: 100000 }; // Ha nincs adat, egy alapértelmezett tartományt küld vissza
+    }
   } catch (error) {
     console.error("❌ Hiba történt az árintervallum lekérésekor:", error);
     throw error;
   }
 }
+
 
 
 
