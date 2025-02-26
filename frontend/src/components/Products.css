@@ -28,9 +28,10 @@ body {
 
 /* Szűrő gomb */
 .filter-toggle-button {
-  background: linear-gradient(90deg, #3498db, #6dd5fa);
-  color: white;
-  border: none;
+  color: ghostwhite;
+  border: 1px solid black;
+  border-radius: 50px;
+  background-color: rgba(248, 248, 255, 0.352);
   padding: 12px 25px;
   font-size: 1.2rem;
   cursor: pointer;
@@ -40,8 +41,8 @@ body {
 }
 
 .filter-toggle-button:hover {
-  background: linear-gradient(90deg, #217dbb, #4fa3d1);
-  transform: scale(1.05);
+  background-color: #49bf8c9e;
+  color: rgb(255, 255, 255);
 }
 
 /* Szűrőpanel konténer */
@@ -232,7 +233,7 @@ body {
 .filters-container {
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
   padding: 15px;
-  border-radius: 12px;
+  border-radius: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   width: 250px;
   margin: 10px auto;
@@ -289,7 +290,7 @@ body {
 .filters-container::after {
   content: "▼";
   font-size: 14px;
-  color: #007bff;
+  color: #c678eb;
   position: absolute;
   top: 48px;
   right: 15px;
@@ -327,7 +328,7 @@ body {
   appearance: none;
   width: 16px;
   height: 16px;
-  background: #007bff;
+  background: #104b8b;
   border-radius: 50%;
   cursor: pointer;
   pointer-events: auto;
