@@ -50,14 +50,14 @@ function Products() {
   const [szijak, setSzijak] = useState([]);
   const [selectedMaxCsuklomili, setSelectedMaxCsuklomili] = useState("");
   const [maxCsuklomilik, setMaxCsuklomilik] = useState([]);
-  
-
-const [minPrice, setMinPrice] = useState(0);
-const [maxPrice, setMaxPrice] = useState(100000);
-const [priceRange, setPriceRange] = useState([0, 100000]);
 
 
-  
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(100000);
+  const [priceRange, setPriceRange] = useState([0, 100000]);
+
+
+
 
 
 
@@ -117,7 +117,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt a vízállóságok betöltésekor.");
       });
   }, []);
-  
+
   useEffect(() => {
     axios.get("http://localhost:8080/ora/sulyok")
       .then((response) => {
@@ -137,7 +137,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt a típusok betöltésekor.");
       });
   }, []);
-  
+
   useEffect(() => {
     axios.get("http://localhost:8080/ora/datumkijelzesek")
       .then((response) => {
@@ -167,7 +167,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt a tok színek betöltésekor.");
       });
   }, []);
-  
+
   useEffect(() => {
     axios.get("http://localhost:8080/ora/aszamlapszinek")
       .then((response) => {
@@ -178,7 +178,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt a számlap színek betöltésekor.");
       });
   }, []);
-   
+
   useEffect(() => {
     axios.get("http://localhost:8080/ora/atok")
       .then((response) => {
@@ -189,7 +189,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt a tok anyagok betöltésekor.");
       });
   }, []);
-  
+
   useEffect(() => {
     axios.get("http://localhost:8080/ora/kristalyuvegek")
       .then((response) => {
@@ -200,7 +200,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt a kristályüveg típusok betöltésekor.");
       });
   }, []);
-  
+
   useEffect(() => {
     axios.get("http://localhost:8080/ora/szamlaptipusok")
       .then((response) => {
@@ -211,7 +211,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt a számlaptípusok betöltésekor.");
       });
   }, []);
-  
+
   useEffect(() => {
     axios.get("http://localhost:8080/ora/oraformak")
       .then((response) => {
@@ -244,7 +244,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt a szíjak anyagának betöltésekor.");
       });
   }, []);
-  
+
   useEffect(() => {
     axios.get("http://localhost:8080/ora/maxcsuklomili")
       .then((response) => {
@@ -255,7 +255,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt a maximális csuklóméretek betöltésekor.");
       });
   }, []);
-  
+
   useEffect(() => {
     axios.get("http://localhost:8080/ora/ar-tartomany")
       .then((response) => {
@@ -271,11 +271,11 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
         console.error("❌ Hiba történt az árak lekérésekor.");
       });
   }, []);
-  
-  
-  
-  
-  
+
+
+
+
+
 
   const handleFilterChange = () => {
     const params = {};
@@ -300,10 +300,10 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
       params.minAr = priceRange[0];
       params.maxAr = priceRange[1];
     }
-    
-    
-    
-    
+
+
+
+
 
     axios.get("http://localhost:8080/ora/filtered", { params })
       .then((response) => {
@@ -327,7 +327,7 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
   return (
     <div className="products-page">
       <h2 className="products-title">Termékek szűrése</h2>
-      
+
       <div className="filter-navbar">
         <button className="filter-toggle-button" onClick={() => setFilterVisible(!filterVisible)}>
           {filterVisible ? "Szűrő összecsukása" : "Szűrő megjelenítése"}
@@ -365,9 +365,9 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
                 <option key={meghajtas.meghajtas} value={meghajtas.meghajtas}>{meghajtas.meghajtas}</option>
               ))}
             </select>
-          </div> 
-          
-          
+          </div>
+
+
           <label htmlFor="vizallosag-filter">Vízállóság:</label>
           <div className="dropdown-container">
             <select id="vizallosag-filter" className="brand-dropdown" value={selectedVizallosag} onChange={(e) => setSelectedVizallosag(e.target.value)}>
@@ -375,16 +375,16 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
               {vizallosagok.map((vizallosag) => (
                 <option key={vizallosag.vizallosag} value={vizallosag.vizallosag}>{vizallosag.vizallosag}</option>
               ))}
-              </select>
+            </select>
           </div>
 
           <label htmlFor="suly-filter">Súly (grammban):</label>
           <div className="dropdown-container">
             <select id="suly-filter" className="brand-dropdown" value={selectedSuly} onChange={(e) => setSelectedSuly(e.target.value)}>
-             <option value="">Válassz súlyt</option>
-            {sulyok.map((suly) => (
-              <option key={suly.sulygrammban} value={suly.sulygrammban}>{suly.sulygrammban} g</option>
-            ))}
+              <option value="">Válassz súlyt</option>
+              {sulyok.map((suly) => (
+                <option key={suly.sulygrammban} value={suly.sulygrammban}>{suly.sulygrammban} g</option>
+              ))}
             </select>
           </div>
 
@@ -392,9 +392,9 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
           <div className="dropdown-container">
             <select id="tipus-filter" className="brand-dropdown" value={selectedTipus} onChange={(e) => setSelectedTipus(e.target.value)}>
               <option value="">Válassz típust</option>
-            {tipusok.map((tipus) => (
-              <option key={tipus.tipus} value={tipus.tipus}>{tipus.tipus}</option>
-            ))}
+              {tipusok.map((tipus) => (
+                <option key={tipus.tipus} value={tipus.tipus}>{tipus.tipus}</option>
+              ))}
             </select>
           </div>
 
@@ -402,40 +402,40 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
           <div className="dropdown-container">
             <select id="datumkijelzes-filter" className="brand-dropdown" value={selectedDatumkijelzes} onChange={(e) => setSelectedDatumkijelzes(e.target.value)}>
               <option value="">Válassz dátumkijelzést</option>
-            {datumkijelzesek.map((datumkijelzes) => (
-              <option key={datumkijelzes.datumkijelzes} value={datumkijelzes.datumkijelzes}>{datumkijelzes.datumkijelzes}</option>
-            ))}
+              {datumkijelzesek.map((datumkijelzes) => (
+                <option key={datumkijelzes.datumkijelzes} value={datumkijelzes.datumkijelzes}>{datumkijelzes.datumkijelzes}</option>
+              ))}
             </select>
           </div>
 
           <label htmlFor="extrafunkcio-filter">Extrafunkció:</label>
           <div className="dropdown-container">
-           <select id="extrafunkcio-filter" className="brand-dropdown" value={selectedExtrafunkcio} onChange={(e) => setSelectedExtrafunkcio(e.target.value)}>
-            <option value="">Válassz extrafunkciót</option>
-          {extrafunkciok.map((extrafunkcio) => (
-            <option key={extrafunkcio.extrafunkcio} value={extrafunkcio.extrafunkcio}>{extrafunkcio.extrafunkcio}</option>
-          ))}
-          </select>
+            <select id="extrafunkcio-filter" className="brand-dropdown" value={selectedExtrafunkcio} onChange={(e) => setSelectedExtrafunkcio(e.target.value)}>
+              <option value="">Válassz extrafunkciót</option>
+              {extrafunkciok.map((extrafunkcio) => (
+                <option key={extrafunkcio.extrafunkcio} value={extrafunkcio.extrafunkcio}>{extrafunkcio.extrafunkcio}</option>
+              ))}
+            </select>
           </div>
 
           <label htmlFor="atokszine-filter">Tok színe:</label>
           <div className="dropdown-container">
             <select id="atokszine-filter" className="brand-dropdown" value={selectedAtokszine} onChange={(e) => setSelectedAtokszine(e.target.value)}>
               <option value="">Válassz tok színt</option>
-            {atokszinek.map((atokszine) => (
-              <option key={atokszine.atokszine} value={atokszine.atokszine}>{atokszine.atokszine}</option>
-          ))}
-          </select>
+              {atokszinek.map((atokszine) => (
+                <option key={atokszine.atokszine} value={atokszine.atokszine}>{atokszine.atokszine}</option>
+              ))}
+            </select>
           </div>
 
           <label htmlFor="aszamlapszine-filter">Számlap színe:</label>
           <div className="dropdown-container">
             <select id="aszamlapszine-filter" className="brand-dropdown" value={selectedAszamlapszine} onChange={(e) => setSelectedAszamlapszine(e.target.value)}>
               <option value="">Válassz számlap színt</option>
-            {aszamlapszinek.map((aszamlapszineObj, index) => (
-              <option key={index} value={aszamlapszineObj.aszamlapszine}>{aszamlapszineObj.aszamlapszine}</option>
-          ))}
-          </select>
+              {aszamlapszinek.map((aszamlapszineObj, index) => (
+                <option key={index} value={aszamlapszineObj.aszamlapszine}>{aszamlapszineObj.aszamlapszine}</option>
+              ))}
+            </select>
           </div>
 
 
@@ -444,9 +444,9 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
           <div className="dropdown-container">
             <select id="atok-filter" className="brand-dropdown" value={selectedAtok} onChange={(e) => setSelectedAtok(e.target.value)}>
               <option value="">Válassz tok anyagot</option>
-            {atokList.map((atokObj, index) => (
-              <option key={index} value={atokObj.atok}>{atokObj.atok}</option>
-            ))}
+              {atokList.map((atokObj, index) => (
+                <option key={index} value={atokObj.atok}>{atokObj.atok}</option>
+              ))}
             </select>
           </div>
 
@@ -455,10 +455,10 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
           <div className="dropdown-container">
             <select id="kristalyuveg-filter" className="brand-dropdown" value={selectedKristalyuveg} onChange={(e) => setSelectedKristalyuveg(e.target.value)}>
               <option value="">Válassz kristályüveg típust</option>
-            {kristalyuvegek.map((kristalyuvegObj, index) => (
-              <option key={index} value={kristalyuvegObj.kristalyuveg}>{kristalyuvegObj.kristalyuveg}</option>
-            ))}
-          </select>
+              {kristalyuvegek.map((kristalyuvegObj, index) => (
+                <option key={index} value={kristalyuvegObj.kristalyuveg}>{kristalyuvegObj.kristalyuveg}</option>
+              ))}
+            </select>
           </div>
 
 
@@ -467,26 +467,26 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
           <div className="dropdown-container">
             <select id="szamlaptipus-filter" className="brand-dropdown" value={selectedSzamlaptipus} onChange={(e) => setSelectedSzamlaptipus(e.target.value)}>
               <option value="">Válassz számlaptípust</option>
-            {szamlaptipusok.map((szamlaptipusObj, index) => (
-              <option key={index} value={szamlaptipusObj.szamlaptipus}>{szamlaptipusObj.szamlaptipus}</option>
-            ))}
+              {szamlaptipusok.map((szamlaptipusObj, index) => (
+                <option key={index} value={szamlaptipusObj.szamlaptipus}>{szamlaptipusObj.szamlaptipus}</option>
+              ))}
             </select>
-            </div>
+          </div>
 
-            <label htmlFor="oraforma-filter">Óraforma:</label>
-            <div className="dropdown-container">
-              <select id="oraforma-filter" className="brand-dropdown" value={selectedOraforma} onChange={(e) => setSelectedOraforma(e.target.value)}>
-                <option value="">Válassz óraformát</option>
+          <label htmlFor="oraforma-filter">Óraforma:</label>
+          <div className="dropdown-container">
+            <select id="oraforma-filter" className="brand-dropdown" value={selectedOraforma} onChange={(e) => setSelectedOraforma(e.target.value)}>
+              <option value="">Válassz óraformát</option>
               {oraformak.map((oraformaObj, index) => (
                 <option key={index} value={oraformaObj.oraforma}>{oraformaObj.oraforma}</option>
               ))}
             </select>
-            </div>
+          </div>
 
-            <label htmlFor="szijszine-filter">Szíj színe:</label>
-            <div className="dropdown-container">
-              <select id="szijszine-filter" className="brand-dropdown" value={selectedSzijszine} onChange={(e) => setSelectedSzijszine(e.target.value)}>
-                <option value="">Válassz szíj színt</option>
+          <label htmlFor="szijszine-filter">Szíj színe:</label>
+          <div className="dropdown-container">
+            <select id="szijszine-filter" className="brand-dropdown" value={selectedSzijszine} onChange={(e) => setSelectedSzijszine(e.target.value)}>
+              <option value="">Válassz szíj színt</option>
               {szijszinek.map((szijszineObj, index) => (
                 <option key={index} value={szijszineObj.szijszine}>{szijszineObj.szijszine}</option>
               ))}
@@ -497,58 +497,92 @@ const [priceRange, setPriceRange] = useState([0, 100000]);
           <div className="dropdown-container">
             <select id="szij-filter" className="brand-dropdown" value={selectedSzij} onChange={(e) => setSelectedSzij(e.target.value)}>
               <option value="">Válassz szíj anyagot</option>
-            {szijak.map((szijObj, index) => (
-              <option key={index} value={szijObj.szij}>{szijObj.szij}</option>
-            ))}
-          </select>
+              {szijak.map((szijObj, index) => (
+                <option key={index} value={szijObj.szij}>{szijObj.szij}</option>
+              ))}
+            </select>
           </div>
 
           <label htmlFor="maxcsuklomili-filter">Maximális csuklóméret (mm):</label>
           <div className="dropdown-container">
             <select id="maxcsuklomili-filter" className="brand-dropdown" value={selectedMaxCsuklomili} onChange={(e) => setSelectedMaxCsuklomili(e.target.value)}>
               <option value="">Válassz maximális csuklóméretet</option>
-            {maxCsuklomilik.map((maxcsuklomiliObj, index) => (
-              <option key={index} value={maxcsuklomiliObj.maxcsuklomili}>{maxcsuklomiliObj.maxcsuklomili} mm</option>
-            ))}
-          </select>
+              {maxCsuklomilik.map((maxcsuklomiliObj, index) => (
+                <option key={index} value={maxcsuklomiliObj.maxcsuklomili}>{maxcsuklomiliObj.maxcsuklomili} mm</option>
+              ))}
+            </select>
           </div>
 
           <div className="price-filter">
-  <label htmlFor="price-slider">
-    Ár: {priceRange[0].toLocaleString()} Ft - {priceRange[1].toLocaleString()} Ft
-  </label>
-  <Range
-    step={100}
-    min={minPrice}
-    max={maxPrice}
-    values={priceRange}
-    onChange={(values) => setPriceRange(values)}
-    renderTrack={({ props, children }) => (
-      <div {...props} style={{ 
-        height: '6px', 
-        width: '100%', 
-        background: '#ddd', 
-        borderRadius: '4px', 
-        position: 'relative'
-      }}>
-        {children}
-      </div>
-    )}
-    renderThumb={({ props }) => (
-      <div {...props} style={{
-        height: '16px',
-        width: '16px',
-        backgroundColor: '#007bff',
-        borderRadius: '50%',
-        cursor: 'pointer'
-      }} />
-    )}
-  />
-</div>
+            <label htmlFor="price-slider">
+              Ár: {priceRange[0].toLocaleString()} Ft - {priceRange[1].toLocaleString()} Ft
+            </label>
+
+            <div className="price-slider-container">
+              <Range
+                step={100}
+                min={minPrice}
+                max={maxPrice}
+                values={priceRange}
+                onChange={(values) => setPriceRange(values)}
+                renderTrack={({ props, children }) => (
+                  <div
+                    {...props}
+                    style={{
+                      height: "6px",
+                      width: "100%",
+                      background: "#ddd",
+                      borderRadius: "4px",
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* Kijelölt ár tartomány (kék sáv) */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        height: "6px",
+                        background: "#007bff",
+                        borderRadius: "4px",
+                        left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                        width: `${((priceRange[1] - priceRange[0]) / (maxPrice - minPrice)) * 100}%`,
+                      }}
+                    />
+                    {children}
+                  </div>
+                )}
+                renderThumb={({ props }) => (
+                  <div
+                    {...props}
+                    style={{
+                      height: "16px",
+                      width: "16px",
+                      backgroundColor: "#007bff",
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      position: "absolute",
+                      top: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  />
+                )}
+              />
+            </div>
+          </div>
 
 
 
-          <br/>
+
+
+
+
+
+
+          <br />
 
 
 

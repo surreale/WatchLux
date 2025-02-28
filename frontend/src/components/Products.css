@@ -7,15 +7,12 @@ body {
   background-size: cover;
   background-attachment: fixed;
   font-family: 'Lexend', sans-serif;
+  padding-top: 80px;
 }
 
 /* Termékoldal elrendezés */
-.products-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
+
+
 
 /* Szűrő Navbar */
 .filter-navbar {
@@ -72,29 +69,22 @@ body {
 }
 
 /* Termékek konténer */
-.products-container {
-  width: 100%;
-  max-width: 1200px;
-  text-align: center;
-  margin-top: 20px;
-}
+
 
 /* Termékek cím */
 .products-title {
-  font-size: 2.5rem;
+  text-align: left;
+  font-size: 2rem;
   font-weight: bold;
-  color: white;
-  text-transform: uppercase;
 }
 
-/* Termékek grid */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
+  gap: 20px;
   margin-top: 20px;
+  justify-content: start; /* Balra rendezés */
 }
-
 /* Termékkártya */
 .product-card {
   background: linear-gradient(145deg, #ffffff62, #0000007e);
@@ -217,30 +207,36 @@ body {
 
 /* Reszponzív kialakítás */
 @media screen and (max-width: 768px) {
-  .products-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  .products-page {
+    flex-direction: column; /* Mobilon egymás alá kerül a szűrő és a termékek */
   }
 
-  .product-image {
-    max-width: 150px;
+  .filters-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
   }
 
-  .filter-container {
-    width: 95%;
-    padding: 15px;
+  .products-container {
+    max-width: 100%;
+    padding-left: 0;
   }
 }
+/* A szűrőpanel fix elhelyezése bal oldalon */
+/* Szűrőpanel fix elhelyezése a bal oldalon */
 .filters-container {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  padding: 15px;
-  border-radius: 20px;
+  flex: 0 0 280px; /* Fix szélesség */
+  position: sticky;
+  top: 80px; /* Fejléc alatti kezdőpont */
+  height: calc(100vh - 160px); /* Ne lógjon ki a láblécből */
+  overflow-y: auto;
+  background: linear-gradient(135deg, #ffffff, #f8f8f8);
+  padding: 20px;
+  border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 250px;
-  margin: 10px auto;
   text-align: left;
-  position: relative;
 }
-
 .filters-container h3 {
   font-size: 1.4rem;
   color: #333;
@@ -309,7 +305,9 @@ body {
 }
 
 .price-filter {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   margin-top: 10px;
 }
@@ -324,12 +322,73 @@ body {
   pointer-events: none;
 }
 
-.price-filter input[type="range"]::-webkit-slider-thumb {
+.price-filter input[type="range"] {
   appearance: none;
-  width: 16px;
+  width: 48%;
+  height: 6px;
+  background: #ddd;
+  border-radius: 5px;
+  position: relative;
+}
+
+.price-slider-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  position: relative;
+}
+.price-slider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.price-slider-container .range-track {
+  height: 6px;
+  background: #ddd;
+  border-radius: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.price-slider-container .range-thumb {
   height: 16px;
-  background: #104b8b;
+  width: 16px;
+  background-color: #007bff;
   border-radius: 50%;
   cursor: pointer;
-  pointer-events: auto;
+  position: absolute;
+  top: -5px;
+}
+
+
+
+.main-container {
+  display: flex;
+  align-items: flex-start;
+  min-height: calc(100vh - 160px); /* Fejléc és lábléc közötti hely */
+  width: 100%;
+}
+
+/* SZŰRŐ PANEL – MINDIG BAL OLDALT MARAD */
+.filters-wrapper {
+  flex: 0 0 280px; /* Fix szélesség, hogy ne mozduljon el */
+  height: 100%;
+  position: relative; /* Relatív, hogy ne legyen fix */
+  display: flex;
+  flex-direction: column;
+}
+
+.products-container {
+  flex: 1;
+  max-width: 75%; /* A szűrő miatt ne használja az egész szélességet */
+  padding-left: 20px;
+  text-align: left;
+}
+.products-page {
+  display: grid;
+  grid-template-columns: 280px auto; /* A bal oldalon fix szélesség, a jobb oldalon automatikus */
+  gap: 20px;
 }
