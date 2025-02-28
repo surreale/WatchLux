@@ -1,20 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap');
 
 
-/* Általános stílusok */
+
 body {
   background-image: url(wallpaper.jpeg);
   background-size: cover;
   background-attachment: fixed;
   font-family: 'Lexend', sans-serif;
-  padding-top: 80px;
 }
 
-/* Termékoldal elrendezés */
+.products-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
 
-
-
-/* Szűrő Navbar */
 .filter-navbar {
   display: flex;
   justify-content: center;
@@ -23,12 +24,10 @@ body {
   padding: 15px 0;
 }
 
-/* Szűrő gomb */
 .filter-toggle-button {
-  color: ghostwhite;
-  border: 1px solid black;
-  border-radius: 50px;
-  background-color: rgba(248, 248, 255, 0.352);
+  background: linear-gradient(90deg, #3498db, #6dd5fa);
+  color: white;
+  border: none;
   padding: 12px 25px;
   font-size: 1.2rem;
   cursor: pointer;
@@ -36,6 +35,7 @@ body {
   transition: all 0.3s ease-in-out;
   font-weight: bold;
 }
+
 
 .filter-toggle-button:hover {
   background-color: #49bf8c9e;
@@ -58,7 +58,6 @@ body {
   max-height: 800px;
 }
 
-/* Szűrőpanel */
 .filter-container {
   background: linear-gradient(145deg, #232323, #1b1b1b);
   border-radius: 12px;
@@ -67,6 +66,7 @@ body {
   text-align: center;
   color: white;
 }
+
 
 /* Termékek konténer */
 
@@ -80,37 +80,38 @@ body {
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* 4 oszlop */
   gap: 20px;
   margin-top: 20px;
   justify-content: start; /* Balra rendezés */
+  width: calc(100% - 320px); /* A szűrőpanel szélességéhez igazítva */
 }
-/* Termékkártya */
+
 .product-card {
   background: linear-gradient(145deg, #ffffff62, #0000007e);
-  border-radius: 40px;
+  border-radius: 15px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 10px 20px rgba(177, 177, 177, 0.5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 15px 30px rgba(243, 242, 242, 0.7);
+  box-shadow: 0 10px 25px rgba(243, 242, 242, 0.7);
 }
 
 /* Termékkép */
 /* Termékképek egységes méretre állítása */
 .product-image {
-  width: 180px;  /* Fix szélesség */
-  height: 180px; /* Fix magasság */
-  object-fit: contain; /* Megőrzi az arányokat és nem vágja le a képet */
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
   border-radius: 12px;
-  background-color: white; /* Fehér háttér, ha a kép kisebb */
+  background-color: white;
   padding: 10px;
   display: block;
-  margin: 0 auto; /* Kép középre igazítása */
+  margin: 0 auto;
 }
 
 
@@ -156,7 +157,6 @@ body {
   transform: scale(1.05);
 }
 
-/* Lapozás */
 .pagination {
   display: flex;
   justify-content: center;
@@ -171,6 +171,7 @@ body {
   backdrop-filter: blur(8px);
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
+
 
 .page-button,
 .arrow,
@@ -206,37 +207,42 @@ body {
 }
 
 /* Reszponzív kialakítás */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .products-page {
-    flex-direction: column; /* Mobilon egymás alá kerül a szűrő és a termékek */
+    flex-direction: column;
   }
 
   .filters-container {
-    position: relative;
     width: 100%;
-    max-width: 100%;
     height: auto;
+    position: relative;
   }
 
   .products-container {
-    max-width: 100%;
-    padding-left: 0;
+    grid-template-columns: repeat(2, 1fr); /* Kisebb képernyőn 2 oszlop */
   }
 }
+
+@media screen and (max-width: 768px) {
+  .products-container {
+    grid-template-columns: repeat(1, 1fr); /* Kis képernyőn 1 oszlop */
+  }
+}
+
+
 /* A szűrőpanel fix elhelyezése bal oldalon */
 /* Szűrőpanel fix elhelyezése a bal oldalon */
 .filters-container {
-  flex: 0 0 280px; /* Fix szélesség */
-  position: sticky;
-  top: 80px; /* Fejléc alatti kezdőpont */
-  height: calc(100vh - 160px); /* Ne lógjon ki a láblécből */
-  overflow-y: auto;
-  background: linear-gradient(135deg, #ffffff, #f8f8f8);
-  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 15px;
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  margin: 10px auto;
   text-align: left;
+  position: relative;
 }
+
 .filters-container h3 {
   font-size: 1.4rem;
   color: #333;
@@ -382,13 +388,8 @@ body {
 }
 
 .products-container {
-  flex: 1;
-  max-width: 75%; /* A szűrő miatt ne használja az egész szélességet */
-  padding-left: 20px;
-  text-align: left;
-}
-.products-page {
-  display: grid;
-  grid-template-columns: 280px auto; /* A bal oldalon fix szélesség, a jobb oldalon automatikus */
-  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+  margin-top: 20px;
 }

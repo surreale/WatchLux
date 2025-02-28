@@ -11,7 +11,7 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [filterVisible, setFilterVisible] = useState(false);
+  
 
   const productsPerPage = 20;
   const maxPageButtons = 5;
@@ -326,16 +326,12 @@ function Products() {
 
   return (
     <div className="products-page">
-      <h2 className="products-title">Termékek szűrése</h2>
+      <h2 className="products-title">Termékek szűrése</h2> 
+      
 
-      <div className="filter-navbar">
-        <button className="filter-toggle-button" onClick={() => setFilterVisible(!filterVisible)}>
-          {filterVisible ? "Szűrő összecsukása" : "Szűrő megjelenítése"}
-        </button>
-      </div>
-
-      {filterVisible && (
+      
         <div className="filters-container">
+        <div className="products-container"> </div>
           <h3>Szűrés</h3>
           <label htmlFor="brand-filter">Márka:</label>
           <div className="dropdown-container">
@@ -588,7 +584,7 @@ function Products() {
 
           <button className="filter-apply-button" onClick={handleFilterChange}>Szűrés alkalmazása</button>
         </div>
-      )}
+      
 
       <div className="products-container">
         <h2 className="products-title">Termékek</h2>
