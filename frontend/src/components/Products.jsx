@@ -11,7 +11,7 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  
+
 
   const productsPerPage = 20;
   const maxPageButtons = 5;
@@ -55,9 +55,32 @@ function Products() {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100000);
   const [priceRange, setPriceRange] = useState([0, 100000]);
+  const scrollToTop = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  const [sortOption, setSortOption] = useState(""); // Rendezési opció állapota
 
+  const handleSortChange = (option) => {
+    setSortOption(option);
+    let sortedProducts = [...filteredProducts];
 
+    switch (option) {
+      case "abc-asc":
+        sortedProducts.sort((a, b) => a.megnevezes.localeCompare(b.megnevezes));
+        break;
+      case "abc-desc":
+        sortedProducts.sort((a, b) => b.megnevezes.localeCompare(a.megnevezes));
+        break;
+      case "price-asc":
+        sortedProducts.sort((a, b) => a.ar - b.ar);
+        break;
+      case "price-desc":
+        sortedProducts.sort((a, b) => b.ar - a.ar);
+        break;
+      default:
+        break;
+    }
 
+    setFilteredProducts(sortedProducts);
+  };
 
 
 
@@ -276,9 +299,9 @@ function Products() {
 
 
 
-
   const handleFilterChange = () => {
     const params = {};
+    if (sortOption) params.rendezes = sortOption;
     if (selectedBrand) params.marka = selectedBrand;
     if (selectedGender) params.nem = selectedGender;
     if (selectedMeghajtas) params.meghajtas = selectedMeghajtas;
@@ -326,12 +349,10 @@ function Products() {
 
   return (
     <div className="products-page">
-      <h2 className="products-title">Termékek szűrése</h2> 
-      
-
-      
+      <h2 className="products-title">Termékek szűrése</h2>
+      <div className="main-container">
         <div className="filters-container">
-        <div className="products-container"> </div>
+          <div className="products-container"> </div>
           <h3>Szűrés</h3>
           <label htmlFor="brand-filter">Márka:</label>
           <div className="dropdown-container">
@@ -582,61 +603,78 @@ function Products() {
 
 
 
-          <button className="filter-apply-button" onClick={handleFilterChange}>Szűrés alkalmazása</button>
+          <button className="filter-apply-button" onClick={() => { handleFilterChange(); scrollToTop(); }}>
+            Szűrés alkalmazása
+          </button>
+
         </div>
-      
 
-      <div className="products-container">
-        <h2 className="products-title">Termékek</h2>
-        <div className="products-grid">
-          {visibleProducts.length > 0 ? (
-            visibleProducts.map((product) => (
-              <div key={product.oraaz} className="product-card">
-                <img
-                  src={`/images/${product.kep1}`}
-                  alt={product.megnevezes}
-                  className="product-image"
-                />
-                <h3 className="product-name">{product.megnevezes}</h3>
-                <p className="product-price product-ar">Ár: {Number(product.ar).toLocaleString('hu-HU')} Ft</p>
 
-                <p className="product-stock">Raktáron: {product.raktar}</p>
+        <div className="products-container">
+          <div className="products-header">
+            <h2 className="products-title">Termékek</h2>
+            <select
+              value={sortOption}
+              onChange={(e) => handleSortChange(e.target.value)}
+              className="sort-dropdown"
+            >
+              <option value="">Rendezés</option>
+              <option value="abc-asc">ABC sorrendben (növekvő)</option>
+              <option value="abc-desc">ABC sorrendben (csökkenő)</option>
+              <option value="price-asc">Ár szerint (növekvő)</option>
+              <option value="price-desc">Ár szerint (csökkenő)</option>
+            </select>
+          </div>
+          <div className="products-grid">
+            {visibleProducts.length > 0 ? (
+              visibleProducts.map((product) => (
+                <div key={product.oraaz} className="product-card">
+                  <img
+                    src={`/images/${product.kep1}`}
+                    alt={product.megnevezes}
+                    className="product-image"
+                  />
+                  <h3 className="product-name">{product.megnevezes}</h3>
+                  <p className="product-price product-ar">Ár: {Number(product.ar).toLocaleString('hu-HU')} Ft</p>
 
-                <button
-                  className="view-button"
-                  onClick={() => navigate(`/product/${product.oraaz}`)}
-                >
-                  Megtekintés
-                </button>
-              </div>
-            ))
-          ) : (
-            <p className="no-products">❌ Nincs találat a kiválasztott szűrési feltételekre.</p>
+                  <p className="product-stock">Raktáron: {product.raktar}</p>
+
+                  <button
+                    className="view-button"
+                    onClick={() => navigate(`/product/${product.oraaz}`)}
+                  >
+                    Megtekintés
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p className="no-products">❌ Nincs találat a kiválasztott szűrési feltételekre.</p>
+            )}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button className="double-arrow" onClick={() => handlePageChange(1)} disabled={currentPage === 1}>&laquo;</button>
+              <button className="arrow" onClick={() => handlePageChange(Math.max(1, currentPage - 1))} disabled={currentPage === 1}>&lt;</button>
+              {Array.from({ length: maxPageButtons }, (_, index) => {
+                const pageNumber = Math.max(1, currentPage - Math.floor(maxPageButtons / 2)) + index;
+                return pageNumber <= totalPages ? (
+                  <button
+                    key={pageNumber}
+                    className={`page-button ${currentPage === pageNumber ? "active" : ""}`}
+                    onClick={() => handlePageChange(pageNumber)}
+                  >
+                    {pageNumber}
+                  </button>
+                ) : null;
+              })}
+              <button className="arrow" onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages}>&gt;</button>
+              <button className="double-arrow" onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages}>&raquo;</button>
+            </div>
           )}
         </div>
-
-        {totalPages > 1 && (
-          <div className="pagination">
-            <button className="double-arrow" onClick={() => handlePageChange(1)} disabled={currentPage === 1}>&laquo;</button>
-            <button className="arrow" onClick={() => handlePageChange(Math.max(1, currentPage - 1))} disabled={currentPage === 1}>&lt;</button>
-            {Array.from({ length: maxPageButtons }, (_, index) => {
-              const pageNumber = Math.max(1, currentPage - Math.floor(maxPageButtons / 2)) + index;
-              return pageNumber <= totalPages ? (
-                <button
-                  key={pageNumber}
-                  className={`page-button ${currentPage === pageNumber ? "active" : ""}`}
-                  onClick={() => handlePageChange(pageNumber)}
-                >
-                  {pageNumber}
-                </button>
-              ) : null;
-            })}
-            <button className="arrow" onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages}>&gt;</button>
-            <button className="double-arrow" onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages}>&raquo;</button>
-          </div>
-        )}
       </div>
-    </div>
+    </div >
   );
 }
 
