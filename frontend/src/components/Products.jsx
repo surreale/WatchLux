@@ -301,43 +301,76 @@ function Products() {
 
   const handleFilterChange = () => {
     const params = {};
-    if (sortOption) params.rendezes = sortOption;
-    if (selectedBrand) params.marka = selectedBrand;
-    if (selectedGender) params.nem = selectedGender;
-    if (selectedMeghajtas) params.meghajtas = selectedMeghajtas;
-    if (selectedVizallosag) params.vizallosag = selectedVizallosag;
-    if (selectedSuly) params.sulygrammban = selectedSuly;
-    if (selectedTipus) params.tipus = selectedTipus;
-    if (selectedDatumkijelzes) params.datumkijelzes = selectedDatumkijelzes;
-    if (selectedExtrafunkcio) params.extrafunkcio = selectedExtrafunkcio;
-    if (selectedAtokszine) params.atokszine = selectedAtokszine;
-    if (selectedAszamlapszine) params.aszamlapszine = selectedAszamlapszine;
-    if (selectedAtok) params.atok = selectedAtok;
-    if (selectedKristalyuveg) params.kristalyuveg = selectedKristalyuveg;
-    if (selectedSzamlaptipus) params.szamlaptipus = selectedSzamlaptipus;
-    if (selectedOraforma) params.oraforma = selectedOraforma;
-    if (selectedSzijszine) params.szijszine = selectedSzijszine;
-    if (selectedSzij) params.szij = selectedSzij;
-    if (selectedMaxCsuklomili) params.maxcsuklomili = selectedMaxCsuklomili;
-    if (priceRange[0] > minPrice || priceRange[1] < maxPrice) {
-      params.minAr = priceRange[0];
-      params.maxAr = priceRange[1];
+  
+    const hasActiveFilters = (
+        sortOption || 
+        selectedBrand || 
+        selectedGender || 
+        selectedMeghajtas || 
+        selectedVizallosag || 
+        selectedSuly || 
+        selectedTipus || 
+        selectedDatumkijelzes || 
+        selectedExtrafunkcio || 
+        selectedAtokszine || 
+        selectedAszamlapszine || 
+        selectedAtok || 
+        selectedKristalyuveg || 
+        selectedSzamlaptipus || 
+        selectedOraforma || 
+        selectedSzijszine || 
+        selectedSzij || 
+        selectedMaxCsuklomili || 
+        priceRange[0] > minPrice || 
+        priceRange[1] < maxPrice
+    );
+
+    if (hasActiveFilters) {
+        if (sortOption) params.rendezes = sortOption;  // 👉 ÚJ SOR: adjuk hozzá a rendezési paramétert!
+        if (selectedBrand) params.marka = selectedBrand;
+        if (selectedGender) params.nem = selectedGender;
+        if (selectedMeghajtas) params.meghajtas = selectedMeghajtas;
+        if (selectedVizallosag) params.vizallosag = selectedVizallosag;
+        if (selectedSuly) params.sulygrammban = selectedSuly;
+        if (selectedTipus) params.tipus = selectedTipus;
+        if (selectedDatumkijelzes) params.datumkijelzes = selectedDatumkijelzes;
+        if (selectedExtrafunkcio) params.extrafunkcio = selectedExtrafunkcio;
+        if (selectedAtokszine) params.atokszine = selectedAtokszine;
+        if (selectedAszamlapszine) params.aszamlapszine = selectedAszamlapszine;
+        if (selectedAtok) params.atok = selectedAtok;
+        if (selectedKristalyuveg) params.kristalyuveg = selectedKristalyuveg;
+        if (selectedSzamlaptipus) params.szamlaptipus = selectedSzamlaptipus;
+        if (selectedOraforma) params.oraforma = selectedOraforma;
+        if (selectedSzijszine) params.szijszine = selectedSzijszine;
+        if (selectedSzij) params.szij = selectedSzij;
+        if (selectedMaxCsuklomili) params.maxcsuklomili = selectedMaxCsuklomili;
+        if (priceRange[0] > minPrice || priceRange[1] < maxPrice) {
+            params.minAr = priceRange[0];
+            params.maxAr = priceRange[1];
+        }
+
+        axios.get("http://localhost:8080/ora/filtered", { params })
+            .then((response) => {
+                setFilteredProducts(response.data);
+                setTotalPages(Math.ceil(response.data.length / productsPerPage));
+                setCurrentPage(1);
+            })
+            .catch(() => {
+                console.error("❌ Hiba történt a szűrés során.");
+            });
+    } else {
+        axios.get("http://localhost:8080/ora/oralekerdezes")
+            .then((response) => {
+                setFilteredProducts(response.data);
+                setTotalPages(Math.ceil(response.data.length / productsPerPage));
+                setCurrentPage(1);
+            })
+            .catch(() => {
+                console.error("❌ Hiba történt a termékek betöltésekor.");
+            });
     }
+};
 
-
-
-
-
-    axios.get("http://localhost:8080/ora/filtered", { params })
-      .then((response) => {
-        setFilteredProducts(response.data);
-        setTotalPages(Math.ceil(response.data.length / productsPerPage));
-        setCurrentPage(1);
-      })
-      .catch(() => {
-        console.error("❌ Hiba történt a szűrés során.");
-      });
-  };
 
   const handlePageChange = (page) => {
     navigate(`?page=${page}`);
