@@ -60,27 +60,35 @@ function Products() {
 
   const handleSortChange = (option) => {
     setSortOption(option);
+
+    // 👉 Ha a rendezési opció üres (tehát "Rendezés" van kiválasztva), töltse be alaphelyzetben az összes órát
+    if (option === "") {
+        handleFilterChange();  // Hívjuk meg a `handleFilterChange` függvényt, hogy alaphelyzetbe töltse a termékeket
+        return; // Megszakítjuk a további rendezési logikát
+    }
+
     let sortedProducts = [...filteredProducts];
 
     switch (option) {
-      case "abc-asc":
-        sortedProducts.sort((a, b) => a.megnevezes.localeCompare(b.megnevezes));
-        break;
-      case "abc-desc":
-        sortedProducts.sort((a, b) => b.megnevezes.localeCompare(a.megnevezes));
-        break;
-      case "price-asc":
-        sortedProducts.sort((a, b) => a.ar - b.ar);
-        break;
-      case "price-desc":
-        sortedProducts.sort((a, b) => b.ar - a.ar);
-        break;
-      default:
-        break;
+        case "abc-asc":
+            sortedProducts.sort((a, b) => a.megnevezes.localeCompare(b.megnevezes));
+            break;
+        case "abc-desc":
+            sortedProducts.sort((a, b) => b.megnevezes.localeCompare(a.megnevezes));
+            break;
+        case "price-asc":
+            sortedProducts.sort((a, b) => a.ar - b.ar);
+            break;
+        case "price-desc":
+            sortedProducts.sort((a, b) => b.ar - a.ar);
+            break;
+        default:
+            break;
     }
 
     setFilteredProducts(sortedProducts);
-  };
+};
+
 
 
 
@@ -301,32 +309,46 @@ function Products() {
 
   const handleFilterChange = () => {
     const params = {};
-  
+
     const hasActiveFilters = (
-        sortOption || 
-        selectedBrand || 
-        selectedGender || 
-        selectedMeghajtas || 
-        selectedVizallosag || 
-        selectedSuly || 
-        selectedTipus || 
-        selectedDatumkijelzes || 
-        selectedExtrafunkcio || 
-        selectedAtokszine || 
-        selectedAszamlapszine || 
-        selectedAtok || 
-        selectedKristalyuveg || 
-        selectedSzamlaptipus || 
-        selectedOraforma || 
-        selectedSzijszine || 
-        selectedSzij || 
-        selectedMaxCsuklomili || 
-        priceRange[0] > minPrice || 
+        sortOption ||
+        selectedBrand ||
+        selectedGender ||
+        selectedMeghajtas ||
+        selectedVizallosag ||
+        selectedSuly ||
+        selectedTipus ||
+        selectedDatumkijelzes ||
+        selectedExtrafunkcio ||
+        selectedAtokszine ||
+        selectedAszamlapszine ||
+        selectedAtok ||
+        selectedKristalyuveg ||
+        selectedSzamlaptipus ||
+        selectedOraforma ||
+        selectedSzijszine ||
+        selectedSzij ||
+        selectedMaxCsuklomili ||
+        priceRange[0] > minPrice ||
         priceRange[1] < maxPrice
     );
 
+    // 👉 Ha a rendezési opció üres, akkor töltse be alaphelyzetben az összes órát
+    if (sortOption === "") {
+        axios.get("http://localhost:8080/ora/oralekerdezes")
+            .then((response) => {
+                setFilteredProducts(response.data);
+                setTotalPages(Math.ceil(response.data.length / productsPerPage));
+                setCurrentPage(1);
+            })
+            .catch(() => {
+                console.error("❌ Hiba történt az alapértelmezett terméklista betöltésekor.");
+            });
+        return; // Ne fusson le a további szűrési logika
+    }
+
     if (hasActiveFilters) {
-        if (sortOption) params.rendezes = sortOption;  // 👉 ÚJ SOR: adjuk hozzá a rendezési paramétert!
+        if (sortOption) params.rendezes = sortOption;
         if (selectedBrand) params.marka = selectedBrand;
         if (selectedGender) params.nem = selectedGender;
         if (selectedMeghajtas) params.meghajtas = selectedMeghajtas;
@@ -351,8 +373,30 @@ function Products() {
 
         axios.get("http://localhost:8080/ora/filtered", { params })
             .then((response) => {
-                setFilteredProducts(response.data);
-                setTotalPages(Math.ceil(response.data.length / productsPerPage));
+                let sortedProducts = response.data;
+
+                // Ha van beállítva rendezési opció, akkor rendezzük a termékeket
+                if (sortOption) {
+                    switch (sortOption) {
+                        case "abc-asc":
+                            sortedProducts.sort((a, b) => a.megnevezes.localeCompare(b.megnevezes));
+                            break;
+                        case "abc-desc":
+                            sortedProducts.sort((a, b) => b.megnevezes.localeCompare(a.megnevezes));
+                            break;
+                        case "price-asc":
+                            sortedProducts.sort((a, b) => a.ar - b.ar);
+                            break;
+                        case "price-desc":
+                            sortedProducts.sort((a, b) => b.ar - a.ar);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                setFilteredProducts(sortedProducts);
+                setTotalPages(Math.ceil(sortedProducts.length / productsPerPage));
                 setCurrentPage(1);
             })
             .catch(() => {
@@ -369,6 +413,41 @@ function Products() {
                 console.error("❌ Hiba történt a termékek betöltésekor.");
             });
     }
+};
+
+
+  const handleClearFilters = () => {
+    // Összes szűrő állapotának alaphelyzetbe állítása
+    setSortOption("");
+    setSelectedBrand("");
+    setSelectedGender("");
+    setSelectedMeghajtas("");
+    setSelectedVizallosag("");
+    setSelectedSuly("");
+    setSelectedTipus("");
+    setSelectedDatumkijelzes("");
+    setSelectedExtrafunkcio("");
+    setSelectedAtokszine("");
+    setSelectedAszamlapszine("");
+    setSelectedAtok("");
+    setSelectedKristalyuveg("");
+    setSelectedSzamlaptipus("");
+    setSelectedOraforma("");
+    setSelectedSzijszine("");
+    setSelectedSzij("");
+    setSelectedMaxCsuklomili("");
+    setPriceRange([minPrice, maxPrice]); // Ártartomány visszaállítása
+
+    // Alapértelmezett terméklista betöltése
+    axios.get("http://localhost:8080/ora/oralekerdezes")
+        .then((response) => {
+            setFilteredProducts(response.data);
+            setTotalPages(Math.ceil(response.data.length / productsPerPage));
+            setCurrentPage(1);
+        })
+        .catch(() => {
+            console.error("❌ Hiba történt az alapértelmezett terméklista betöltésekor.");
+        });
 };
 
 
@@ -640,6 +719,10 @@ function Products() {
             Szűrés alkalmazása
           </button>
 
+          <button className="filter-clear-button" onClick={() => { handleClearFilters(); scrollToTop(); }}>
+            Szűrés törlése
+          </button>
+
         </div>
 
 
@@ -647,16 +730,17 @@ function Products() {
           <div className="products-header">
             <h2 className="products-title">Termékek</h2>
             <select
-              value={sortOption}
-              onChange={(e) => handleSortChange(e.target.value)}
-              className="sort-dropdown"
-            >
-              <option value="">Rendezés</option>
-              <option value="abc-asc">ABC sorrendben (növekvő)</option>
-              <option value="abc-desc">ABC sorrendben (csökkenő)</option>
-              <option value="price-asc">Ár szerint (növekvő)</option>
-              <option value="price-desc">Ár szerint (csökkenő)</option>
-            </select>
+  value={sortOption}
+  onChange={(e) => handleSortChange(e.target.value)}
+  className="sort-dropdown"
+>
+  <option value="">Rendezés</option>
+  <option value="abc-asc">ABC sorrendben (növekvő)</option>
+  <option value="abc-desc">ABC sorrendben (csökkenő)</option>
+  <option value="price-asc">Ár szerint (növekvő)</option>
+  <option value="price-desc">Ár szerint (csökkenő)</option>
+</select>
+
           </div>
           <div className="products-grid">
             {visibleProducts.length > 0 ? (
