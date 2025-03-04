@@ -1,8 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Range } from 'react-range';
 import "./Products.css";
+import warning from './warning.jpeg';
+import cart1 from './cart.jpeg';
+import cart2 from './cartplus.jpeg';
+import cart3 from './cartremo.jpeg';
+import fav1 from './fav.jpeg';
+import fav2 from './favsel.jpeg';
+import fav3 from './favadded.jpeg';
+import { FavoritesContext } from "./FavoritesContext"; // 🔹 Kedvencek importálása
+import { CartContext } from "./CartContext"; // 🔹 Kosár importálása
+
+
 
 function Products() {
   const navigate = useNavigate();
@@ -11,6 +22,40 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [cartState, setCartState] = useState({});
+  const [favState, setFavState] = useState({});
+  const [hoverState, setHoverState] = useState({});
+
+    // 🔄 Itt helyezd el a handleCartToggle függvényt!
+    const handleCartToggle = (product) => {
+      if (cart.some((item) => item.oraaz === product.oraaz)) {
+        removeFromCart(product.oraaz); // Ha már a kosárban van, eltávolítjuk
+      } else {
+        addToCart({
+          oraaz: product.oraaz,
+          megnevezes: product.megnevezes,
+          ar: product.ar,
+          kep1: product.kep1,
+        }); // Ha nincs a kosárban, hozzáadjuk
+      }
+    };
+    
+    
+    // 🔄 Itt helyezd el a handleFavToggle függvényt!
+    const handleFavToggle = (product) => {
+      if (favorites.some((item) => item.oraaz === product.oraaz)) {
+        addToFavorites(favorites.filter((item) => item.oraaz !== product.oraaz)); // ❌ Ha ez nem működik, használd az eltávolítást, mint a kosárnál!
+      } else {
+        addToFavorites({
+          oraaz: product.oraaz,
+          megnevezes: product.megnevezes,
+          ar: product.ar,
+          kep1: product.kep1,
+        }); // Ha nincs a kedvencekben, hozzáadjuk
+      }
+    };
+    
+    
 
 
   const productsPerPage = 20;
@@ -303,117 +348,8 @@ function Products() {
       });
   }, []);
 
-
-
-
-
-  const handleFilterChange = () => {
-    const params = {};
-
-    const hasActiveFilters = (
-        sortOption ||
-        selectedBrand ||
-        selectedGender ||
-        selectedMeghajtas ||
-        selectedVizallosag ||
-        selectedSuly ||
-        selectedTipus ||
-        selectedDatumkijelzes ||
-        selectedExtrafunkcio ||
-        selectedAtokszine ||
-        selectedAszamlapszine ||
-        selectedAtok ||
-        selectedKristalyuveg ||
-        selectedSzamlaptipus ||
-        selectedOraforma ||
-        selectedSzijszine ||
-        selectedSzij ||
-        selectedMaxCsuklomili ||
-        priceRange[0] > minPrice ||
-        priceRange[1] < maxPrice
-    );
-
-    // 👉 Ha a rendezési opció üres, akkor töltse be alaphelyzetben az összes órát
-    if (sortOption === "") {
-        axios.get("http://localhost:8080/ora/oralekerdezes")
-            .then((response) => {
-                setFilteredProducts(response.data);
-                setTotalPages(Math.ceil(response.data.length / productsPerPage));
-                setCurrentPage(1);
-            })
-            .catch(() => {
-                console.error("❌ Hiba történt az alapértelmezett terméklista betöltésekor.");
-            });
-        return; // Ne fusson le a további szűrési logika
-    }
-
-    if (hasActiveFilters) {
-        if (sortOption) params.rendezes = sortOption;
-        if (selectedBrand) params.marka = selectedBrand;
-        if (selectedGender) params.nem = selectedGender;
-        if (selectedMeghajtas) params.meghajtas = selectedMeghajtas;
-        if (selectedVizallosag) params.vizallosag = selectedVizallosag;
-        if (selectedSuly) params.sulygrammban = selectedSuly;
-        if (selectedTipus) params.tipus = selectedTipus;
-        if (selectedDatumkijelzes) params.datumkijelzes = selectedDatumkijelzes;
-        if (selectedExtrafunkcio) params.extrafunkcio = selectedExtrafunkcio;
-        if (selectedAtokszine) params.atokszine = selectedAtokszine;
-        if (selectedAszamlapszine) params.aszamlapszine = selectedAszamlapszine;
-        if (selectedAtok) params.atok = selectedAtok;
-        if (selectedKristalyuveg) params.kristalyuveg = selectedKristalyuveg;
-        if (selectedSzamlaptipus) params.szamlaptipus = selectedSzamlaptipus;
-        if (selectedOraforma) params.oraforma = selectedOraforma;
-        if (selectedSzijszine) params.szijszine = selectedSzijszine;
-        if (selectedSzij) params.szij = selectedSzij;
-        if (selectedMaxCsuklomili) params.maxcsuklomili = selectedMaxCsuklomili;
-        if (priceRange[0] > minPrice || priceRange[1] < maxPrice) {
-            params.minAr = priceRange[0];
-            params.maxAr = priceRange[1];
-        }
-
-        axios.get("http://localhost:8080/ora/filtered", { params })
-            .then((response) => {
-                let sortedProducts = response.data;
-
-                // Ha van beállítva rendezési opció, akkor rendezzük a termékeket
-                if (sortOption) {
-                    switch (sortOption) {
-                        case "abc-asc":
-                            sortedProducts.sort((a, b) => a.megnevezes.localeCompare(b.megnevezes));
-                            break;
-                        case "abc-desc":
-                            sortedProducts.sort((a, b) => b.megnevezes.localeCompare(a.megnevezes));
-                            break;
-                        case "price-asc":
-                            sortedProducts.sort((a, b) => a.ar - b.ar);
-                            break;
-                        case "price-desc":
-                            sortedProducts.sort((a, b) => b.ar - a.ar);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                setFilteredProducts(sortedProducts);
-                setTotalPages(Math.ceil(sortedProducts.length / productsPerPage));
-                setCurrentPage(1);
-            })
-            .catch(() => {
-                console.error("❌ Hiba történt a szűrés során.");
-            });
-    } else {
-        axios.get("http://localhost:8080/ora/oralekerdezes")
-            .then((response) => {
-                setFilteredProducts(response.data);
-                setTotalPages(Math.ceil(response.data.length / productsPerPage));
-                setCurrentPage(1);
-            })
-            .catch(() => {
-                console.error("❌ Hiba történt a termékek betöltésekor.");
-            });
-    }
-};
+  const { favorites, addToFavorites } = useContext(FavoritesContext);
+  const { cart, addToCart } = useContext(CartContext);
 
 
   const handleClearFilters = () => {
@@ -446,9 +382,108 @@ function Products() {
             setCurrentPage(1);
         })
         .catch(() => {
-            console.error("❌ Hiba történt az alapértelmezett terméklista betöltésekor.");
+            console.error("Hiba történt az alapértelmezett terméklista betöltésekor.");
         });
 };
+
+
+
+  const handleFilterChange = () => {
+    const params = {};
+
+    // 🔄 Csak akkor igaz, ha valóban van aktív szűrő
+    const hasActiveFilters = (
+        selectedBrand ||
+        selectedGender ||
+        selectedMeghajtas ||
+        selectedVizallosag ||
+        selectedSuly ||
+        selectedTipus ||
+        selectedDatumkijelzes ||
+        selectedExtrafunkcio ||
+        selectedAtokszine ||
+        selectedAszamlapszine ||
+        selectedAtok ||
+        selectedKristalyuveg ||
+        selectedSzamlaptipus ||
+        selectedOraforma ||
+        selectedSzijszine ||
+        selectedSzij ||
+        selectedMaxCsuklomili ||
+        priceRange[0] > minPrice ||
+        priceRange[1] < maxPrice
+    );
+
+    // 🔄 Ha NINCS aktív szűrő, töltsük be az alapértelmezett terméklistát
+    if (!hasActiveFilters) {
+        axios.get("http://localhost:8080/ora/oralekerdezes")
+            .then((response) => {
+                setFilteredProducts(response.data);
+                setTotalPages(Math.ceil(response.data.length / productsPerPage));
+                setCurrentPage(1);
+            })
+            .catch(() => {
+                console.error("Hiba történt az alapértelmezett terméklista betöltésekor.");
+            });
+        return; // Ne fusson le a további szűrési logika
+    }
+
+    // 🔄 Ha van aktív szűrő, építjük a lekérdezés paramétereit
+    if (selectedBrand) params.marka = selectedBrand;
+    if (selectedGender) params.nem = selectedGender;
+    if (selectedMeghajtas) params.meghajtas = selectedMeghajtas;
+    if (selectedVizallosag) params.vizallosag = selectedVizallosag;
+    if (selectedSuly) params.sulygrammban = selectedSuly;
+    if (selectedTipus) params.tipus = selectedTipus;
+    if (selectedDatumkijelzes) params.datumkijelzes = selectedDatumkijelzes;
+    if (selectedExtrafunkcio) params.extrafunkcio = selectedExtrafunkcio;
+    if (selectedAtokszine) params.atokszine = selectedAtokszine;
+    if (selectedAszamlapszine) params.aszamlapszine = selectedAszamlapszine;
+    if (selectedAtok) params.atok = selectedAtok;
+    if (selectedKristalyuveg) params.kristalyuveg = selectedKristalyuveg;
+    if (selectedSzamlaptipus) params.szamlaptipus = selectedSzamlaptipus;
+    if (selectedOraforma) params.oraforma = selectedOraforma;
+    if (selectedSzijszine) params.szijszine = selectedSzijszine;
+    if (selectedSzij) params.szij = selectedSzij;
+    if (selectedMaxCsuklomili) params.maxcsuklomili = selectedMaxCsuklomili;
+    if (priceRange[0] > minPrice || priceRange[1] < maxPrice) {
+        params.minAr = priceRange[0];
+        params.maxAr = priceRange[1];
+    }
+
+    axios.get("http://localhost:8080/ora/filtered", { params })
+        .then((response) => {
+            let filtered = response.data;
+
+            // 🔄 Ha van rendezési opció, alkalmazzuk azt, de csak a szűrt adatokra
+            if (sortOption) {
+                switch (sortOption) {
+                    case "abc-asc":
+                        filtered.sort((a, b) => a.megnevezes.localeCompare(b.megnevezes));
+                        break;
+                    case "abc-desc":
+                        filtered.sort((a, b) => b.megnevezes.localeCompare(a.megnevezes));
+                        break;
+                    case "price-asc":
+                        filtered.sort((a, b) => a.ar - b.ar);
+                        break;
+                    case "price-desc":
+                        filtered.sort((a, b) => b.ar - a.ar);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            setFilteredProducts(filtered);
+            setTotalPages(Math.ceil(filtered.length / productsPerPage));
+            setCurrentPage(1);
+        })
+        .catch(() => {
+          console.error("Hiba történt a szűrés során.");
+        });
+};
+
 
 
   const handlePageChange = (page) => {
@@ -458,6 +493,42 @@ function Products() {
 
   const startIndex = (currentPage - 1) * productsPerPage;
   const visibleProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+
+  // Kosár gomb képeinek kezelése
+// Kosár gomb képeinek kezelése
+const getCartImage = (id) => {
+  if (cartState[id]) {
+    return hoverState[id] === "cart" ? cart3 : cart3;  // Ha kattintott, a `cartremo.jpeg` képet használja
+  }
+  return hoverState[id] === "cart" ? cart2 : cart1;  // Ha nincs kattintva, `cartplus.jpeg` vagy `cart.jpeg` használata
+};
+
+// Kedvencek gomb képeinek kezelése
+const getFavImage = (id) => {
+  if (favorites.some((item) => item.oraaz === id)) {
+    return hoverState[id] === "fav" ? fav2 : fav3;  // Ha már a kedvencekben van, `favadded.jpeg` képet használja
+  }
+  return hoverState[id] === "fav" ? fav2 : fav1;  // Ha nincs a kedvencekben, `favsel.jpeg` vagy `fav.jpeg` használata
+};
+
+
+
+// Egér belépés
+const handleMouseEnter = (type, id) => {
+  setHoverState((prev) => ({ ...prev, [id]: type }));
+};
+
+// Egér kilépés
+const handleMouseLeave = (type, id) => {
+  setHoverState((prev) => {
+    const newState = { ...prev };
+    if (newState[id] === type) {
+      delete newState[id];
+    }
+    return newState;
+  });
+};
+
 
   return (
     <div className="products-page">
@@ -648,58 +719,60 @@ function Products() {
             </label>
 
             <div className="price-slider-container">
-              <Range
-                step={100}
-                min={minPrice}
-                max={maxPrice}
-                values={priceRange}
-                onChange={(values) => setPriceRange(values)}
-                renderTrack={({ props, children }) => (
-                  <div
-                    {...props}
-                    style={{
-                      height: "6px",
-                      width: "100%",
-                      background: "#ddd",
-                      borderRadius: "4px",
-                      position: "relative",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    {/* Kijelölt ár tartomány (kék sáv) */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        height: "6px",
-                        background: "#007bff",
-                        borderRadius: "4px",
-                        left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
-                        width: `${((priceRange[1] - priceRange[0]) / (maxPrice - minPrice)) * 100}%`,
-                      }}
-                    />
-                    {children}
-                  </div>
-                )}
-                renderThumb={({ props }) => (
-                  <div
-                    {...props}
-                    style={{
-                      height: "16px",
-                      width: "16px",
-                      backgroundColor: "#007bff",
-                      borderRadius: "50%",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      position: "absolute",
-                      top: "50%",
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  />
-                )}
-              />
+            <Range
+    step={100}
+    min={minPrice}
+    max={maxPrice}
+    values={priceRange}
+    onChange={(values) => setPriceRange(values)}  // Frissítjük az állapotot húzás közben
+    onFinalChange={() => handleFilterChange()} // 🔄 Amikor elengeded a csúszkát, frissíti a termékeket
+    renderTrack={({ props, children }) => (
+        <div
+            {...props}
+            style={{
+                height: "6px",
+                width: "100%",
+                background: "#fff",  // Fehér színű csúszka
+                borderRadius: "4px",
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+            }}
+        >
+            <div
+                style={{
+                    position: "absolute",
+                    height: "6px",
+                    background: "#007bff",
+                    borderRadius: "4px",
+                    left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                    width: `${((priceRange[1] - priceRange[0]) / (maxPrice - minPrice)) * 100}%`,
+                }}
+            />
+            {children}
+        </div>
+    )}
+    renderThumb={({ props }) => (
+        <div
+            {...props}
+            style={{
+                height: "16px",
+                width: "16px",
+                backgroundColor: "#fff",  // Fehér színű húzógomb
+                border: "2px solid #007bff",
+                borderRadius: "50%",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "absolute",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+            }}
+        />
+    )}
+/>
+
             </div>
           </div>
 
@@ -754,18 +827,50 @@ function Products() {
                   <h3 className="product-name">{product.megnevezes}</h3>
                   <p className="product-price product-ar">Ár: {Number(product.ar).toLocaleString('hu-HU')} Ft</p>
 
-                  <p className="product-stock">Raktáron: {product.raktar}</p>
+                  <p className="product-stock">{product.raktar}</p>
 
-                  <button
-                    className="view-button"
-                    onClick={() => navigate(`/product/${product.oraaz}`)}
-                  >
-                    Megtekintés
-                  </button>
+                  <div className="product-actions">
+  <button
+    className="view-button"
+    onClick={() => navigate(`/product/${product.oraaz}`)}
+  >
+    Megtekintés
+  </button>
+
+  <div className="action-group">
+    <button
+      className="cart-button"
+      onClick={() => handleCartToggle(product)}  // 🔹 Terméket átadjuk
+      onMouseEnter={() => handleMouseEnter("cart", product.oraaz)}
+      onMouseLeave={() => handleMouseLeave("cart", product.oraaz)}
+    >
+      <img
+        src={getCartImage(product.oraaz)}
+        alt="Kosár"
+        className="action-icon"
+      />
+    </button>
+
+    <button
+      className="fav-button"
+      onClick={() => handleFavToggle(product)}  // 🔹 Terméket átadjuk
+      onMouseEnter={() => handleMouseEnter("fav", product.oraaz)}
+      onMouseLeave={() => handleMouseLeave("fav", product.oraaz)}
+    >
+      <img
+        src={getFavImage(product.oraaz)}
+        alt="Kedvencek"
+        className="action-icon"
+      />
+    </button>
+  </div>
+</div>
+
+
                 </div>
               ))
             ) : (
-              <p className="no-products">❌ Nincs találat a kiválasztott szűrési feltételekre.</p>
+              <p className="no-products"><img src={warning} style={{ width: "50px", height: "50px" }} /> Nincs találat a kiválasztott szűrési feltételekre.</p>
             )}
           </div>
 
