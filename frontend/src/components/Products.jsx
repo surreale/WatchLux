@@ -19,45 +19,42 @@ function Products() {
   const navigate = useNavigate();
   const location = useLocation();
 
+
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [cartState, setCartState] = useState({});
   const [favState, setFavState] = useState({});
-  const [hoverState, setHoverState] = useState({});
+  const [hoverState, setHoverState] = useState({});  
 
     // 🔄 Itt helyezd el a handleCartToggle függvényt!
     const handleCartToggle = (product) => {
       if (cart.some((item) => item.oraaz === product.oraaz)) {
-        removeFromCart(product.oraaz); // Ha már a kosárban van, eltávolítjuk
+        removeFromCart(product.oraaz);
       } else {
         addToCart({
           oraaz: product.oraaz,
           megnevezes: product.megnevezes,
           ar: product.ar,
           kep1: product.kep1,
-        }); // Ha nincs a kosárban, hozzáadjuk
+        });
       }
     };
     
     
-    // 🔄 Itt helyezd el a handleFavToggle függvényt!
-    const handleFavToggle = (product) => {
-      if (favorites.some((item) => item.oraaz === product.oraaz)) {
-        addToFavorites(favorites.filter((item) => item.oraaz !== product.oraaz)); // ❌ Ha ez nem működik, használd az eltávolítást, mint a kosárnál!
-      } else {
-        addToFavorites({
-          oraaz: product.oraaz,
-          megnevezes: product.megnevezes,
-          ar: product.ar,
-          kep1: product.kep1,
-        }); // Ha nincs a kedvencekben, hozzáadjuk
-      }
-    };
-    
-    
-
-
+// 🔄 Itt helyezd el a handleFavToggle függvényt, például a handleCartToggle után
+const handleFavToggle = (product) => {
+  if (product && product.oraaz && product.megnevezes) {  // 🔄 Ellenőrizzük, hogy a product nem undefined
+    addToFavorites({
+      oraaz: product.oraaz,
+      megnevezes: product.megnevezes,
+      ar: product.ar,
+      kep1: product.kep1,
+    });
+  } else {
+    console.error("Hiba: A termék adatai hiányosak vagy érvénytelenek!");
+  }
+};
   const productsPerPage = 20;
   const maxPageButtons = 5;
 
@@ -96,7 +93,6 @@ function Products() {
   const [selectedMaxCsuklomili, setSelectedMaxCsuklomili] = useState("");
   const [maxCsuklomilik, setMaxCsuklomilik] = useState([]);
 
-
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100000);
   const [priceRange, setPriceRange] = useState([0, 100000]);
@@ -133,9 +129,6 @@ function Products() {
 
     setFilteredProducts(sortedProducts);
 };
-
-
-
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -349,7 +342,7 @@ function Products() {
   }, []);
 
   const { favorites, addToFavorites } = useContext(FavoritesContext);
-  const { cart, addToCart } = useContext(CartContext);
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
 
 
   const handleClearFilters = () => {
@@ -496,12 +489,17 @@ function Products() {
 
   // Kosár gomb képeinek kezelése
 // Kosár gomb képeinek kezelése
+// Kosár gomb képeinek kezelése
 const getCartImage = (id) => {
-  if (cartState[id]) {
-    return hoverState[id] === "cart" ? cart3 : cart3;  // Ha kattintott, a `cartremo.jpeg` képet használja
+  if (cart.some((item) => item.oraaz === id)) {
+    // Ha a termék a kosárban van, jelenítse meg a `cartremo.jpeg`-t
+    return cart3;  // cartremo.jpeg (amikor kivehető)
+  } else {
+    // Ha a termék NINCS a kosárban, jelenítse meg a `cartplus.jpeg`-t
+    return cart2;  // cartplus.jpeg (amikor hozzáadható)
   }
-  return hoverState[id] === "cart" ? cart2 : cart1;  // Ha nincs kattintva, `cartplus.jpeg` vagy `cart.jpeg` használata
 };
+
 
 // Kedvencek gomb képeinek kezelése
 const getFavImage = (id) => {

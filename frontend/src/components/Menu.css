@@ -66,13 +66,15 @@ body {
   justify-content: center; /* Középre igazítás */
   align-items: center;
   margin: 0 auto; /* Középre helyezés */
-  max-width: 600px; /* Maximális szélesség */
-  width: 200%; /* Teljes szélesség */
-  margin-right: 35em;
+  /*
+  max-width: 100px; /* Maximális szélesség */
+  /*
+  width: 500px; /* Teljes szélesség */
+  margin-right: 45em;
 }
 
 .search-bar .search-input {
-  width: 100%; /* Rugalmas szélesség */
+  width: 200%; /* Rugalmas szélesség */
   max-width: 400px; /* Maximális szélesség */
   border-radius: 50px; /* Kör alakú sarkok */
   padding: 12px 50px 12px 40px; /* Margók a kereső ikon számára */

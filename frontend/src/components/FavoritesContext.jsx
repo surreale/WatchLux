@@ -64,3 +64,4 @@ const Notification = ({ message }) => {
     </div>
   );
 };
+
