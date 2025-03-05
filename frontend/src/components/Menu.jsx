@@ -20,6 +20,7 @@ function Menu() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,11 +74,22 @@ function Menu() {
                   <img src={SearchIcon} alt="Search Icon" className="search-icon" />
                 </span>
                 <Form.Control
-                  type="search"
-                  placeholder="Keressen karórát..."
-                  aria-label="Search"
-                  className="search-input"
-                />
+  type="search"
+  placeholder="Keressen karórát..."
+  aria-label="Search"
+  className="search-input"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (searchQuery.trim()) {
+        window.location.href = `/products?search=${searchQuery.trim()}`;
+      }
+    }
+  }}
+/>
+
               </div>
             </Form>
             <div className="d-flex align-items-center user-cart-container">
