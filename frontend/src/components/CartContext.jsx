@@ -20,19 +20,27 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // 🔹 Termék hozzáadása vagy eltávolítása a kosárból
-  const addToCart = (product) => {
-    setCart((prevCart) => {
-      const exists = prevCart.some((item) => item.oraaz === product.oraaz);
-      if (exists) {
-        addNotification(`${product.megnevezes} kivéve a kosárból`);
-        return prevCart.filter((item) => item.oraaz !== product.oraaz);
-      } else {
-        addNotification(`${product.megnevezes} hozzáadva a kosárhoz`);
-        return [...prevCart, { ...product, quantity: 1 }];
-      }
-    });
-  };
+// 🔹 addToCart függvény
+const addToCart = (product) => {
+  setCart((prevCart) => {
+    const existingItem = prevCart.find((item) => item.oraaz === product.oraaz);
+    if (existingItem) {
+      // Ha már létezik a termék, csak a mennyiséget növeli
+      addNotification("Termék mennyisége frissítve a kosárban!");
+      return prevCart.map((item) =>
+        item.oraaz === product.oraaz
+          ? { ...item, mennyiseg: item.mennyiseg + product.mennyiseg }
+          : item
+      );
+    } else {
+      // Ha új termék, hozzáadja a kosárhoz
+      addNotification("Termék hozzáadva a kosárhoz!");
+      return [...prevCart, product];
+    }
+  });
+};
+
+
 
   // 🔹 Termék eltávolítása a kosárból (külön gombhoz)
   const removeFromCart = (oraaz) => {

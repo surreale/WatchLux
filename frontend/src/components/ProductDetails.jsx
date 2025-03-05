@@ -8,7 +8,7 @@ import "./ProductDetails.css";
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { cart, addToCart } = useContext(CartContext);
+  const { cart, addToCart, removeFromCart  } = useContext(CartContext);
   const { favorites, addToFavorites } = useContext(FavoritesContext);
 
   const [product, setProduct] = useState(null);
@@ -16,6 +16,7 @@ function ProductDetails() {
   const [error, setError] = useState('');
   const [mainImage, setMainImage] = useState('');
   const [isZoomed, setIsZoomed] = useState(false);
+  const [quantity, setQuantity] = useState(1); 
 
   // 🔹 Termékadatok betöltése az API-ból
   useEffect(() => {
@@ -32,17 +33,30 @@ function ProductDetails() {
       });
   }, [id]);
 
-  // 🔹 Kosárba rakás eseménykezelő
-  const handleAddToCart = () => {
-    if (!product) return;
+    // 🔹 Mennyiség kezelése
+    const handleQuantityChange = (value) => {
+      if (value >= 1 && value <= 20) {
+        setQuantity(value);
+      }
+    };
 
+// 🔹 Kosárba rakás eseménykezelő
+const handleAddToCart = () => {
+  if (!product) return;
+
+  if (cart.some((item) => item.oraaz === product.oraaz)) {
+    removeFromCart(product.oraaz);  // 🔹 Ha már a kosárban van, akkor töröljük
+  } else {
     addToCart({
       oraaz: product.oraaz,
       megnevezes: product.megnevezes,
       ar: product.ar,
-      kep1: product.kep1
+      kep1: product.kep1,
+      mennyiseg: quantity
     });
-  };
+  }
+};
+
 
   // 🔹 Kedvencek kezelése
   const isFavorite = product ? favorites.some((item) => item.oraaz === product.oraaz) : false;
@@ -94,6 +108,17 @@ function ProductDetails() {
           <p className="product-brand">{product.marka}</p>
           <p className="product-price"> Ár: {Number(product.ar).toLocaleString('hu-HU')} Ft</p>
           <p className="product-stock">Raktáron: {product.raktar}</p>
+
+                    {/* 🔹 Kompakt mennyiségválasztó */}
+                    <div className="quantity-selector-small">
+            <button onClick={() => handleQuantityChange(quantity - 1)} disabled={quantity <= 1}>-</button>
+            <input 
+              type="text" 
+              value={quantity} 
+              onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)} 
+            />
+            <button onClick={() => handleQuantityChange(quantity + 1)} disabled={quantity >= 20}>+</button>
+          </div>
 
           {/* 🔹 Kosár és Kedvencek gombok */}
           <div className="buttons">

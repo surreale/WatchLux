@@ -21,6 +21,8 @@ const Cart = () => {
                 <h3>{item.megnevezes}</h3>
                 <hr />
                 <p>Ár: {item.ar} Ft</p>
+                <p>Mennyiség: {item.mennyiseg} db</p> {/* 🔹 Mennyiség megjelenítése */}
+                <p>Összesen: {item.ar * item.mennyiseg} Ft</p> {/* 🔹 Összegzés */}
                 <button className="remove-button" onClick={() => removeFromCart(item.oraaz)}>Törlés</button>
               </div>
             </div>

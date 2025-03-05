@@ -225,3 +225,30 @@
     gap: 10px;
   }
 }
+
+.quantity-selector-small {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.quantity-selector-small button {
+  padding: 2px 5px;
+  margin: 0 3px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.quantity-selector-small input {
+  width: 30px;
+  text-align: center;
+  border: 1px solid #ddd;
+  margin: 0 3px;
+  padding: 2px;
+}
+
+.quantity-selector-small button:disabled {
+  cursor: not-allowed;
+  background-color: #eee;
+}

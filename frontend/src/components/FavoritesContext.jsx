@@ -25,10 +25,10 @@ export const FavoritesProvider = ({ children }) => {
     setFavorites((prevFavorites) => {
       const exists = prevFavorites.some((item) => item.oraaz === product.oraaz);
       if (exists) {
-        addNotification(`${product.megnevezes} eltávolítva a kedvencekből`);
+        addNotification("Termék eltávolítva a kedvencekből");
         return prevFavorites.filter((item) => item.oraaz !== product.oraaz);
       } else {
-        addNotification(`${product.megnevezes} hozzáadva a kedvencekhez`);
+        addNotification("Termék hozzáadva a kedvencekhez");
         return [...prevFavorites, product];
       }
     });

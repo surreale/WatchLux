@@ -86,3 +86,11 @@ body.no-scroll {
     font-size: 300%;
 }
   
+.cart-item p {
+  margin: 5px 0;
+}
+
+.cart-item .cart-details p {
+  font-size: 14px;
+  color: #333;
+}
