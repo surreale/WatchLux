@@ -29,16 +29,17 @@ const addToCart = (product) => {
       addNotification("Termék mennyisége frissítve a kosárban!");
       return prevCart.map((item) =>
         item.oraaz === product.oraaz
-          ? { ...item, mennyiseg: item.mennyiseg + product.mennyiseg }
+          ? { ...item, mennyiseg: (item.mennyiseg || 1) + (product.mennyiseg || 1) }
           : item
       );
     } else {
-      // Ha új termék, hozzáadja a kosárhoz
+      // Ha új termék, hozzáadja a kosárhoz alapértelmezett mennyiséggel
       addNotification("Termék hozzáadva a kosárhoz!");
-      return [...prevCart, product];
+      return [...prevCart, { ...product, mennyiseg: product.mennyiseg || 1 }];
     }
   });
 };
+
 
 
 
