@@ -225,6 +225,20 @@ router.get('/filtered', async (req, res) => {
   }
 });
 
+router.get('/search', async (req, res) => {
+  const { query } = req.query; // Lekérjük a keresési kifejezést
+  if (!query) {
+    return res.status(400).json({ error: "A keresési kifejezés nem lehet üres!" });
+  }
+
+  try {
+    const products = await db.searchProducts(query); // 🔄 Létrehozunk egy új adatbázis függvényt
+    res.json(products);
+  } catch (error) {
+    console.error('Hiba történt a keresés során:', error);
+    res.status(500).send('Hiba történt az adatok lekérésekor.');
+  }
+});
 
 
 module.exports = router;

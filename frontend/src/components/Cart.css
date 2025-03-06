@@ -94,3 +94,36 @@ body.no-scroll {
   font-size: 14px;
   color: #333;
 }
+
+.cart-summary {
+  position: fixed;
+  right: 20px;
+  bottom: 60px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  z-index: 100;
+}
+
+.cart-summary h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.payment-button {
+  background-color: ghostwhite;
+  color: black;
+  border: 1px solid black;
+  border-radius: 50px;
+  padding: 10px 15px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.payment-button:hover {
+  background-color: #4db8ff;
+  color: rgb(255, 255, 255);
+}

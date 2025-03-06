@@ -162,7 +162,8 @@ function Products() {
           console.error("❌ Hiba történt a termékek betöltésekor.");
         });
     }
-  }, [searchQuery]);
+}, [searchQuery]);
+
 
 
   useEffect(() => {
@@ -805,11 +806,11 @@ function Products() {
 
 
           <button className="filter-apply-button" onClick={() => { handleFilterChange(); scrollToTop(); }}>
-            Szűrés alkalmazása
+            Szűrés
           </button>
 
           <button className="filter-clear-button" onClick={() => { handleClearFilters(); scrollToTop(); }}>
-            Szűrés törlése
+            Törlés
           </button>
 
         </div>

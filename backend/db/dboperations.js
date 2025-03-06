@@ -358,6 +358,23 @@ async function getPriceRange() {
   }
 }
 
+async function searchProducts(query) {
+  try {
+    const sql = `
+      SELECT * FROM oralekerdezes 
+      WHERE 
+        megnevezes LIKE ? OR 
+        marka LIKE ? OR 
+        tipus LIKE ?
+    `;
+    const searchQuery = `%${query}%`;
+    const [rows] = await pool.query(sql, [searchQuery, searchQuery, searchQuery]);
+    return rows;
+  } catch (error) {
+    console.error("❌ Hiba történt a keresés során:", error);
+    throw error;
+  }
+}
 
 
 
@@ -382,6 +399,6 @@ module.exports = {
   getSzijszinek,
   getSzijk,
   getMaxCsuklomili,
-  getPriceRange
-  
+  getPriceRange,
+  searchProducts
 };
