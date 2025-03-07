@@ -10,6 +10,8 @@ import { CartProvider } from "./components/CartContext";
 import Cart from "./components/Cart";
 import { FavoritesProvider } from './components/FavoritesContext';
 import Favorites from './components/Favorites';
+import Checkout from "./components/Checkout";
+import "./components/Checkout.css";
 
 function App() {
   const appStyle = {
@@ -42,6 +44,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart/" element={<Cart />} />
           <Route path="/kedvencek/" element={<Favorites />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
         <Footer />
       </div>

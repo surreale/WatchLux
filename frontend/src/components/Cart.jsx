@@ -39,7 +39,7 @@ const Cart = () => {
       {cart.length > 0 && (
         <div className="cart-summary">
           <h3>Összesen: {totalPrice.toLocaleString()} Ft</h3>
-          <button className="payment-button" onClick={() => navigate("/checkout")}>
+          <button className="fizetes" onClick={() => navigate("/checkout")}>
             Tovább a fizetéshez
           </button>
         </div>

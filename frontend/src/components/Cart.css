@@ -112,7 +112,7 @@ body.no-scroll {
   color: #333;
 }
 
-.payment-button {
+.fizetes {
   background-color: ghostwhite;
   color: black;
   border: 1px solid black;
@@ -123,7 +123,7 @@ body.no-scroll {
   transition: background 0.3s;
 }
 
-.payment-button:hover {
-  background-color: #4db8ff;
+.fizetes:hover {
+  background-color: #49bf8c;
   color: rgb(255, 255, 255);
 }

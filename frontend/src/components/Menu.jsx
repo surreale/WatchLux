@@ -50,7 +50,8 @@ function Menu() {
       {!location.pathname.startsWith("/product/") &&
         location.pathname !== "/products" &&
         location.pathname !== "/cart" &&
-        location.pathname !== "/kedvencek" && <HeroText />}
+        location.pathname !== "/kedvencek" &&
+        location.pathname !== "/checkout" && <HeroText />}
 
       <Navbar
         expand="lg"
