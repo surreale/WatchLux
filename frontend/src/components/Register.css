@@ -1,0 +1,17 @@
+.des {
+    border: 1px solid black;
+    border-radius: 50px;
+}
+
+.btn {
+    border: 1px solid black;
+    border-radius: 50px;
+    background-color: white;
+    color: black;
+    margin-left: 35%;
+}
+
+.btn:hover {
+    background-color: #49bf8c;
+    color: rgb(255, 255, 255);
+  }

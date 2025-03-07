@@ -1,6 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import "./Register.css";
 
 export default function Register({showRegister, handleRegisterClose}) {
     return (
@@ -12,20 +13,20 @@ export default function Register({showRegister, handleRegisterClose}) {
   <Form>
     <Form.Group className="mb-3" controlId="formRegisterName">
       <Form.Label>Felhasználónév</Form.Label>
-      <Form.Control type="text" placeholder="Adja meg a felhasználónevét" />
+      <Form.Control type="text" className='des' placeholder="Adja meg a felhasználónevét" />
     </Form.Group>
 
     <Form.Group className="mb-3" controlId="formRegisterEmail">
-      <Form.Label>Email cím</Form.Label>
-      <Form.Control type="email" placeholder="Adja meg az email címét" />
+      <Form.Label>E-mail cím</Form.Label>
+      <Form.Control type="email" className='des' placeholder="Adja meg az e-mail címét" />
     </Form.Group>
 
     <Form.Group className="mb-3" controlId="formRegisterPassword">
       <Form.Label>Jelszó</Form.Label>
-      <Form.Control type="password" placeholder="Adja meg a jelszavát" />
+      <Form.Control type="password" className='des' placeholder="Adja meg a jelszavát" />
     </Form.Group>
 
-    <Button variant="primary" type="submit">
+    <Button variant="primary" className='btn' type="submit">
       Regisztráció
     </Button>
   </Form>

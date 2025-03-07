@@ -109,8 +109,6 @@ function Menu() {
                     <ul className="list-unstyled mb-0">
                       <li className="menu-item" onClick={handleRegisterShow}>Regisztráció</li>
                       <li className="menu-item" onClick={handleLoginShow}>Bejelentkezés</li>
-                      <li className="menu-item"><Link to="/profil">Profil</Link></li>
-                      <li className="menu-item"><Link to="/logout">Kijelentkezés</Link></li>
                     </ul>
                   </div>
                 )}
