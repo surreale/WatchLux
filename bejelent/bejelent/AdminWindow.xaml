@@ -129,6 +129,60 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Header="Számlázás">
+                <Grid>
+                    <Border Background="#1E1E2D" CornerRadius="20" Width="850" Height="550" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.9">
+                        <Grid Margin="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Számlázás" FontSize="26" FontWeight="Bold" Foreground="White"
+                                       HorizontalAlignment="Center" Margin="0,20,0,10"/>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10" Grid.Row="0">
+                                <Button Content="Számla létrehozása" Width="150" Height="30" FontSize="14"
+                                        Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,10,0"
+                                        Click="CreateInvoiceButton_Click"/>
+                                <Button Content="Számla törlése" Width="150" Height="30" FontSize="14"
+                                        Background="#F44336" Foreground="White" BorderThickness="0" Margin="0,0,10,0"
+                                        Click="DeleteInvoiceButton_Click"/>
+                                <Button Content="Számlák betöltése" Width="150" Height="30" FontSize="14"
+                                        Background="#2196F3" Foreground="White" BorderThickness="0" Margin="0,0,10,0"
+                                        Click="LoadInvoicesButton_Click"/>
+                            </StackPanel>
+
+                            <Border Background="#2A2A3C" CornerRadius="10" Grid.Row="1" Margin="0,10">
+                                <DataGrid x:Name="InvoiceDataGrid" AutoGenerateColumns="True"
+                                          Background="#1E1E2D" Foreground="White" FontSize="14"
+                                          RowBackground="#2A2A3C" AlternatingRowBackground="#383850"
+                                          GridLinesVisibility="Horizontal"
+                                          BorderBrush="#4CAF50" BorderThickness="1">
+                                    <DataGrid.ColumnHeaderStyle>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="#4CAF50"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGrid.ColumnHeaderStyle>
+                                </DataGrid>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0" Grid.Row="2">
+                                <Button x:Name="SaveInvoiceButton" Content="Mentés" Width="130" Height="40" FontSize="14"
+                                        Background="#2196F3" Foreground="White" BorderThickness="0" Margin="10,0" Click="SaveInvoiceButton_Click"/>
+                                <Button x:Name="UpdateInvoiceButton" Content="Módosítás" Width="130" Height="40" FontSize="14"
+                                        Background="#FFC107" Foreground="White" BorderThickness="0" Margin="10,0" Click="UpdateInvoiceButton_Click"/>
+                                <Button x:Name="CancelInvoiceButton" Content="Mégse" Width="130" Height="40" FontSize="14"
+                                        Background="#808080" Foreground="White" BorderThickness="0" Margin="10,0" Click="CancelInvoiceButton_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
         </TabControl>
     </Grid>
 </Window>

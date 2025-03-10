@@ -618,8 +618,54 @@ namespace BejelentkezesApp
             }
         }
 
+        private void LoadInvoicesButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // A szamlazas nevű view-ból tölti be az adatokat
+                    string query = "SELECT * FROM szamlazas";
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    InvoiceDataGrid.ItemsSource = dataTable.DefaultView;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba a számlák betöltésekor:\n{ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
 
+        private void CreateInvoiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Számla létrehozása funkció még nincs implementálva.");
+        }
+
+        private void DeleteInvoiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Számla törlése funkció még nincs implementálva.");
+        }
+
+        private void SaveInvoiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Számla mentése funkció még nincs implementálva.");
+        }
+
+        private void UpdateInvoiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Számla módosítása funkció még nincs implementálva.");
+        }
+
+        private void CancelInvoiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Művelet megszakítva.");
+        }
 
 
 
