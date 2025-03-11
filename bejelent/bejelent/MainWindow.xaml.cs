@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using MySql.Data.MySqlClient;
 
 namespace BejelentkezesApp
@@ -72,5 +73,8 @@ namespace BejelentkezesApp
                 return builder.ToString();
             }
         }
+
+       
+
     }
 }

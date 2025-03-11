@@ -46,6 +46,55 @@ namespace BejelentkezesApp
 
         };
 
+        private readonly Dictionary<string, string> columnHeaderMapping = new Dictionary<string, string>
+            {
+
+                { "aszamlapszineaz", "Számlap színe azonosító/  " },
+                { "aszamlapszine", "Számlap színe" },
+                { "datumkijelzesaz", "Dátumkijelzés azonosító/  " },
+                { "datumkijelzes", "Dátumkijelzés" },
+                { "atokaz", "Tok azonosító/  " },
+                { "atok", "Tok" },
+                { "extrafunkcioaz", "Extrefunkció azonosító/  " },
+                { "extrafunkcio", "Extrafunkció" },
+                { "id", "Felhasználó azonosító/  " },
+                { "nev", "Név/  " },
+                { "felhasznalonev", "Felhasználónév/  " },
+                { "jelszo", "Jelszó/  " },
+                { "jogosultsag", "Jogosultság" },
+                { "fizetesmoddaz", "Fizetésmód azonosító/  " },
+                { "fizetesmod", "Fizetésmód" },
+                { "jotallasaz", "Jótállás azonosító/  " },
+                { "jotallas", "Jótállás" },
+                { "kristalyuvegaz", "Üveg fajtája azonosító/  " },
+                { "kristalyuveg", "Üveg fajtája" },
+                { "markaaz", "Márka azonosító/  " },
+                { "marka", "Márka" },
+                { "maxcsuklomiliaz", "Max csukló milliméter azonosító/  " },
+                { "maxcsuklomili", "Max csukló milliméter" },
+                { "maghajtasaz", "Meghajtás azonosító/  " },
+                { "meghajtas", "Meghajtás" },
+                { "nemaz", "Nem azonosító/  " },
+                { "nem", "Nem" },
+                { "oraformaaz", "Óraforma azonosító/  " },
+                { "oraforma", "Óraforma" },
+                { "raktaraz", "Raktár azonosító/  " },
+                { "raktar", "Raktár" },
+                { "sulygrammbanaz", "Súly grammban azonosító/  " },
+                { "sulygrammban", "Súly grammban" },
+                { "szamlaptipusaz", "Számlap típus azonosító/  " },
+                { "szamlaptipus", "Számlap típus" },
+                { "szijaz", "Szíj azonosító/  " },
+                { "szij", "Szíj" },
+                { "szijszineaz", "Szíj színe azonosító/  " },
+                { "szijszine", "Szíj színe" },
+                { "tipusaz", "Típus azonosító/  " },
+                { "tipus", "Típus" },
+                { "vizallosagaz", "Vízállóság azonosító/  " },
+                { "vizallosag", "Vízállóság" },
+            };
+
+
         public Admin(string jogosultsag)
         {
             InitializeComponent();
@@ -588,6 +637,7 @@ namespace BejelentkezesApp
 
 
 
+        
 
         private void SaveChangesOraButton_Click(object sender, RoutedEventArgs e)
         {
@@ -683,11 +733,12 @@ namespace BejelentkezesApp
 
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            if (e.PropertyName == "id")
+            if (columnHeaderMapping.ContainsKey(e.PropertyName))
             {
-                e.Column.IsReadOnly = true; 
+                e.Column.Header = columnHeaderMapping[e.PropertyName]; // Csak a felületen módosítja az oszlop nevét
             }
         }
+
 
         private void AddOraButton_Click(object sender, RoutedEventArgs e)
         {
@@ -695,7 +746,34 @@ namespace BejelentkezesApp
             AddOraWindow addOraWindow = new AddOraWindow();
             addOraWindow.ShowDialog(); 
         }
+        private void LoadInvoices()
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM szamlazas"; // Az adatokat a "szamlazas" nézetből/táblából tölti be
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    InvoiceDataGrid.ItemsSource = dataTable.DefaultView;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba történt a számlák betöltésekor: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
-        
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (InvoiceTab.IsSelected) // Ha a Számlázás fül aktív
+            {
+                LoadInvoices(); // Automatikus betöltés
+            }
+        }
+
+
     }
 }
