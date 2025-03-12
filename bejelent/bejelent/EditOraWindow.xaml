@@ -3,7 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Óra Módosítása" Height="800" Width="600" Background="#1E1E1E"
         WindowStartupLocation="CenterScreen">
-    <Grid Margin="10">
+    <Grid>
+        <Image Source="pack://application:,,,/Assets/neww.jpg" Stretch="UniformToFill" Opacity="0.3" 
+        Panel.ZIndex="-1" />
+        <Grid Margin="10">
+       
+
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -159,5 +165,6 @@
             <Button Content="Mentés" Width="100" Height="30" Margin="5" Click="SaveButton_Click" />
             <Button Content="Mégse" Width="100" Height="30" Margin="5" Click="CancelButton_Click" />
         </StackPanel>
+    </Grid>
     </Grid>
 </Window>

@@ -50,48 +50,73 @@ namespace BejelentkezesApp
             {
 
                 { "aszamlapszineaz", "Számlap színe azonosító/  " },
-                { "aszamlapszine", "Számlap színe" },
+                { "aszamlapszine", "Számlap színe/  " },
                 { "datumkijelzesaz", "Dátumkijelzés azonosító/  " },
-                { "datumkijelzes", "Dátumkijelzés" },
+                { "datumkijelzes", "Dátumkijelzés/  " },
                 { "atokaz", "Tok azonosító/  " },
-                { "atok", "Tok" },
+                { "atok", "Tok/  " },
                 { "extrafunkcioaz", "Extrefunkció azonosító/  " },
-                { "extrafunkcio", "Extrafunkció" },
+                { "extrafunkcio", "Extrafunkció/  " },
                 { "id", "Felhasználó azonosító/  " },
                 { "nev", "Név/  " },
                 { "felhasznalonev", "Felhasználónév/  " },
                 { "jelszo", "Jelszó/  " },
-                { "jogosultsag", "Jogosultság" },
-                { "fizetesmoddaz", "Fizetésmód azonosító/  " },
-                { "fizetesmod", "Fizetésmód" },
+                { "jogosultsag", "Jogosultság/  " },
+                { "fizetesmodaz", "Fizetésmód azonosító/  " },
+                { "fizetesmod", "Fizetésmód/  " },
                 { "jotallasaz", "Jótállás azonosító/  " },
-                { "jotallas", "Jótállás" },
+                { "jotallas", "Jótállás/  " },
                 { "kristalyuvegaz", "Üveg fajtája azonosító/  " },
-                { "kristalyuveg", "Üveg fajtája" },
+                { "kristalyuveg", "Üveg fajtája/  " },
                 { "markaaz", "Márka azonosító/  " },
-                { "marka", "Márka" },
+                { "marka", "Márka/  " },
                 { "maxcsuklomiliaz", "Max csukló milliméter azonosító/  " },
-                { "maxcsuklomili", "Max csukló milliméter" },
-                { "maghajtasaz", "Meghajtás azonosító/  " },
-                { "meghajtas", "Meghajtás" },
+                { "maxcsuklomili", "Max csukló milliméter/  " },
+                { "meghajtasaz", "Meghajtás azonosító/  " },
+                { "meghajtas", "Meghajtás/  " },
                 { "nemaz", "Nem azonosító/  " },
-                { "nem", "Nem" },
+                { "nem", "Nem/  " },
                 { "oraformaaz", "Óraforma azonosító/  " },
-                { "oraforma", "Óraforma" },
+                { "oraforma", "Óraforma/  " },
                 { "raktaraz", "Raktár azonosító/  " },
-                { "raktar", "Raktár" },
+                { "raktar", "Raktár/  " },
                 { "sulygrammbanaz", "Súly grammban azonosító/  " },
-                { "sulygrammban", "Súly grammban" },
+                { "sulygrammban", "Súly grammban/  " },
                 { "szamlaptipusaz", "Számlap típus azonosító/  " },
-                { "szamlaptipus", "Számlap típus" },
+                { "szamlaptipus", "Számlap típus/  " },
                 { "szijaz", "Szíj azonosító/  " },
-                { "szij", "Szíj" },
+                { "szij", "Szíj/  " },
                 { "szijszineaz", "Szíj színe azonosító/  " },
-                { "szijszine", "Szíj színe" },
+                { "szijszine", "Szíj színe/  " },
                 { "tipusaz", "Típus azonosító/  " },
-                { "tipus", "Típus" },
+                { "tipus", "Típus/  " },
                 { "vizallosagaz", "Vízállóság azonosító/  " },
-                { "vizallosag", "Vízállóság" },
+                { "vizallosag", "Vízállóság/  " },
+                { "atokszineaz", "A tok színe azonosító/  " },
+                { "atokszine", "A tok színe/  " },
+                { "szallitasaz", "Szállítás azonisító/  " },
+                { "iranyszam", "Irányítószám/  " },
+                { "varos", "Város/  " },
+                { "vasarloaz", "Vásárló azonosító/  " },
+                { "tel", "Telefonszám/  " },
+                { "email", "Email/  " },
+                { "oraaz", "Óra azonosító/  " },
+                { "megnevezes", "Megnevezés/  " },
+                { "kep1", "Kép1/  " },
+                { "kep2", "Kép2/  " },
+                { "kep3", "Kép3/  " },
+                { "ar", "Ár/  " },
+                { "cikkszam", "Cikkszám/  " },
+                { "meretmillimeterben", "Méret milliméterben/  " },
+                { "db", "Db  " },
+                { "szamlaaz", "Számla azonosító/  " },
+                { "cim", "Cím/  " },
+                { "vnev", "Vásárló Neve/  " },
+                { "oranev", "Óra neve/  " },
+                { "sznev", "Szállítási Név/  " },
+                { "datum", "Dátum/  " },
+                { "adoszam", "Adószám/  " },
+
             };
 
 
@@ -765,6 +790,23 @@ namespace BejelentkezesApp
                 MessageBox.Show($"Hiba történt a számlák betöltésekor: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void OraDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (columnHeaderMapping.ContainsKey(e.PropertyName))
+            {
+                e.Column.Header = columnHeaderMapping[e.PropertyName];
+            }
+        }
+
+        private void InvoiceDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (columnHeaderMapping.ContainsKey(e.PropertyName))
+            {
+                e.Column.Header = columnHeaderMapping[e.PropertyName];
+            }
+        }
+
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

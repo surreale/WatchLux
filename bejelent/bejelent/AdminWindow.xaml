@@ -15,10 +15,11 @@
             <TabItem Header="Adminisztráció">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="67*"/>
-                        <ColumnDefinition Width="370*"/>
+                        <ColumnDefinition Width="134*"/>
+                        <ColumnDefinition Width="83*"/>
+                        <ColumnDefinition Width="657*"/>
                     </Grid.ColumnDefinitions>
-                    <Border Background="#1E1E2D" CornerRadius="20" Width="850" Height="550" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.9" Grid.ColumnSpan="2" Margin="12,0,0,0">
+                    <Border Background="#1E1E2D" CornerRadius="20" Width="850" Height="550" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.9" Grid.ColumnSpan="3" Margin="12,0,0,0">
                         <Grid Margin="20">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -90,7 +91,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            
+
                             <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,10,0" Grid.Column="1">
                                 <Button Content="Betöltés" Width="120" Height="30" FontSize="14"
                                         Background="#4CAF50" Foreground="White" BorderThickness="0" 
@@ -111,10 +112,11 @@
 
                             <Border Background="#2A2A3C" CornerRadius="10" Grid.Row="1" Margin="0,10,0,10" Grid.ColumnSpan="2">
                                 <DataGrid x:Name="OraDataGrid" AutoGenerateColumns="True"
-                                          Background="#1E1E2D" Foreground="White" FontSize="14"
-                                          RowBackground="#2A2A3C" AlternatingRowBackground="#383850"
-                                          GridLinesVisibility="Horizontal"
-                                          BorderBrush="#4CAF50" BorderThickness="1">
+                                        AutoGeneratingColumn="OraDataGrid_AutoGeneratingColumn"
+                                        Background="#1E1E2D" Foreground="White" FontSize="14"
+                                        RowBackground="#2A2A3C" AlternatingRowBackground="#383850"
+                                        GridLinesVisibility="Horizontal"
+                                        BorderBrush="#4CAF50" BorderThickness="1">
                                     <DataGrid.ColumnHeaderStyle>
                                         <Style TargetType="DataGridColumnHeader">
                                             <Setter Property="Background" Value="#4CAF50"/>
@@ -156,10 +158,11 @@
 
                             <Border Background="#2A2A3C" CornerRadius="10" Grid.Row="1" Margin="0,10">
                                 <DataGrid x:Name="InvoiceDataGrid" AutoGenerateColumns="True"
-                                          Background="#1E1E2D" Foreground="White" FontSize="14"
-                                          RowBackground="#2A2A3C" AlternatingRowBackground="#383850"
-                                          GridLinesVisibility="Horizontal"
-                                          BorderBrush="#4CAF50" BorderThickness="1">
+                                        AutoGeneratingColumn="InvoiceDataGrid_AutoGeneratingColumn"
+                                        Background="#1E1E2D" Foreground="White" FontSize="14"
+                                        RowBackground="#2A2A3C" AlternatingRowBackground="#383850"
+                                        GridLinesVisibility="Horizontal"
+                                        BorderBrush="#4CAF50" BorderThickness="1">
                                     <DataGrid.ColumnHeaderStyle>
                                         <Style TargetType="DataGridColumnHeader">
                                             <Setter Property="Background" Value="#4CAF50"/>
@@ -169,15 +172,9 @@
                                     </DataGrid.ColumnHeaderStyle>
                                 </DataGrid>
                             </Border>
-                            
 
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,15" Grid.Row="2">
-                                <Button x:Name="SaveInvoiceButton" Content="Mentés" Width="130" Height="40" FontSize="14"
-                                        Background="#2196F3" Foreground="White" BorderThickness="0" Margin="10,0" Click="SaveInvoiceButton_Click"/>
-                                
-                                <Button x:Name="CancelInvoiceButton" Content="Mégse" Width="130" Height="40" FontSize="14"
-                                        Background="#808080" Foreground="White" BorderThickness="0" Margin="10,0" Click="CancelInvoiceButton_Click"/>
-                            </StackPanel>
+
+                           
                         </Grid>
                     </Border>
                 </Grid>
