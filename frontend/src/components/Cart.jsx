@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 
 const Cart = () => {
-  const { cart, removeFromCart } = useContext(CartContext);
+  const { cart, removeFromCart, updateCartQuantity } = useContext(CartContext);
   const navigate = useNavigate();
 
-  // 🔄 Összesített ár kiszámítása
+  // Összesített ár kiszámítása
   const totalPrice = cart.reduce((acc, item) => acc + Number(item.ar) * (Number(item.mennyiseg) || 1), 0);
 
   return (
@@ -19,12 +19,40 @@ const Cart = () => {
         <div className="cart-items">
           {cart.map((item) => (
             <div key={item.oraaz} className="cart-item">
-              <img src={`/images/${item.kep1}`} alt={item.megnevezes} className="cart-image" />
+              {/* 🔹 Kép kattintható - visszanavigál a részletező oldalra */}
+              <img 
+                src={`/images/${item.kep1}`} 
+                alt={item.megnevezes} 
+                className="cart-image clickable" 
+                onClick={() => navigate(`/product/${item.oraaz}`)}
+              />
               <div className="cart-details">
-                <h3>{item.megnevezes}</h3>
+                {/* 🔹 Termék neve kattintható - visszanavigál a részletező oldalra */}
+                <h3 
+                  className="clickable"
+                  onClick={() => navigate(`/product/${item.oraaz}`)}
+                >
+                  {item.megnevezes}
+                </h3>
                 <hr />
                 <p>Ár: {item.ar} Ft</p>
-                <p>Mennyiség: {item.mennyiseg || 1} db</p>
+                <div className="quantity-control">
+                  <label htmlFor={`quantity-${item.oraaz}`}>Mennyiség:</label>
+                  <input
+                    id={`quantity-${item.oraaz}`}
+                    type="number"
+                    min="1"
+                    max="20"
+                    value={item.mennyiseg || 1}
+                    onChange={(e) => {
+                      const newQuantity = Number(e.target.value);
+                      if (newQuantity >= 1 && newQuantity <= 20) {
+                        updateCartQuantity(item.oraaz, newQuantity);
+                      }
+                    }}
+                  />
+                  <span> db</span>
+                </div>
                 <p>Összesen: {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft</p>
                 <button className="remove-button" onClick={() => removeFromCart(item.oraaz)}>Törlés</button>
               </div>
@@ -35,7 +63,7 @@ const Cart = () => {
       
       <button className="checkout-button" onClick={() => navigate("/products")}>Vásárlás folytatása</button>
 
-      {/* 🔄 Jobb oldali sáv az összeggel és a fizetés gombbal */}
+      {/* Jobb oldali sáv az összeggel és a fizetés gombbal */}
       {cart.length > 0 && (
         <div className="cart-summary">
           <h3>Összesen: {totalPrice.toLocaleString()} Ft</h3>

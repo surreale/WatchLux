@@ -127,3 +127,29 @@ body.no-scroll {
   background-color: #49bf8c;
   color: rgb(255, 255, 255);
 }
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quantity-control input {
+  width: 50px;
+  text-align: center;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #007bff; /* Kék szín a linkekhez */
+  transition: color 0.3s;
+}
+
+.clickable:hover {
+  color: #0056b3; /* Sötétebb kék, ha ráhúzzuk az egeret */
+}

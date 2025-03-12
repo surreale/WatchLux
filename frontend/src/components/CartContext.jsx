@@ -20,33 +20,40 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-// 🔹 addToCart függvény
-const addToCart = (product) => {
-  setCart((prevCart) => {
-    const existingItem = prevCart.find((item) => item.oraaz === product.oraaz);
-    if (existingItem) {
-      // Ha már létezik a termék, csak a mennyiséget növeli
-      addNotification("Termék mennyisége frissítve a kosárban!");
-      return prevCart.map((item) =>
-        item.oraaz === product.oraaz
-          ? { ...item, mennyiseg: (item.mennyiseg || 1) + (product.mennyiseg || 1) }
-          : item
-      );
-    } else {
-      // Ha új termék, hozzáadja a kosárhoz alapértelmezett mennyiséggel
-      addNotification("Termék hozzáadva a kosárhoz!");
-      return [...prevCart, { ...product, mennyiseg: product.mennyiseg || 1 }];
-    }
-  });
-};
+  // 🔹 Termék hozzáadása a kosárhoz
+  const addToCart = (product) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.oraaz === product.oraaz);
+      if (existingItem) {
+        // Ha már létezik a termék, csak a mennyiséget növeli
+        addNotification("Termék mennyisége frissítve a kosárban!");
+        return prevCart.map((item) =>
+          item.oraaz === product.oraaz
+            ? { ...item, mennyiseg: (item.mennyiseg || 1) + (product.mennyiseg || 1) }
+            : item
+        );
+      } else {
+        // Ha új termék, hozzáadja a kosárhoz alapértelmezett mennyiséggel
+        addNotification("Termék hozzáadva a kosárhoz!");
+        return [...prevCart, { ...product, mennyiseg: product.mennyiseg || 1 }];
+      }
+    });
+  };
 
-
-
-
-  // 🔹 Termék eltávolítása a kosárból (külön gombhoz)
+  // 🔹 Termék eltávolítása a kosárból
   const removeFromCart = (oraaz) => {
     setCart((prevCart) => prevCart.filter((item) => item.oraaz !== oraaz));
     addNotification("Termék eltávolítva a kosárból");
+  };
+
+  // 🔹 Mennyiség módosítása a kosárban
+  const updateCartQuantity = (oraaz, newQuantity) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.oraaz === oraaz ? { ...item, mennyiseg: newQuantity } : item
+      )
+    );
+    addNotification("Termék mennyisége frissítve!");
   };
 
   // 🔹 Új értesítés hozzáadása és automatikus törlése 3 másodperc után
@@ -60,7 +67,7 @@ const addToCart = (product) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCartQuantity }}>
       {children}
       <div className="notification-container">
         {notifications.map((notif) => (
