@@ -391,6 +391,20 @@ async function registerUser(nev, tel, email, jelszo) {
   }
 }
 
+async function checkExistingUser(email, tel) {
+  try {
+      const sqlQuery = `
+          SELECT * FROM vasarlo WHERE email = ? OR tel = ?
+      `;
+      const [rows] = await pool.query(sqlQuery, [email, tel]);
+
+      return rows.length > 0 ? true : false; // Ha talál egyezést, akkor true-t ad vissza
+  } catch (error) {
+      console.error("❌ Hiba az ellenőrzés során:", error);
+      throw error;
+  }
+}
+
 module.exports = {
   getProducts,
   getProductById,
@@ -414,5 +428,6 @@ module.exports = {
   getMaxCsuklomili,
   getPriceRange,
   searchProducts,
-  registerUser
+  registerUser,
+  checkExistingUser
 };

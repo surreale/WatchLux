@@ -1,6 +1,6 @@
 const express = require("express");
-const crypto = require("crypto"); // SHA-256 titkosításhoz
-const db = require("../db/dboperations"); // Az adatbázis műveletek kezelése
+const crypto = require("crypto");
+const db = require("../db/dboperations");
 
 const router = express.Router();
 
@@ -13,11 +13,19 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ error: "Minden mező kitöltése kötelező!" });
         }
 
-        // SHA-256 jelszó titkosítás
+        // 🔹 Jelszó validáció a backendben is
+        if (jelszo.length < 8 || !/[A-Z]/.test(jelszo) || !/[a-z]/.test(jelszo)) {
+            return res.status(400).json({ error: "A jelszónak legalább 8 karakter hosszúnak kell lennie, és tartalmaznia kell kis- és nagybetűt." });
+        }
+
+        const existingUser = await db.checkExistingUser(email, tel);
+        if (existingUser) {
+            return res.status(400).json({ error: "Már létezik ilyen e-mail vagy telefonszám!" });
+        }
+
         const hashedPassword = crypto.createHash("sha256").update(jelszo).digest("hex");
 
-        // 🔥 Helyes adatbázis beszúrás (fix)
-        await db.registerUser(nev, tel, email, hashedPassword);
+        await db.registerUser(nev, tel.replace("+", ""), email, hashedPassword);
 
         res.status(201).json({ message: "Sikeres regisztráció!" });
     } catch (error) {
@@ -25,4 +33,8 @@ router.post("/register", async (req, res) => {
         res.status(500).json({ error: "Szerverhiba, próbáld újra később!" });
     }
 });
+
+
+
+
 module.exports = router;
