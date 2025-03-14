@@ -3,8 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Range } from 'react-range';
 import "./Products.css";
-import warning from './warning.jpeg';
-import cart1 from './cart.jpeg';
+
 import cart2 from './cartplus.jpeg';
 import cart3 from './cartremo.jpeg';
 import fav1 from './fav.jpeg';
@@ -24,8 +23,7 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [cartState, setCartState] = useState({});
-  const [favState, setFavState] = useState({});
+
   const [hoverState, setHoverState] = useState({});
 
   // 🔄 Itt helyezd el a handleCartToggle függvényt!

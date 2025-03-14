@@ -376,7 +376,20 @@ async function searchProducts(query) {
   }
 }
 
+async function registerUser(nev, tel, email, jelszo) {
+  try {
+      const sqlQuery = `
+          INSERT INTO vasarlo (nev, tel, email, jelszo) 
+          VALUES (?, ?, ?, ?)
+      `;
 
+      const [result] = await pool.query(sqlQuery, [nev, tel, email, jelszo]);
+      return result;
+  } catch (error) {
+      console.error("❌ Hiba a regisztráció során:", error);
+      throw error;
+  }
+}
 
 module.exports = {
   getProducts,
@@ -400,5 +413,6 @@ module.exports = {
   getSzijk,
   getMaxCsuklomili,
   getPriceRange,
-  searchProducts
+  searchProducts,
+  registerUser
 };

@@ -9,7 +9,9 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const termekRouter = require("./routes/termek");
 const filtersRouter = require("./routes/filters");
+const authRouter = require("./routes/auth"); // 🔥 Regisztráció route
 
+ 
 const app = express();
 
 // 🔹 CORS engedélyezése
@@ -32,5 +34,5 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/ora", termekRouter);
 app.use("/filters", filtersRouter);
-
+app.use("/auth", authRouter); //
 module.exports = app;
