@@ -1,10 +1,9 @@
-/* Toast értesítés alap CSS */
+/* Általános toast stílus */
 .toast-container {
     position: fixed;
-    top: 20px; /* A lap tetején középen */
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 128, 0, 0.95); /* Zöld háttér */
     color: white;
     padding: 12px 20px;
     font-size: 16px;
@@ -14,20 +13,29 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
 }
 
-/* Amikor a toast megjelenik */
+/* Bejelentkezési toast (zöld) */
+.toast-container.success {
+    background-color: rgba(0, 128, 0, 0.95); /* Zöld */
+}
+
+/* Kijelentkezési toast (piros) */
+.toast-container.error {
+    background-color: rgba(200, 0, 0, 0.95); /* Piros */
+}
+
+/* Megjelenés */
 .toast-container.show {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
 }
 
-/* Amikor a toast eltűnik */
+/* Eltűnés */
 .toast-container.hide {
     opacity: 0;
     visibility: hidden;
     transform: translateX(-50%) translateY(-20px);
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
