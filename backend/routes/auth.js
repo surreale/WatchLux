@@ -34,7 +34,30 @@ router.post("/register", async (req, res) => {
     }
 });
 
+router.post("/login", async (req, res) => {
+    try {
+        const { email, jelszo } = req.body;
 
+        if (!email || !jelszo) {
+            return res.status(400).json({ error: "Az e-mail és a jelszó megadása kötelező!" });
+        }
+
+        // 🔹 Jelszó SHA-256 titkosítása
+        const hashedPassword = crypto.createHash("sha256").update(jelszo).digest("hex");
+
+        // 🔹 Ellenőrizzük, hogy létezik-e a felhasználó
+        const user = await db.getUserByEmail(email);
+
+        if (!user || user.jelszo !== hashedPassword) {
+            return res.status(401).json({ error: "Hibás e-mail vagy jelszó!" });
+        }
+
+        res.status(200).json({ message: "Sikeres bejelentkezés!", user });
+    } catch (error) {
+        console.error("❌ Hiba történt a bejelentkezés során:", error);
+        res.status(500).json({ error: "Szerverhiba, próbáld újra később!" });
+    }
+});
 
 
 module.exports = router;

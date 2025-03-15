@@ -405,6 +405,17 @@ async function checkExistingUser(email, tel) {
   }
 }
 
+
+async function getUserByEmail(email) {
+  try {
+      const sqlQuery = `SELECT * FROM vasarlo WHERE email = ?`;
+      const [rows] = await pool.query(sqlQuery, [email]);
+      return rows.length > 0 ? rows[0] : null;
+  } catch (error) {
+      console.error("❌ Hiba a felhasználó lekérésekor:", error);
+      throw error;
+  }
+} 
 module.exports = {
   getProducts,
   getProductById,
@@ -429,5 +440,6 @@ module.exports = {
   getPriceRange,
   searchProducts,
   registerUser,
-  checkExistingUser
+  checkExistingUser,
+  getUserByEmail
 };

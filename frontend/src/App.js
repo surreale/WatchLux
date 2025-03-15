@@ -12,8 +12,15 @@ import { FavoritesProvider } from './components/FavoritesContext';
 import Favorites from './components/Favorites';
 import Checkout from "./components/Checkout";
 import "./components/Checkout.css";
+import Login from './components/Login'; // 🔹 Bejelentkezési oldal importálása
+import { useState } from 'react';
 
 function App() {
+  const [showLogin, setShowLogin] = useState(false);
+
+  const handleLoginOpen = () => setShowLogin(true);
+  const handleLoginClose = () => setShowLogin(false);
+
   const appStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -34,7 +41,7 @@ function App() {
     <CartProvider>
     <Router>
       <div style={appStyle} className="main-content">
-        <Menu />
+        <Menu onLoginClick={handleLoginOpen} /> {/* 🔹 Gomb a bejelentkezéshez */}
         
         <Routes>
           {/* Főoldal */}
@@ -46,7 +53,11 @@ function App() {
           <Route path="/kedvencek/" element={<Favorites />} />
           <Route path="/checkout" element={<Checkout />} />
         </Routes>
+
         <Footer />
+
+        {/* 🔹 Bejelentkezési modál */}
+        <Login showLogin={showLogin} handleLoginClose={handleLoginClose} />
       </div>
     </Router>
     </CartProvider>
