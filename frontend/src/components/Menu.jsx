@@ -32,12 +32,21 @@ function Menu() {
       setLastScrollY(window.scrollY);
     };
 
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".user-menu-container")) {
+        setShowUserMenu(false); // Ha a felhasználói menün kívül kattint, bezárja
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
+    document.addEventListener("click", handleClickOutside); // Külső kattintás figyelése
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [lastScrollY]);
+  
 
   const handleRegisterClose = () => setShowRegister(false);
   const handleRegisterShow = () => setShowRegister(true);
