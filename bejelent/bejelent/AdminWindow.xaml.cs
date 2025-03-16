@@ -719,7 +719,11 @@ namespace BejelentkezesApp
 
         private void CreateInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Számla létrehozása funkció még nincs implementálva.");
+            CreateInvoiceWindow createInvoiceWindow = new CreateInvoiceWindow();
+            createInvoiceWindow.ShowDialog();
+
+            // Frissítjük az InvoiceDataGrid-et
+            LoadInvoices();
         }
 
         private void DeleteInvoiceButton_Click(object sender, RoutedEventArgs e)

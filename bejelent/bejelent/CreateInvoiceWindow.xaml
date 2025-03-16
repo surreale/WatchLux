@@ -1,0 +1,83 @@
+﻿<Window x:Class="BejelentkezesApp.CreateInvoiceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Új Számla Létrehozása" Height="600" Width="600"
+        WindowStartupLocation="CenterScreen" Background="#1E1E2D" ResizeMode="NoResize">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Border Background="#2A2A3C" CornerRadius="20" Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Cím -->
+                    <TextBlock Text="Új Számla Létrehozása" FontSize="22" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                    <!-- Form mezők -->
+                    <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" Width="400">
+                        <Label Content="Vásárló Neve:" Foreground="White"/>
+                        <TextBox x:Name="VasarloNevTextBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                 BorderBrush="#4CAF50" Padding="5"/>
+
+                        <Label Content="Szállítási név:" Foreground="White" Margin="0,10,0,0"/>
+                        <TextBox x:Name="SzallitasNevTextBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                 BorderBrush="#4CAF50" Padding="5"/>
+
+                        <Label Content="Cím:" Foreground="White" Margin="0,10,0,0"/>
+                        <TextBox x:Name="CimTextBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                 BorderBrush="#4CAF50" Padding="5"/>
+
+                        <Label Content="Város:" Foreground="White" Margin="0,10,0,0"/>
+                        <TextBox x:Name="VarosTextBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                 BorderBrush="#4CAF50" Padding="5"/>
+
+                        <Label Content="Irányítószám:" Foreground="White" Margin="0,10,0,0"/>
+                        <TextBox x:Name="IranyitoszamTextBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                 BorderBrush="#4CAF50" Padding="5"/>
+
+                        <Label Content="Email:" Foreground="White" Margin="0,10,0,0"/>
+                        <TextBox x:Name="EmailTextBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                 BorderBrush="#4CAF50" Padding="5"/>
+
+                        <Label Content="Telefonszám:" Foreground="White" Margin="0,10,0,0"/>
+                        <TextBox x:Name="TelefonTextBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                 BorderBrush="#4CAF50" Padding="5"/>
+
+                        <Label Content="Óra neve:" Foreground="White" Margin="0,10,0,0"/>
+                        <TextBox x:Name="OraNevTextBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                 BorderBrush="#4CAF50" Padding="5"/>
+
+                        <Label Content="Fizetési mód:" Foreground="White" Margin="0,10,0,0"/>
+                        <ComboBox x:Name="FizetesiModComboBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                  BorderBrush="#4CAF50">
+                            <ComboBoxItem Content="Bankkártya"/>
+                            <ComboBoxItem Content="Készpénz"/>
+                            <ComboBoxItem Content="Átutalás"/>
+                        </ComboBox>
+
+                        <Label Content="Dátum:" Foreground="White" Margin="0,10,0,0"/>
+                        <DatePicker x:Name="DatumPicker" Width="380" Background="#1E1E2D" Foreground="White"
+                                    BorderBrush="#4CAF50"/>
+
+                        <Label Content="Adószám:" Foreground="White" Margin="0,10,0,0"/>
+                        <TextBox x:Name="AdoszamTextBox" Width="380" Background="#1E1E2D" Foreground="White"
+                                 BorderBrush="#4CAF50" Padding="5"/>
+                    </StackPanel>
+
+                    <!-- Gombok -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                        <Button Content="Mentés" Width="140" Height="40" FontSize="14" Background="#4CAF50"
+                                Foreground="White" BorderThickness="0" Margin="10,0" Click="SaveInvoiceButton_Click"/>
+                        <Button Content="Mégse" Width="140" Height="40" FontSize="14" Background="#F44336"
+                                Foreground="White" BorderThickness="0" Margin="10,0" Click="CancelButton_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Window>

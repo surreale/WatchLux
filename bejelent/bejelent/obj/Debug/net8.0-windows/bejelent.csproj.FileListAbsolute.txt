@@ -120,3 +120,5 @@ C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\refint\bejelent.
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\bejelent.pdb
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\bejelent.genruntimeconfig.cache
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\ref\bejelent.dll
+C:\Users\MSI\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\CreateInvoiceWindow.baml
+C:\Users\MSI\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\CreateInvoiceWindow.g.cs

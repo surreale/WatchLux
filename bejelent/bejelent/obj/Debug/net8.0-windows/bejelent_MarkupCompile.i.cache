@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\
+C:\Users\MSI\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\
 bejelent
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-C:\Users\13d\Desktop\bejelent\bejelent\App.xaml
-4-116484751
+C:\Users\MSI\Desktop\bejelent\bejelent\App.xaml
+5-1711396961
 
-10-34386614
-206-1836972405
-AddOraWindow.xaml;AdminWindow.xaml;EditOraWindow.xaml;MainWindow.xaml;
+112054633844
+206-526016104
+AddOraWindow.xaml;AdminWindow.xaml;CreateInvoiceWindow.xaml;EditOraWindow.xaml;MainWindow.xaml;
 
 False
 
