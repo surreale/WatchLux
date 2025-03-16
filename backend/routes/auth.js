@@ -81,25 +81,42 @@ router.get("/profile", async (req, res) => {
   // 🔹 Profil frissítése
   router.put("/update", async (req, res) => {
     try {
-      const userId = req.user.id; 
-      const { nev, tel } = req.body;
-      await db.updateUserProfile(userId, nev, tel);
-      res.json({ message: "Profil frissítve!" });
+        const { userId, nev, tel } = req.body;
+
+        if (!userId || !nev || !tel) {
+            return res.status(400).json({ error: "Minden mezőt ki kell tölteni!" });
+        }
+
+        const result = await db.updateUserProfile(userId, nev, tel);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Felhasználó nem található!" });
+        }
+
+        res.json({ message: "Profil frissítve!" });
     } catch (error) {
-      res.status(500).json({ error: "Hiba történt a profil frissítésekor." });
+        console.error("❌ Hiba történt a profil frissítésekor:", error);
+        res.status(500).json({ error: "Szerverhiba történt!" });
     }
-  });
+});
+
   
   // 🔹 Jelszó módosítása
   router.put("/change-password", async (req, res) => {
     try {
-      const userId = req.user.id; 
-      const { oldPassword, newPassword } = req.body;
-      await db.changeUserPassword(userId, oldPassword, newPassword);
-      res.json({ message: "Sikeres jelszó módosítás!" });
+        const { userId, oldPassword, newPassword } = req.body;
+
+        if (!userId || !oldPassword || !newPassword) {
+            return res.status(400).json({ error: "Minden mezőt ki kell tölteni!" });
+        }
+
+        await db.changeUserPassword(userId, oldPassword, newPassword);
+        res.json({ message: "Sikeres jelszó módosítás!" });
     } catch (error) {
-      res.status(400).json({ error: error.message });
+        console.error("❌ Hiba történt a jelszó módosítása közben:", error);
+        res.status(400).json({ error: error.message });
     }
-  });
+});
+
 
 module.exports = router;
