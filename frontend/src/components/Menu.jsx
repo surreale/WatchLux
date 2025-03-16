@@ -67,7 +67,12 @@ function Menu() {
       navigate("/"); // 2 másodperc után átirányítás a főoldalra
     }, 2000);
   };
-
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);  // 🔥 Beállítja a bejelentkezési állapotot
+    setShowToast({ visible: true, message: "✅ Sikeres bejelentkezés!", type: "success" });
+    setTimeout(() => setShowToast({ visible: false, message: "", type: "" }), 2000);
+  };
+  
   return (
     <>
       {!location.pathname.startsWith("/product/") &&
@@ -144,12 +149,11 @@ function Menu() {
         </Container>
       </Navbar>
 
-      <Login showLogin={showLogin} handleLoginClose={() => { 
-        setIsLoggedIn(true);
-        setShowToast({ visible: true, message: "✅ Sikeres bejelentkezés!", type: "success" });
-        setTimeout(() => setShowToast({ visible: false, message: "", type: "" }), 2000);
-        handleLoginClose();
-      }} />
+      <Login 
+    showLogin={showLogin} 
+    handleLoginClose={handleLoginClose} 
+    onLoginSuccess={handleLoginSuccess} 
+/>
       <Register showRegister={showRegister} handleRegisterClose={handleRegisterClose} />
 
       {showToast.visible && <div className={`toast-container ${showToast.type} show`}>{showToast.message}</div>}

@@ -6,37 +6,62 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import "./toast.css"; // A toast CSS-hez
 
-export default function Login({ showLogin, handleLoginClose }) {
+export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [showToast, setShowToast] = useState(false); // Értesítés állapota
+    const [showToast, setShowToast] = useState(false);
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
 
+        if (isLoggingIn) return;
+        setIsLoggingIn(true);
+
+        if (!email.trim() || !password.trim()) {
+            setError("Az e-mail és a jelszó megadása kötelező!");
+            setIsLoggingIn(false);
+            return;
+        }
+
         try {
             const response = await axios.post("http://localhost:8080/auth/login", { email, jelszo: password });
 
-            console.log("✅ Sikeres bejelentkezés!", response.data.user); 
+            if (response.status === 200 && response.data.user) {
+                console.log("✅ Sikeres bejelentkezés!", response.data.user);
 
-            setShowToast(true); // Értesítés megjelenítése
-            
-            setTimeout(() => {
-                setShowToast(false);
-                setTimeout(() => navigate("/products"), 500); // 0.5s késleltetés a smooth eltűnés után
-                handleLoginClose();
-            }, 2000); // 2 másodperc múlva eltűnik és átirányít
+                localStorage.setItem("isLoggedIn", "true");
+
+                onLoginSuccess(); 
+
+                setShowToast(true);
+                setTimeout(() => {
+                    setShowToast(false);
+                    navigate("/products");
+                    handleLoginClose(); // Modal bezárása
+                }, 2000);
+            } else {
+                setError("Hibás e-mail vagy jelszó!");
+                setIsLoggingIn(false);
+            }
         } catch (error) {
             setError(error.response?.data?.error || "Hiba történt!");
+            setIsLoggingIn(false);
         }
+    };
+
+    const handleInputChange = (setter) => (e) => {
+        setter(e.target.value);
+        setIsLoggingIn(false);
+        setError("");
     };
 
     return (
         <>
-            <Modal show={showLogin} onHide={handleLoginClose} centered>
+            <Modal show={showLogin} onHide={handleLoginClose} centered> {/* 🔥 Itt javítottam! */}
                 <Modal.Header closeButton>
                     <Modal.Title>Bejelentkezés</Modal.Title>
                 </Modal.Header>
@@ -48,7 +73,7 @@ export default function Login({ showLogin, handleLoginClose }) {
                                 type="email"
                                 placeholder="Adja meg az email címét"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={handleInputChange(setEmail)}
                             />
                         </Form.Group>
 
@@ -58,14 +83,14 @@ export default function Login({ showLogin, handleLoginClose }) {
                                 type="password"
                                 placeholder="Adja meg a jelszavát"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={handleInputChange(setPassword)}
                             />
                         </Form.Group>
 
                         {error && <p style={{ color: "red" }}>{error}</p>}
 
-                        <Button variant="primary" type="submit">
-                            Bejelentkezés
+                        <Button variant="primary" type="submit" disabled={isLoggingIn}>
+                            {isLoggingIn ? "Bejelentkezés..." : "Bejelentkezés"}
                         </Button>
                     </Form>
                 </Modal.Body>
