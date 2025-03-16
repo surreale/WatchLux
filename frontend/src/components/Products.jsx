@@ -399,7 +399,7 @@ function Products() {
 
 
   const handleFilterChange = () => {
-    const params = {};
+    const params = new URLSearchParams();
 
     // 🔄 Csak akkor igaz, ha valóban van aktív szűrő
     const hasActiveFilters = (
@@ -424,8 +424,9 @@ function Products() {
       priceRange[1] < maxPrice
     );
 
-    // 🔄 Ha NINCS aktív szűrő, töltsük be az alapértelmezett terméklistát
+    // 🔹 Ha nincs aktív szűrő, frissítse az URL-t és töltse be az alapértelmezett termékeket
     if (!hasActiveFilters) {
+      window.history.pushState({}, "", `/products`);
       axios.get("http://localhost:8080/ora/oralekerdezes")
         .then((response) => {
           setFilteredProducts(response.data);
@@ -438,28 +439,32 @@ function Products() {
       return; // Ne fusson le a további szűrési logika
     }
 
-    // 🔄 Ha van aktív szűrő, építjük a lekérdezés paramétereit
-    if (selectedBrand) params.marka = selectedBrand;
-    if (selectedGender) params.nem = selectedGender;
-    if (selectedMeghajtas) params.meghajtas = selectedMeghajtas;
-    if (selectedVizallosag) params.vizallosag = selectedVizallosag;
-    if (selectedSuly) params.sulygrammban = selectedSuly;
-    if (selectedTipus) params.tipus = selectedTipus;
-    if (selectedDatumkijelzes) params.datumkijelzes = selectedDatumkijelzes;
-    if (selectedExtrafunkcio) params.extrafunkcio = selectedExtrafunkcio;
-    if (selectedAtokszine) params.atokszine = selectedAtokszine;
-    if (selectedAszamlapszine) params.aszamlapszine = selectedAszamlapszine;
-    if (selectedAtok) params.atok = selectedAtok;
-    if (selectedKristalyuveg) params.kristalyuveg = selectedKristalyuveg;
-    if (selectedSzamlaptipus) params.szamlaptipus = selectedSzamlaptipus;
-    if (selectedOraforma) params.oraforma = selectedOraforma;
-    if (selectedSzijszine) params.szijszine = selectedSzijszine;
-    if (selectedSzij) params.szij = selectedSzij;
-    if (selectedMaxCsuklomili) params.maxcsuklomili = selectedMaxCsuklomili;
+    // 🔄 Ha van aktív szűrő, építjük a lekérdezés paramétereit és frissítjük az URL-t
+    if (selectedBrand) params.set("marka", selectedBrand);
+    if (selectedGender) params.set("nem", selectedGender);
+    if (selectedMeghajtas) params.set("meghajtas", selectedMeghajtas);
+    if (selectedVizallosag) params.set("vizallosag", selectedVizallosag);
+    if (selectedSuly) params.set("sulygrammban", selectedSuly);
+    if (selectedTipus) params.set("tipus", selectedTipus);
+    if (selectedDatumkijelzes) params.set("datumkijelzes", selectedDatumkijelzes);
+    if (selectedExtrafunkcio) params.set("extrafunkcio", selectedExtrafunkcio);
+    if (selectedAtokszine) params.set("atokszine", selectedAtokszine);
+    if (selectedAszamlapszine) params.set("aszamlapszine", selectedAszamlapszine);
+    if (selectedAtok) params.set("atok", selectedAtok);
+    if (selectedKristalyuveg) params.set("kristalyuveg", selectedKristalyuveg);
+    if (selectedSzamlaptipus) params.set("szamlaptipus", selectedSzamlaptipus);
+    if (selectedOraforma) params.set("oraforma", selectedOraforma);
+    if (selectedSzijszine) params.set("szijszine", selectedSzijszine);
+    if (selectedSzij) params.set("szij", selectedSzij);
+    if (selectedMaxCsuklomili) params.set("maxcsuklomili", selectedMaxCsuklomili);
     if (priceRange[0] > minPrice || priceRange[1] < maxPrice) {
-      params.minAr = priceRange[0];
-      params.maxAr = priceRange[1];
+      params.set("minAr", priceRange[0]);
+      params.set("maxAr", priceRange[1]);
     }
+
+    // 🔹 Frissítjük az URL-t a kiválasztott szűrőkkel
+    const newUrl = `/products?${params.toString()}`;
+    window.history.pushState({}, "", newUrl);
 
     axios.get("http://localhost:8080/ora/filtered", { params })
       .then((response) => {
@@ -492,7 +497,8 @@ function Products() {
       .catch(() => {
         console.error("Hiba történt a szűrés során.");
       });
-  };
+};
+
 
 
 
