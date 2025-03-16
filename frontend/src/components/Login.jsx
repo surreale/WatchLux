@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
@@ -13,6 +13,16 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
     const [showToast, setShowToast] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const navigate = useNavigate();
+
+    // 🔹 Ha a modal megnyílik, törölje a mezőket
+    useEffect(() => {
+        if (showLogin) {
+            setEmail("");
+            setPassword("");
+            setError("");
+            setIsLoggingIn(false);
+        }
+    }, [showLogin]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -35,7 +45,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
 
                 localStorage.setItem("isLoggedIn", "true");
 
-                onLoginSuccess(); 
+                onLoginSuccess();
 
                 setShowToast(true);
                 setTimeout(() => {
@@ -61,7 +71,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
 
     return (
         <>
-            <Modal show={showLogin} onHide={handleLoginClose} centered> {/* 🔥 Itt javítottam! */}
+            <Modal show={showLogin} onHide={handleLoginClose} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Bejelentkezés</Modal.Title>
                 </Modal.Header>
