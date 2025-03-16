@@ -12,7 +12,7 @@ import Kedvencek from "./kedvencek.jpeg";
 import HeroText from "./HeroText";
 import "./Menu.css";
 import "./toast.css"; // A push-up értesítéshez szükséges CSS
-
+import Profile from "./Profile";
 function Menu() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -25,7 +25,10 @@ function Menu() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true");
   const [showToast, setShowToast] = useState({ visible: false, message: "", type: "" });
+  const [showProfile, setShowProfile] = useState(false);
 
+ 
+  
   useEffect(() => {
     const handleScroll = () => {
       setShowNavbar(window.scrollY <= lastScrollY);
@@ -55,7 +58,8 @@ function Menu() {
     e.stopPropagation();
     setShowUserMenu((prev) => !prev);
   };
-
+  const handleProfileShow = () => setShowProfile(true);
+  const handleProfileClose = () => setShowProfile(false);
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
@@ -122,17 +126,18 @@ function Menu() {
                 {showUserMenu && (
                   <div className="user-menu-dropdown position-absolute bg-white rounded shadow">
                     <ul className="list-unstyled mb-0">
-                      {isLoggedIn ? (
-                        <>
-                          <li className="menu-item">Profilom</li>
-                          <li className="menu-item" onClick={handleLogout}>Kijelentkezés</li>
-                        </>
-                      ) : (
-                        <>
-                          <li className="menu-item" onClick={handleRegisterShow}>Regisztráció</li>
-                          <li className="menu-item" onClick={handleLoginShow}>Bejelentkezés</li>
-                        </>
-                      )}
+                    {isLoggedIn ? (
+    <>
+        <li className="menu-item" onClick={handleProfileShow}>Profilom</li>
+        <li className="menu-item" onClick={handleLogout}>Kijelentkezés</li>
+    </>
+) : (
+    <>
+        <li className="menu-item" onClick={handleRegisterShow}>Regisztráció</li>
+        <li className="menu-item" onClick={handleLoginShow}>Bejelentkezés</li>
+    </>
+)}
+
                     </ul>
                   </div>
                 )}
@@ -155,7 +160,7 @@ function Menu() {
     onLoginSuccess={handleLoginSuccess} 
 />
       <Register showRegister={showRegister} handleRegisterClose={handleRegisterClose} />
-
+      <Profile showProfile={showProfile} handleProfileClose={handleProfileClose} />
       {showToast.visible && <div className={`toast-container ${showToast.type} show`}>{showToast.message}</div>}
     </>
   );

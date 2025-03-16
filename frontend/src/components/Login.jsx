@@ -27,31 +27,30 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
-
+    
         if (isLoggingIn) return;
         setIsLoggingIn(true);
-
+    
         if (!email.trim() || !password.trim()) {
             setError("Az e-mail és a jelszó megadása kötelező!");
             setIsLoggingIn(false);
             return;
         }
-
+    
         try {
             const response = await axios.post("http://localhost:8080/auth/login", { email, jelszo: password });
-
+    
             if (response.status === 200 && response.data.user) {
-                console.log("✅ Sikeres bejelentkezés!", response.data.user);
-
                 localStorage.setItem("isLoggedIn", "true");
-
+                localStorage.setItem("userId", response.data.user.vasarloaz); // 🔥 Helyes oszlopnév használata
+    
                 onLoginSuccess();
-
+    
                 setShowToast(true);
                 setTimeout(() => {
                     setShowToast(false);
                     navigate("/products");
-                    handleLoginClose(); // Modal bezárása
+                    handleLoginClose();
                 }, 2000);
             } else {
                 setError("Hibás e-mail vagy jelszó!");
@@ -62,6 +61,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
             setIsLoggingIn(false);
         }
     };
+    
 
     const handleInputChange = (setter) => (e) => {
         setter(e.target.value);

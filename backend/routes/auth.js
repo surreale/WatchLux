@@ -58,6 +58,48 @@ router.post("/login", async (req, res) => {
         res.status(500).json({ error: "Szerverhiba, próbáld újra később!" });
     }
 });
+router.get("/profile", async (req, res) => {
+    try {
+        const userId = req.query.userId;  // 🔥 Mostantól az userId helyesen jön frontendről
 
+        if (!userId) {
+            return res.status(400).json({ error: "Nincs bejelentkezett felhasználó!" });
+        }
+
+        const userData = await db.getUserProfile(userId);
+        if (!userData) {
+            return res.status(404).json({ error: "Felhasználó nem található!" });
+        }
+
+        res.json(userData);
+    } catch (error) {
+        console.error("❌ Hiba történt a profil lekérésekor:", error);
+        res.status(500).json({ error: "Hiba történt a profil lekérésekor." });
+    }
+});
+  
+  // 🔹 Profil frissítése
+  router.put("/update", async (req, res) => {
+    try {
+      const userId = req.user.id; 
+      const { nev, tel } = req.body;
+      await db.updateUserProfile(userId, nev, tel);
+      res.json({ message: "Profil frissítve!" });
+    } catch (error) {
+      res.status(500).json({ error: "Hiba történt a profil frissítésekor." });
+    }
+  });
+  
+  // 🔹 Jelszó módosítása
+  router.put("/change-password", async (req, res) => {
+    try {
+      const userId = req.user.id; 
+      const { oldPassword, newPassword } = req.body;
+      await db.changeUserPassword(userId, oldPassword, newPassword);
+      res.json({ message: "Sikeres jelszó módosítás!" });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
 
 module.exports = router;

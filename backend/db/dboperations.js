@@ -416,6 +416,68 @@ async function getUserByEmail(email) {
       throw error;
   }
 } 
+
+async function getUserProfile(userId) {
+  try {
+      const sqlQuery = `SELECT nev, tel, email FROM vasarlo WHERE vasarloaz = ?`;
+      const [rows] = await pool.query(sqlQuery, [userId]); 
+      
+      if (rows.length === 0) {
+          throw new Error("Felhasználó nem található!");
+      }
+
+      return rows[0];
+  } catch (error) {
+      console.error("❌ Hiba történt a profiladatok lekérésekor:", error);
+      throw error;
+  }
+}
+
+async function updateUserProfile(userId, nev, tel) {
+  try {
+      const sqlQuery = `UPDATE vasarlo SET nev = ?, tel = ? WHERE vasarloaz = ?`;
+      const [result] = await pool.query(sqlQuery, [nev, tel, userId]);
+
+      if (result.affectedRows === 0) {
+          throw new Error("A frissítés nem történt meg! Az ID lehet érvénytelen.");
+      }
+
+      return { message: "Profil sikeresen frissítve!" };
+  } catch (error) {
+      console.error("❌ Hiba történt a profil frissítésekor:", error);
+      throw error;
+  }
+}
+const crypto = require("crypto");
+
+async function changeUserPassword(userId, oldPassword, newPassword) {
+  try {
+      const oldPasswordHash = crypto.createHash("sha256").update(oldPassword).digest("hex");
+      const newPasswordHash = crypto.createHash("sha256").update(newPassword).digest("hex");
+
+      // 🔹 Ellenőrizzük, hogy a régi jelszó helyes-e
+      const checkQuery = `SELECT jelszo FROM vasarlo WHERE vasarloaz = ?`;
+      const [rows] = await pool.query(checkQuery, [userId]);
+
+      if (rows.length === 0) {
+          throw new Error("Felhasználó nem található!");
+      }
+
+      if (rows[0].jelszo !== oldPasswordHash) {
+          throw new Error("Hibás régi jelszó!");
+      }
+
+      // 🔹 Jelszó frissítése
+      const updateQuery = `UPDATE vasarlo SET jelszo = ? WHERE vasarloaz = ?`;
+      await pool.query(updateQuery, [newPasswordHash, userId]);
+
+      return { message: "Sikeres jelszó módosítás!" };
+  } catch (error) {
+      console.error("❌ Hiba történt a jelszó módosítása közben:", error);
+      throw error;
+  }
+}
+
 module.exports = {
   getProducts,
   getProductById,
@@ -441,5 +503,8 @@ module.exports = {
   searchProducts,
   registerUser,
   checkExistingUser,
-  getUserByEmail
+  getUserByEmail,
+  getUserProfile,
+  updateUserProfile,
+  changeUserPassword
 };

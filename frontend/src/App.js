@@ -14,7 +14,7 @@ import Checkout from "./components/Checkout";
 import "./components/Checkout.css";
 import Login from './components/Login'; // 🔹 Bejelentkezési oldal importálása
 import { useState } from 'react';
-
+import Profile from './components/Profile'; 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -52,6 +52,7 @@ function App() {
           <Route path="/cart/" element={<Cart />} />
           <Route path="/kedvencek/" element={<Favorites />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/profile" element={<Profile showProfile={true} handleProfileClose={() => {}} />} /> 
         </Routes>
 
         <Footer />
