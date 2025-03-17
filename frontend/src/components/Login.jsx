@@ -78,10 +78,10 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
                 <Modal.Body>
                     <Form onSubmit={handleLogin}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Email cím</Form.Label>
+                            <Form.Label>E-mail cím</Form.Label>
                             <Form.Control 
                                 type="email"
-                                placeholder="Adja meg az email címét"
+                                placeholder="Adja meg az e-mail címét"
                                 value={email}
                                 onChange={handleInputChange(setEmail)}
                             />

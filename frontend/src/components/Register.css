@@ -1,6 +1,6 @@
 /* Alap beállítások a modalhoz */
 .modal-content {
-    border-radius: 15px;
+    border-radius: 50px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
     border: none;
     padding: 20px;
@@ -9,10 +9,7 @@
 
 /* Modal fejléc */
 .modal-header {
-    background: #007bff;
-    color: white;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    color: black;
     text-align: center;
 }
 
@@ -23,7 +20,7 @@
 
 /* Formázott input mezők */
 .form-control {
-    border-radius: 8px;
+    border-radius: 50px;
     border: 2px solid #ced4da;
     transition: all 0.3s ease-in-out;
     font-size: 16px;
@@ -56,7 +53,7 @@
     font-size: 18px;
     font-weight: bold;
     padding: 12px;
-    border-radius: 8px;
+    border-radius: 50px;
     background: linear-gradient(135deg, #007bff, #0056b3);
     border: none;
     transition: all 0.3s ease-in-out;
@@ -64,7 +61,8 @@
 
 /* Gomb hover effekt */
 .btn-primary:hover {
-    background: linear-gradient(135deg, #0056b3, #003f7f);
+    background-color: #49bf8c;
+    color: rgb(255, 255, 255);
 }
 
 /* Mobilbarát beállítások */

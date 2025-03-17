@@ -23,7 +23,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
                 }
         
                 const response = await axios.get("http://localhost:8080/auth/profile", {
-                    params: { userId } // 🔥 Az API hívásban elküldjük az userId-t
+                    params: { userId }
                 });
         
                 if (!response.data) {
@@ -41,7 +41,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
 
         if (showProfile) {
             fetchUserData();
-            setOldPassword(""); // 🔹 Töröljük a mezőket, ha újra megnyílik a modal
+            setOldPassword("");
             setNewPassword("");
             setConfirmPassword("");
             setError("");
@@ -61,7 +61,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
             setSuccess("Profil sikeresen frissítve!");
             setError("");
         } catch (error) {
-            setError("❌ Hiba történt a profil frissítésekor!");
+            setError("Hiba történt a profil frissítésekor!");
         }
     };
     
@@ -80,7 +80,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
                 userId, oldPassword, newPassword
             });
     
-            setSuccess("✅ Jelszó sikeresen megváltoztatva!");
+            setSuccess("Jelszó sikeresen megváltoztatva!");
             setOldPassword("");
             setNewPassword("");
             setConfirmPassword("");
@@ -101,7 +101,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
                 {success && <p style={{ color: "green" }}>{success}</p>}
                 
                 <Form onSubmit={handleProfileUpdate}>
-                    <h5>👤 Személyes adatok</h5>
+                    <h5>Személyes adatok</h5>
                     <Form.Group className="mb-3">
                         <Form.Label>Név</Form.Label>
                         <Form.Control
@@ -129,7 +129,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
 
                 <hr />
 
-                <h5>🔒 Jelszó módosítása</h5>
+                <h5>Jelszó módosítása</h5>
                 <Form onSubmit={handlePasswordChange}>
                     <Form.Group className="mb-3">
                         <Form.Label>Régi jelszó</Form.Label>
@@ -155,7 +155,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </Form.Group>
-                    <Button variant="danger" type="submit">
+                    <Button variant="danger" type="submit" className="btndes">
                         Jelszó módosítása
                     </Button>
                 </Form>
