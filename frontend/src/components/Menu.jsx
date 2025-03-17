@@ -11,7 +11,7 @@ import Felhasznalo from "./felhasznalo.jpeg";
 import Kedvencek from "./kedvencek.jpeg";
 import HeroText from "./HeroText";
 import "./Menu.css";
-import "./toast.css"; // A push-up értesítéshez szükséges CSS
+import "./toast.css";
 import Profile from "./Profile";
 function Menu() {
   const location = useLocation();
@@ -83,7 +83,8 @@ function Menu() {
         location.pathname !== "/products" &&
         location.pathname !== "/cart" &&
         location.pathname !== "/kedvencek" &&
-        location.pathname !== "/checkout" && <HeroText />}
+        location.pathname !== "/checkout" &&
+        location.pathname !== "/aszf" && <HeroText />}
 
       <Navbar expand="lg" className={`bg-light navbar-custom ${showNavbar ? "show" : "hide"}`} collapseOnSelect>
         <Container fluid>
@@ -96,6 +97,7 @@ function Menu() {
             <Nav className="me-auto text-center">
               <Nav.Link as={Link} to="/">Főoldal</Nav.Link>
               <Nav.Link as={Link} to="/products">Termékek</Nav.Link>
+              <Nav.Link as={Link} to="/aszf">ÁSZF</Nav.Link>
             </Nav>
             <Form className="search-bar">
               <div className="position-relative">

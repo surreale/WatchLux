@@ -1,0 +1,40 @@
+.background {
+    background-color: ghostwhite;
+}
+
+.aszf-container {
+    padding: 70px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+.backbtn {
+    color: black;
+    border: 1px solid black;
+    border-radius: 50px;
+    margin-top: 70px;
+    margin-left: 10px;
+    width: 5%;
+    padding: 10px;
+    text-align: center;
+    transition: background 0.3s;
+}
+
+.backbtn:hover {
+    background-color: #49bf8c;
+    color: rgb(255, 255, 255);
+}
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    margin-top: 20px;
+    color: #333;
+  }
+  
+  ul {
+    padding-left: 20px;
+  }
