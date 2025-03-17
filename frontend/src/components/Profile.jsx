@@ -33,7 +33,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
         
                 setUserData(response.data);
             } catch (error) {
-                console.error("❌ Hiba történt a profiladatok betöltésekor:", error);
+                console.error("Hiba történt a profiladatok betöltésekor:", error);
                 setError("Nem sikerült betölteni a profiladatokat!");
             }
         };
@@ -58,7 +58,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
                 { userId, nev: userData.nev, tel: userData.tel }
             );
     
-            setSuccess("✅ Profil sikeresen frissítve!");
+            setSuccess("Profil sikeresen frissítve!");
             setError("");
         } catch (error) {
             setError("❌ Hiba történt a profil frissítésekor!");
@@ -70,7 +70,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
     const handlePasswordChange = async (e) => {
         e.preventDefault();
         if (newPassword !== confirmPassword) {
-            setError("❌ Az új jelszavak nem egyeznek!");
+            setError("Az új jelszavak nem egyeznek!");
             return;
         }
     
@@ -86,7 +86,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
             setConfirmPassword("");
             setError("");
         } catch (error) {
-            setError(error.response?.data?.error || "❌ Hibás régi jelszó!");
+            setError(error.response?.data?.error || "Hibás régi jelszó!");
         }
     };
     
@@ -119,7 +119,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
                         />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Email (nem módosítható)</Form.Label>
+                        <Form.Label>E-mail (nem módosítható)</Form.Label>
                         <Form.Control type="email" value={userData.email} disabled />
                     </Form.Group>
                     <Button variant="primary" type="submit">

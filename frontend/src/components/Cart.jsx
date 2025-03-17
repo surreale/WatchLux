@@ -1,14 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
 import { useNavigate } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Register from "./Register";
+import Login from "./Login";
 import "./Cart.css";
 
 const Cart = () => {
   const { cart, removeFromCart, updateCartQuantity } = useContext(CartContext);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
-  // Összesített ár kiszámítása
-  const totalPrice = cart.reduce((acc, item) => acc + Number(item.ar) * (Number(item.mennyiseg) || 1), 0);
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + Number(item.ar) * (Number(item.mennyiseg) || 1),
+    0
+  );
+
+  const handleProceedToCheckout = () => {
+    setShowModal(true);
+  };
 
   return (
     <div className="cart-page">
@@ -19,19 +32,14 @@ const Cart = () => {
         <div className="cart-items">
           {cart.map((item) => (
             <div key={item.oraaz} className="cart-item">
-              {/* 🔹 Kép kattintható - visszanavigál a részletező oldalra */}
-              <img 
-                src={`/images/${item.kep1}`} 
-                alt={item.megnevezes} 
-                className="cart-image clickable" 
+              <img
+                src={`/images/${item.kep1}`}
+                alt={item.megnevezes}
+                className="cart-image clickable"
                 onClick={() => navigate(`/product/${item.oraaz}`)}
               />
               <div className="cart-details">
-                {/* 🔹 Termék neve kattintható - visszanavigál a részletező oldalra */}
-                <h3 
-                  className="clickable"
-                  onClick={() => navigate(`/product/${item.oraaz}`)}
-                >
+                <h3 className="clickable" onClick={() => navigate(`/product/${item.oraaz}`)}>
                   {item.megnevezes}
                 </h3>
                 <hr />
@@ -54,24 +62,48 @@ const Cart = () => {
                   <span> db</span>
                 </div>
                 <p>Összesen: {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft</p>
-                <button className="remove-button" onClick={() => removeFromCart(item.oraaz)}>Törlés</button>
+                <button className="remove-button" onClick={() => removeFromCart(item.oraaz)}>
+                  Törlés
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
-      
-      <button className="checkout-button" onClick={() => navigate("/products")}>Vásárlás folytatása</button>
 
-      {/* Jobb oldali sáv az összeggel és a fizetés gombbal */}
+      <button className="checkout-button" onClick={() => navigate("/products")}>
+        Vásárlás folytatása
+      </button>
+
       {cart.length > 0 && (
         <div className="cart-summary">
           <h3>Összesen: {totalPrice.toLocaleString()} Ft</h3>
-          <button className="fizetes" onClick={() => navigate("/checkout")}>
+          <button className="fizetes" onClick={handleProceedToCheckout}>
             Tovább a fizetéshez
           </button>
         </div>
       )}
+
+      {/* Modal ablak a fizetési mód kiválasztásához */}
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Fizetés módja</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Hogyan szeretnéd folytatni a rendelést?</p>
+          <div>
+            <Button className="modal-buttons" onClick={() => navigate("/checkout")}>Vendégként folytatom</Button>
+            <Button className="modal-buttons" onClick={() => { setShowLogin(true); setShowModal(false); }}>Bejelentkezés</Button>
+            <Button className="modal-buttons" onClick={() => { setShowRegister(true); setShowModal(false); }}>Regisztráció</Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      {/* Bejelentkezési Modal */}
+      <Login showLogin={showLogin} handleLoginClose={() => setShowLogin(false)} onLoginSuccess={() => setShowLogin(false)} />
+      
+      {/* Regisztrációs Modal */}
+      <Register showRegister={showRegister} handleRegisterClose={() => setShowRegister(false)} />
     </div>
   );
 };

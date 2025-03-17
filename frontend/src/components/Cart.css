@@ -153,3 +153,16 @@ body.no-scroll {
 .clickable:hover {
   color: #0056b3; /* Sötétebb kék, ha ráhúzzuk az egeret */
 }
+
+.modal-buttons {
+  background-color: ghostwhite;
+  border: 1px solid black;
+  border-radius: 50px;
+  margin-top: 2px;
+  transition: background 0.3s;
+}
+
+.modal-buttons:hover {
+  background-color: #49bf8c;
+  color: rgb(255, 255, 255);
+}

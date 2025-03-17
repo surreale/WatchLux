@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import "./toast.css"; // A toast CSS-hez
+import "./toast.css";
 
 export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
     const [email, setEmail] = useState("");
@@ -79,7 +79,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
                     <Form onSubmit={handleLogin}>
                         <Form.Group className="mb-3">
                             <Form.Label>Email cím</Form.Label>
-                            <Form.Control
+                            <Form.Control 
                                 type="email"
                                 placeholder="Adja meg az email címét"
                                 value={email}
@@ -108,7 +108,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
 
             {/* 🔥 Smooth toast üzenet a lap tetején */}
             <div className={`toast-container ${showToast ? "show" : "hide"}`}>
-                ✅ Sikeres bejelentkezés!
+                Sikeres bejelentkezés!
             </div>
         </>
     );
