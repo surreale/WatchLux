@@ -122,3 +122,5 @@ C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\bejelent.genrunt
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\ref\bejelent.dll
 C:\Users\MSI\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\CreateInvoiceWindow.baml
 C:\Users\MSI\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\CreateInvoiceWindow.g.cs
+C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\CreateInvoiceWindow.baml
+C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\CreateInvoiceWindow.g.cs
