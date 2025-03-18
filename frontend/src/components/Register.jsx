@@ -14,7 +14,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordTouched, setPasswordTouched] = useState(false);
 
-    // 🔹 Név mező kezelése (csak betűk és szóköz engedélyezett, max 30 karakter)
+    // Név mező kezelése (csak betűk és szóköz engedélyezett, max 30 karakter)
     const handleNevChange = (e) => {
         let input = e.target.value;
 
@@ -34,7 +34,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
         setNev(formattedInput);
     };
 
-    // 🔹 Email kezelése (max 30 karakter)
+    // Email kezelése (max 30 karakter)
     const handleEmailChange = (e) => {
         let input = e.target.value;
         if (input.length > 30) {
@@ -43,7 +43,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
         setEmail(input);
     };
 
-    // 🔹 Telefonszám kezelése (fix +36, utána 9 szám)
+    // Telefonszám kezelése (fix +36, utána 9 szám)
     const handleTelChange = (e) => {
         let input = e.target.value;
 
@@ -58,7 +58,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
         setTel("+36" + cleanNumber);
     };
 
-    // 🔹 Jelszó validáció (min. 8 karakter, kis- és nagybetű)
+    // Jelszó validáció (min. 8 karakter, kis- és nagybetű)
     const isValidPassword = (password) => {
         const minLength = password.length >= 8;
         const hasUpper = /[A-Z]/.test(password);
@@ -82,19 +82,18 @@ export default function Register({ showRegister, handleRegisterClose }) {
         setPasswordTouched(true);
     };
 
-    // 🔹 Regisztráció beküldése
     const handleSubmit = async (event) => {
         event.preventDefault();
         setHibaUzenet("");
-
+    
         if (!passwordValid) {
             setHibaUzenet("A jelszó nem felel meg a követelményeknek!");
             return;
         }
-
+    
         // Telefonszámból a "+" eltávolítása, de a 36 marad
         const phoneNumber = tel.replace("+", "");
-
+    
         try {
             const response = await axios.post("http://localhost:8080/auth/register", {
                 nev,
@@ -102,19 +101,25 @@ export default function Register({ showRegister, handleRegisterClose }) {
                 email,
                 jelszo
             });
-
+    
             alert(response.data.message);
-            setNev("");
-            setTel("+36");
-            setEmail("");
-            setJelszo("");
-            setPasswordValid(false);
-            setPasswordTouched(false);
             handleRegisterClose();
+    
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userId", response.data.userId); 
+
+            const savedCart = localStorage.getItem("cart");
+            if (savedCart) {
+                localStorage.setItem("cartRestore", savedCart);
+            }
+    
+            window.location.reload();
+    
         } catch (error) {
             setHibaUzenet(error.response?.data?.error || "Hiba történt a regisztráció során!");
         }
     };
+    
 
     return (
         <Modal show={showRegister} onHide={handleRegisterClose} centered>

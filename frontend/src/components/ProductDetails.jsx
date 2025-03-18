@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { CartContext } from "./CartContext"; // 🔹 Kosár importálása
-import { FavoritesContext } from "./FavoritesContext"; // 🔹 Kedvencek importálása
+import { CartContext } from "./CartContext";
+import { FavoritesContext } from "./FavoritesContext";
 import "./ProductDetails.css";
 
 function ProductDetails() {
@@ -18,7 +18,7 @@ function ProductDetails() {
   const [isZoomed, setIsZoomed] = useState(false);
   const [quantity, setQuantity] = useState(1); 
 
-  // 🔹 Termékadatok betöltése az API-ból
+  // Termékadatok betöltése az API-ból
   useEffect(() => {
     axios
       .get(`http://localhost:8080/ora/oralekerdezes/${id}`)
@@ -33,19 +33,19 @@ function ProductDetails() {
       });
   }, [id]);
 
-    // 🔹 Mennyiség kezelése
+    // Mennyiség kezelése
     const handleQuantityChange = (value) => {
       if (value >= 1 && value <= 20) {
         setQuantity(value);
       }
     };
 
-// 🔹 Kosárba rakás eseménykezelő
+// Kosárba rakás eseménykezelő
 const handleAddToCart = () => {
   if (!product) return;
 
   if (cart.some((item) => item.oraaz === product.oraaz)) {
-    removeFromCart(product.oraaz);  // 🔹 Ha már a kosárban van, akkor töröljük
+    removeFromCart(product.oraaz);  // Ha már a kosárban van, akkor töröljük
   } else {
     addToCart({
       oraaz: product.oraaz,
@@ -58,7 +58,7 @@ const handleAddToCart = () => {
 };
 
 
-  // 🔹 Kedvencek kezelése
+  // Kedvencek kezelése
   const isFavorite = product ? favorites.some((item) => item.oraaz === product.oraaz) : false;
   const handleToggleFavorite = () => {
     if (!product) return;
@@ -79,7 +79,6 @@ const handleAddToCart = () => {
       <button className="back-button" onClick={() => navigate(-1)}>Vissza</button>
 
       <div className="product-details">
-        {/* 🔹 Bal oldali kép szekció */}
         <div className="image-section">
           <img 
             src={mainImage} 
@@ -102,14 +101,12 @@ const handleAddToCart = () => {
           </div>
         </div>
 
-        {/* 🔹 Jobb oldali információk */}
         <div className="info-section">
           <h1 className="product-title">{product.megnevezes}</h1>
           <p className="product-brand">{product.marka}</p>
           <p className="product-price"> Ár: {Number(product.ar).toLocaleString('hu-HU')} Ft</p>
           <p className="product-stock">Raktáron: {product.raktar}</p>
 
-                    {/* 🔹 Kompakt mennyiségválasztó */}
                     <div className="quantity-selector-small">
             <button onClick={() => handleQuantityChange(quantity - 1)} disabled={quantity <= 1}>-</button>
             <input 
@@ -120,7 +117,6 @@ const handleAddToCart = () => {
             <button onClick={() => handleQuantityChange(quantity + 1)} disabled={quantity >= 20}>+</button>
           </div>
 
-          {/* 🔹 Kosár és Kedvencek gombok */}
           <div className="buttons">
             <button className="buy-button" onClick={handleAddToCart}>
               {cart.some((item) => item.oraaz === product.oraaz) ? "Kivétel a kosárból" : "Kosárba"}
@@ -134,7 +130,6 @@ const handleAddToCart = () => {
             </button>
           </div>
 
-          {/* 🔹 Részletes termék adatok */}
           <div className="product-info">
             <h2>Termék részletei</h2>
             <div className="info-grid">

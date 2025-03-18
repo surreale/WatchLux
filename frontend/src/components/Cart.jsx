@@ -19,9 +19,23 @@ const Cart = () => {
     0
   );
 
-  const handleProceedToCheckout = () => {
-    setShowModal(true);
-  };
+
+const saveCartToLocalStorage = () => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
+
+const handleProceedToCheckout = () => {
+  saveCartToLocalStorage();
+  localStorage.setItem("cartBackup", JSON.stringify(cart)); // 🔥 Kosár mentése
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+  if (isLoggedIn) {
+      navigate("/checkout");
+  } else {
+      setShowModal(true);
+  }
+};
+
 
   return (
     <div className="cart-page">
@@ -99,10 +113,8 @@ const Cart = () => {
         </Modal.Body>
       </Modal>
 
-      {/* Bejelentkezési Modal */}
       <Login showLogin={showLogin} handleLoginClose={() => setShowLogin(false)} onLoginSuccess={() => setShowLogin(false)} />
       
-      {/* Regisztrációs Modal */}
       <Register showRegister={showRegister} handleRegisterClose={() => setShowRegister(false)} />
     </div>
   );

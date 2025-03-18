@@ -1,11 +1,10 @@
-/* A kosár oldal teljes magasságot kap és nem lehet görgetni */
 .cart-page {
-    height: 100vh; /* Az oldal teljes magasságot foglal el */
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* A tartalom középre kerül */
-    overflow: hidden; /* Tilos a görgetés */
+    justify-content: center;
+    overflow: hidden;
     background-color: ghostwhite;
 }
 
@@ -75,7 +74,6 @@ body.no-scroll {
     transition: background 0.3s;
 }
 
-/* Gombra hover állapotban egy pulzáló árnyék animáció */
 .checkout-button:hover {
   background-color: #49bf8c;
   color: rgb(255, 255, 255);
@@ -146,12 +144,12 @@ body.no-scroll {
 .clickable {
   cursor: pointer;
   text-decoration: underline;
-  color: #007bff; /* Kék szín a linkekhez */
+  color: #007bff;
   transition: color 0.3s;
 }
 
 .clickable:hover {
-  color: #0056b3; /* Sötétebb kék, ha ráhúzzuk az egeret */
+  color: #0056b3;
 }
 
 .modal-buttons {

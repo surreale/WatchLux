@@ -13,7 +13,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
     const [success, setSuccess] = useState("");
 
     useEffect(() => {
-        // 🔹 Betöltjük a felhasználó adatait
+        // Betöltjük a felhasználó adatait
         const fetchUserData = async () => {
             try {
                 const userId = localStorage.getItem("userId"); 
@@ -49,7 +49,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
         }
     }, [showProfile]);
 
-    // 🔹 Profil frissítése (név, telefonszám)
+    // Profil frissítése (név, telefonszám)
     const handleProfileUpdate = async (e) => {
         e.preventDefault();
         try {
@@ -66,7 +66,7 @@ export default function Profile({ showProfile, handleProfileClose }) {
     };
     
 
-    // 🔹 Jelszó módosítása
+    // Jelszó módosítása
     const handlePasswordChange = async (e) => {
         e.preventDefault();
         if (newPassword !== confirmPassword) {

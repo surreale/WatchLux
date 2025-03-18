@@ -9,8 +9,8 @@ import cart3 from './cartremo.jpeg';
 import fav1 from './fav.jpeg';
 import fav2 from './favsel.jpeg';
 import fav3 from './favadded.jpeg';
-import { FavoritesContext } from "./FavoritesContext"; // 🔹 Kedvencek importálása
-import { CartContext } from "./CartContext"; // 🔹 Kosár importálása
+import { FavoritesContext } from "./FavoritesContext";
+import { CartContext } from "./CartContext";
 
 
 
@@ -26,7 +26,7 @@ function Products() {
 
   const [hoverState, setHoverState] = useState({});
 
-  // 🔄 Itt helyezd el a handleCartToggle függvényt!
+  //  Itt helyezd el a handleCartToggle függvényt!
   const handleCartToggle = (product) => {
     if (cart.some((item) => item.oraaz === product.oraaz)) {
       removeFromCart(product.oraaz);
@@ -41,9 +41,9 @@ function Products() {
   };
 
 
-  // 🔄 Itt helyezd el a handleFavToggle függvényt, például a handleCartToggle után
+  //  Itt helyezd el a handleFavToggle függvényt, például a handleCartToggle után
   const handleFavToggle = (product) => {
-    if (product && product.oraaz && product.megnevezes) {  // 🔄 Ellenőrizzük, hogy a product nem undefined
+    if (product && product.oraaz && product.megnevezes) {  //  Ellenőrizzük, hogy a product nem undefined
       addToFavorites({
         oraaz: product.oraaz,
         megnevezes: product.megnevezes,
@@ -401,7 +401,7 @@ function Products() {
   const handleFilterChange = () => {
     const params = new URLSearchParams();
 
-    // 🔄 Csak akkor igaz, ha valóban van aktív szűrő
+    //  Csak akkor igaz, ha valóban van aktív szűrő
     const hasActiveFilters = (
       selectedBrand ||
       selectedGender ||
@@ -424,7 +424,7 @@ function Products() {
       priceRange[1] < maxPrice
     );
 
-    // 🔹 Ha nincs aktív szűrő, frissítse az URL-t és töltse be az alapértelmezett termékeket
+    // Ha nincs aktív szűrő, frissítse az URL-t és töltse be az alapértelmezett termékeket
     if (!hasActiveFilters) {
       window.history.pushState({}, "", `/products`);
       axios.get("http://localhost:8080/ora/oralekerdezes")
@@ -439,7 +439,7 @@ function Products() {
       return; // Ne fusson le a további szűrési logika
     }
 
-    // 🔄 Ha van aktív szűrő, építjük a lekérdezés paramétereit és frissítjük az URL-t
+    //  Ha van aktív szűrő, építjük a lekérdezés paramétereit és frissítjük az URL-t
     if (selectedBrand) params.set("marka", selectedBrand);
     if (selectedGender) params.set("nem", selectedGender);
     if (selectedMeghajtas) params.set("meghajtas", selectedMeghajtas);
@@ -462,7 +462,7 @@ function Products() {
       params.set("maxAr", priceRange[1]);
     }
 
-    // 🔹 Frissítjük az URL-t a kiválasztott szűrőkkel
+    // Frissítjük az URL-t a kiválasztott szűrőkkel
     const newUrl = `/products?${params.toString()}`;
     window.history.pushState({}, "", newUrl);
 
@@ -470,7 +470,7 @@ function Products() {
       .then((response) => {
         let filtered = response.data;
 
-        // 🔄 Ha van rendezési opció, alkalmazzuk azt, de csak a szűrt adatokra
+        //  Ha van rendezési opció, alkalmazzuk azt, de csak a szűrt adatokra
         if (sortOption) {
           switch (sortOption) {
             case "abc-asc":
@@ -746,7 +746,7 @@ function Products() {
                 max={maxPrice}
                 values={priceRange}
                 onChange={(values) => setPriceRange(values)}  // Frissítjük az állapotot húzás közben
-                onFinalChange={() => handleFilterChange()} // 🔄 Amikor elengeded a csúszkát, frissíti a termékeket
+                onFinalChange={() => handleFilterChange()} //  Amikor elengeded a csúszkát, frissíti a termékeket
                 renderTrack={({ props, children }) => (
                   <div
                     {...props}

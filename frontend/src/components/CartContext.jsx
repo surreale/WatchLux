@@ -1,26 +1,30 @@
 import React, { createContext, useState, useEffect } from "react";
 import "./Notification.css";
 
-export const CartContext = createContext(); // Kosár kontextus létrehozása
+export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [notifications, setNotifications] = useState([]); // Több értesítés tárolása
 
-  // 🔹 Betöltjük a kosarat a localStorage-ból, ha van elmentett adat
+  // Betöltjük a kosarat a localStorage-ból, ha van elmentett adat
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart"));
-    if (storedCart) {
-      setCart(storedCart);
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+      localStorage.removeItem("cartBackup");
     }
-  }, []);
+}, []);
 
-  // 🔹 Kosár mentése localStorage-ba
+
+  // Kosár mentése localStorage-ba
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // 🔹 Termék hozzáadása a kosárhoz
+
+
+  // Termék hozzáadása a kosárhoz
   const addToCart = (product) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.oraaz === product.oraaz);
@@ -40,13 +44,13 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // 🔹 Termék eltávolítása a kosárból
+  // Termék eltávolítása a kosárból
   const removeFromCart = (oraaz) => {
     setCart((prevCart) => prevCart.filter((item) => item.oraaz !== oraaz));
     addNotification("Termék eltávolítva a kosárból");
   };
 
-  // 🔹 Mennyiség módosítása a kosárban
+  // Mennyiség módosítása a kosárban
   const updateCartQuantity = (oraaz, newQuantity) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
@@ -56,7 +60,7 @@ export const CartProvider = ({ children }) => {
     addNotification("Termék mennyisége frissítve!");
   };
 
-  // 🔹 Új értesítés hozzáadása és automatikus törlése 3 másodperc után
+  // Új értesítés hozzáadása és automatikus törlése 3 másodperc után
   const addNotification = (message) => {
     const id = Date.now(); // Egyedi ID minden értesítéshez
     setNotifications((prev) => [...prev, { id, message }]);
@@ -78,7 +82,7 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-// 🔹 Több értesítést támogató komponens
+// Több értesítést támogató komponens
 const Notification = ({ message }) => {
   return (
     <div className="notification">

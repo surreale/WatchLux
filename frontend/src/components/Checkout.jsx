@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { CartContext } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
-import "./Notification.css"; // 🔄 Értesítések CSS importálása
+import "./Notification.css";
 
 const Checkout = () => {
   const { cart } = useContext(CartContext);
@@ -14,7 +14,7 @@ const Checkout = () => {
     postalCode: "",
     phone: "",
   });
-  const [showNotification, setShowNotification] = useState(false); // 🔄 Értesítés állapota
+  const [showNotification, setShowNotification] = useState(false); //  Értesítés állapota
   const navigate = useNavigate();
 
   const totalPrice = cart.reduce((acc, item) => acc + Number(item.ar) * (Number(item.mennyiseg) || 1), 0);
@@ -26,8 +26,8 @@ const Checkout = () => {
 
   const handlePayment = () => {
     if (Object.values(shippingInfo).some((value) => value.trim() === "")) {
-      setShowNotification(true); // 🔄 Értesítés megjelenítése, ha üres mezők vannak
-      setTimeout(() => setShowNotification(false), 3000); // 🔄 Értesítés eltűnik 3 másodperc múlva
+      setShowNotification(true); //  Értesítés megjelenítése, ha üres mezők vannak
+      setTimeout(() => setShowNotification(false), 3000); //  Értesítés eltűnik 3 másodperc múlva
       return;
     }
     alert("Sikeres fizetés! Köszönjük a vásárlást.");
@@ -117,7 +117,6 @@ const Checkout = () => {
         </div>
       )}
 
-      {/* 🔄 Értesítés komponens */}
       {showNotification && (
         <div className="notification">
           Kérjük, töltse ki az összes mezőt!

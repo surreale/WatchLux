@@ -14,7 +14,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const navigate = useNavigate();
 
-    // 🔹 Ha a modal megnyílik, törölje a mezőket
+    // Ha a modal megnyílik, törölje a mezőket
     useEffect(() => {
         if (showLogin) {
             setEmail("");
@@ -42,10 +42,18 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
     
             if (response.status === 200 && response.data.user) {
                 localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("userId", response.data.user.vasarloaz); // 🔥 Helyes oszlopnév használata
+                localStorage.setItem("userId", response.data.user.vasarloaz);
     
                 onLoginSuccess();
-    
+                window.location.reload();
+
+                const savedCart = localStorage.getItem("cart");
+                if (savedCart) {
+                    localStorage.setItem("cartRestore", savedCart); // Átmenetileg tároljuk a visszatöltéshez
+                }
+                
+                handleLoginClose();
+                    
                 setShowToast(true);
                 setTimeout(() => {
                     setShowToast(false);
