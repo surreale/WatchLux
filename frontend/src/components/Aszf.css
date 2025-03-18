@@ -13,7 +13,7 @@
     border: 1px solid black;
     border-radius: 50px;
     margin-top: 70px;
-    margin-left: 10px;
+    margin-left: 80px;
     width: 5%;
     padding: 10px;
     text-align: center;
@@ -38,3 +38,12 @@
   ul {
     padding-left: 20px;
   }
+
+  @media (max-width: 768px) {
+    .backbtn {
+        width: 90%; /* Teljes szélesség mobilon */
+        text-align: center;
+        margin: 10px auto; /* Középre helyezés */
+        display: block;
+    }
+}

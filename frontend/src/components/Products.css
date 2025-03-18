@@ -541,3 +541,23 @@ body {
 .search-result-item:hover {
   background-color: #f8f9fa;
 }
+
+@media (max-width: 768px) {
+  .filters-wrapper {
+      width: 100%;
+      position: relative;
+      margin-top: 10px;
+      z-index: 999;
+  }
+
+  .filters-container {
+      width: 100%;
+      padding: 10px;
+  }
+
+  .products-container {
+      max-width: 100%;
+      padding: 0 10px;
+  }
+}
+

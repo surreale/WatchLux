@@ -68,7 +68,8 @@
     cursor: pointer;
     text-align: center;
     transition: background 0.3s;
-    width: 20%;
+    width: 10%;
+    margin-right: 10px;
 }
 
 .payment-button:hover {
@@ -103,4 +104,26 @@
     gap: 30px; /* Nagyobb távolság a két rész között */
     align-items: flex-start; /* Felül igazítja a két részt */
     justify-content: center; /* Középre igazítja az egész tartalmat */
+}
+
+.vissza {
+    background-color: ghostwhite;
+    color: black;
+    border: 1px solid black;
+    border-radius: 50px;
+    padding: 10px 15px;
+    transition: background 0.3s;
+    width: 10%;
+}
+
+.vissza:hover {
+    background-color: #e81d1d;
+    color: rgb(255, 255, 255);
+}
+
+@media (max-width: 768px) {
+    .payment-button, .vissza {
+        width: 25%;
+        max-width: none;
+    }
 }

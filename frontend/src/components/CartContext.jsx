@@ -10,12 +10,15 @@ export const CartProvider = ({ children }) => {
   // Betöltjük a kosarat a localStorage-ból, ha van elmentett adat
   useEffect(() => {
     const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
+    if (savedCart && JSON.parse(savedCart).length > 0) {
       setCart(JSON.parse(savedCart));
-      localStorage.removeItem("cartBackup");
+    } else {
+      const backupCart = localStorage.getItem("cartBackup");
+      if (backupCart) {
+        setCart(JSON.parse(backupCart));
+      }
     }
-}, []);
-
+  }, []);
 
   // Kosár mentése localStorage-ba
   useEffect(() => {

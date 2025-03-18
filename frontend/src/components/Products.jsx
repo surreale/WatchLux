@@ -553,7 +553,7 @@ function Products() {
 
   return (
     <div className="products-page">
-      <h2 className="products-title">-</h2>
+      <h2 className="products-title"></h2>
       <div className="main-container">
         <div className="filters-container">
           <div className="products-container"> </div>

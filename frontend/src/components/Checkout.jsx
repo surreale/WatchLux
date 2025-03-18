@@ -113,6 +113,9 @@ const Checkout = () => {
             <button className="payment-button" onClick={handlePayment}>
               Fizetés
             </button>
+            <button className="vissza" onClick={() => navigate("/cart")}>
+              Vissza
+            </button>
           </div>
         </div>
       )}
