@@ -157,13 +157,29 @@
                             </StackPanel>
 
                             <Border Background="#2A2A3C" CornerRadius="10" Grid.Row="1" Margin="0,10">
-                                <DataGrid x:Name="InvoiceDataGrid" AutoGenerateColumns="True"
-                                        AutoGeneratingColumn="InvoiceDataGrid_AutoGeneratingColumn"
-                                        Background="#1E1E2D" Foreground="White" FontSize="14"
-                                        RowBackground="#2A2A3C" AlternatingRowBackground="#383850"
-                                        GridLinesVisibility="Horizontal"
-                                        BorderBrush="#4CAF50" BorderThickness="1">
-                                    <DataGrid.ColumnHeaderStyle>
+                                <DataGrid x:Name="InvoiceDataGrid"
+          AutoGenerateColumns="True"
+          AutoGeneratingColumn="InvoiceDataGrid_AutoGeneratingColumn"
+          Background="#1E1E2D"
+          Foreground="White"
+          FontSize="14"
+          RowBackground="#2A2A3C"
+          AlternatingRowBackground="#383850"
+          GridLinesVisibility="Horizontal"
+          BorderBrush="#4CAF50"
+          BorderThickness="1"
+          SelectionMode="Extended"
+          SelectionUnit="FullRow"
+          IsReadOnly="True"
+          CanUserAddRows="False"
+          CanUserDeleteRows="False"
+          CanUserResizeRows="True"
+          CanUserResizeColumns="True"
+          SelectionChanged="InvoiceDataGrid_SelectionChanged">
+                                
+
+
+                                <DataGrid.ColumnHeaderStyle>
                                         <Style TargetType="DataGridColumnHeader">
                                             <Setter Property="Background" Value="#4CAF50"/>
                                             <Setter Property="Foreground" Value="White"/>
@@ -171,6 +187,10 @@
                                         </Style>
                                     </DataGrid.ColumnHeaderStyle>
                                 </DataGrid>
+
+
+
+
                             </Border>
 
 

@@ -18,6 +18,8 @@ namespace BejelentkezesApp
         {
             try
             {
+                FizetesiModComboBox.Items.Clear(); // Töröljük a régi elemeket
+
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
@@ -29,6 +31,9 @@ namespace BejelentkezesApp
                     {
                         FizetesiModComboBox.Items.Add(reader.GetString("fizetesmod"));
                     }
+
+                    if (FizetesiModComboBox.Items.Count > 0)
+                        FizetesiModComboBox.SelectedIndex = 0; // Alapértelmezett elem kijelölése
                 }
             }
             catch (Exception ex)
@@ -37,8 +42,10 @@ namespace BejelentkezesApp
             }
         }
 
+
         private void SaveInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
+            string szamlaAzonosito = SzamlaAzonositoTextBox.Text;
             string vasarloNev = VasarloNevTextBox.Text;
             string szallitasNev = SzallitasNevTextBox.Text;
             string cim = CimTextBox.Text;
@@ -49,30 +56,54 @@ namespace BejelentkezesApp
             string oraNev = OraNevTextBox.Text;
             string fizetesiModNev = FizetesiModComboBox.Text;
             string datum = DatumPicker.SelectedDate.HasValue ? DatumPicker.SelectedDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : "";
-            string adoszam = AdoszamTextBox.Text;
+            string adoszam = AdoszamTextBox.Text; // opcionális
 
-            int iranyitoszam;
-            if (!int.TryParse(IranyitoszamTextBox.Text, out iranyitoszam))
+            // Ellenőrzések: csak számokat tartalmazhatnak
+            if (!int.TryParse(SzamlaAzonositoTextBox.Text, out _))
+            {
+                MessageBox.Show("A számla azonosítónak számnak kell lennie!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(IranyitoszamTextBox.Text, out _))
             {
                 MessageBox.Show("Az irányítószámnak számnak kell lennie!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            int darabszam;
-            if (!int.TryParse(DbTextBox.Text, out darabszam))
+            if (!int.TryParse(TelefonTextBox.Text, out _))
+            {
+                MessageBox.Show("A telefonszámnak számnak kell lennie!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(OraAzonositoTextBox.Text, out _))
+            {
+                MessageBox.Show("Az óra azonosítónak számnak kell lennie!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(DbTextBox.Text, out int darabszam))
             {
                 MessageBox.Show("A darabszámnak számnak kell lennie!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            // Nem kötelező mező: ha nem üres, akkor ellenőrizzük, hogy szám-e
+            if (!string.IsNullOrWhiteSpace(adoszam) && !int.TryParse(adoszam, out _))
+            {
+                MessageBox.Show("Az adószámnak számnak kell lennie, ha meg van adva!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Ellenőrizni, hogy minden kötelező mező ki van-e töltve
             if (string.IsNullOrWhiteSpace(vasarloNev) || string.IsNullOrWhiteSpace(szallitasNev) ||
                 string.IsNullOrWhiteSpace(cim) || string.IsNullOrWhiteSpace(varos) ||
                 string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(telefon) ||
                 string.IsNullOrWhiteSpace(oraAzonosito) || string.IsNullOrWhiteSpace(oraNev) ||
-                string.IsNullOrWhiteSpace(fizetesiModNev) || string.IsNullOrWhiteSpace(datum) ||
-                string.IsNullOrWhiteSpace(adoszam))
+                string.IsNullOrWhiteSpace(fizetesiModNev) || string.IsNullOrWhiteSpace(datum))
             {
-                MessageBox.Show("Minden mezőt ki kell tölteni!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Minden mezőt ki kell tölteni (kivéve az adószámot)!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -89,7 +120,7 @@ namespace BejelentkezesApp
                             "nev, cim, iranyszam, varos", "@nev, @cim, @iranyszam, @varos",
                             new MySqlParameter("@nev", szallitasNev),
                             new MySqlParameter("@cim", cim),
-                            new MySqlParameter("@iranyszam", iranyitoszam),
+                            new MySqlParameter("@iranyszam", int.Parse(IranyitoszamTextBox.Text)),
                             new MySqlParameter("@varos", varos));
 
                         int vasarloId = InsertOrGetId(connection, transaction, "vasarlo", "vasarloaz",
@@ -110,7 +141,7 @@ namespace BejelentkezesApp
                             new MySqlParameter("@vasarloaz", vasarloId),
                             new MySqlParameter("@fizetesmodaz", fizetesModId),
                             new MySqlParameter("@szallitasaz", szallitasId),
-                            new MySqlParameter("@adoszam", adoszam),
+                            new MySqlParameter("@adoszam", string.IsNullOrWhiteSpace(adoszam) ? (object)DBNull.Value : adoszam),
                             new MySqlParameter("@datum", datum));
 
                         InsertIntoTable(connection, transaction, "megrendeles",
@@ -136,6 +167,7 @@ namespace BejelentkezesApp
                 MessageBox.Show($"Hiba az adatbázis kapcsolatnál:\n{ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         private int InsertOrGetId(MySqlConnection conn, MySqlTransaction trans, string table, string primaryKey, string columns, string values, params MySqlParameter[] parameters)
         {

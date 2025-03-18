@@ -5,6 +5,8 @@
         WindowStartupLocation="CenterScreen" Background="#1E1E2D" ResizeMode="NoResize">
 
     <Grid>
+        
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <!-- A fő tartalom -->
@@ -66,15 +68,21 @@
                                  BorderBrush="#4CAF50" Padding="5"/>
 
                         <Label Content="Fizetési mód:" Foreground="White" Margin="0,10,0,0"/>
-                        <ComboBox x:Name="FizetesiModComboBox" Width="380" Background="#1E1E2D" Foreground="White"
-                                  BorderBrush="#4CAF50">
-                            <ComboBoxItem Content="Bankkártya"/>
-                            <ComboBoxItem Content="Készpénz"/>
-                            <ComboBoxItem Content="Átutalás"/>
+                        <ComboBox x:Name="FizetesiModComboBox" Width="380" Background="White" Foreground="Black"
+          BorderBrush="#4CAF50" Margin="0,5,0,0">
+                            <ComboBox.Resources>
+                                <Style TargetType="ComboBoxItem">
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <!-- Szöveg fekete lesz -->
+                                    <Setter Property="Background" Value="White"/>
+                                    <!-- Háttér fehér -->
+                                </Style>
+                            </ComboBox.Resources>
                         </ComboBox>
 
+
                         <Label Content="Dátum:" Foreground="White" Margin="0,10,0,0"/>
-                        <DatePicker x:Name="DatumPicker" Width="380" Background="#1E1E2D" Foreground="White"
+                        <DatePicker x:Name="DatumPicker" Width="380" Background="#1E1E2D" Foreground="Black"
                                     BorderBrush="#4CAF50"/>
 
                         <Label Content="Adószám:" Foreground="White" Margin="0,10,0,0"/>

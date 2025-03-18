@@ -1,19 +1,19 @@
 ﻿bejelent
-1.0.0.0
+
 
 winexe
 C#
 .cs
-c:\Users\13d\Desktop\órai\02.19\WatchLux-18\bejelent\bejelent\obj\Debug\net8.0-windows\
+C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\
 bejelent
 none
 false
-TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-c:\Users\13d\Desktop\órai\02.19\WatchLux-18\bejelent\bejelent\App.xaml
+TRACE;DEBUG;NET;NET8_0;NETCOREAPP
+C:\Users\13d\Desktop\bejelent\bejelent\App.xaml
 5-1711396961
 
-112054633844
-206-298210364
+9-553922790
+206-1836972405
 AddOraWindow.xaml;AdminWindow.xaml;CreateInvoiceWindow.xaml;EditOraWindow.xaml;MainWindow.xaml;
 
 False
