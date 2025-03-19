@@ -631,3 +631,30 @@ body {
     margin-left: 20px;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .pagination {
+    position: relative;
+    left: 0;
+    bottom: auto;
+    padding: 8px;
+    gap: 6px;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 20px; /* Térköz a szűrő és a lapozás között */
+    margin-bottom: 20px; /* Hagyunk helyet a footer előtt */
+  }  
+
+  .page-button,
+  .arrow,
+  .double-arrow {
+    padding: 6px 10px; /* Kisebb méretű gombok */
+    font-size: 14px; /* Kisebb betűméret */
+    box-shadow: none;
+  }
+
+  .page-button.active {
+    box-shadow: none;
+  }
+}

@@ -893,9 +893,6 @@ function Products() {
 
           </div>
 
-
-
-
           {totalPages > 1 && (
             <div className="pagination">
               <button className="double-arrow" onClick={() => handlePageChange(1)} disabled={currentPage === 1}>&laquo;</button>
@@ -916,9 +913,12 @@ function Products() {
               <button className="double-arrow" onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages}>&raquo;</button>
             </div>
           )}
+          <div className="products-container">
+            {/* Termékek listája */}
+          </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 
