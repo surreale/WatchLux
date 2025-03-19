@@ -232,17 +232,18 @@ body {
 /* A szűrőpanel fix elhelyezése bal oldalon */
 /* Szűrőpanel fix elhelyezése a bal oldalon */
 .filters-container {
-  background: linear-gradient(135deg, #000000, #e9ecef);
+  background: ghostwhite;
   padding: 15px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   width: 250px;
   text-align: left;
   position: relative;
+  border-radius: 10px;
 }
 
 .filters-container h3 {
   font-size: 1.4rem;
-  color: white;
+  color: rgb(0, 0, 0);
   font-weight: bold;
   margin-bottom: 10px;
   text-align: center;
@@ -250,7 +251,7 @@ body {
 
 .filters-container label {
   font-size: 1rem;
-  color: white;
+  color: rgb(0, 0, 0);
   font-weight: 600;
 }
 
@@ -263,7 +264,7 @@ body {
   width: 100%;
   padding: 10px;
   font-size: 1rem;
-  border: 2px solid #5b49bf;
+  border: 2px solid #000000;
   border-radius: 50px;
   background-color: white;
   color: #333;
@@ -274,6 +275,7 @@ body {
   overflow-y: auto;
   position: relative;
   z-index: 10;
+  text-align: center;
 }
 
 .brand-dropdown:focus {
@@ -284,17 +286,6 @@ body {
 
 .brand-dropdown::-ms-expand {
   display: none;
-}
-
-.filters-container::after {
-  content: "▼";
-  font-size: 14px;
-  color: #c678eb;
-  position: absolute;
-  top: 48px;
-  right: 15px;
-  pointer-events: none;
-  transition: transform 0.3s ease;
 }
 
 .brand-dropdown:focus + .filters-container::after {
@@ -385,7 +376,6 @@ body {
   flex-direction: column;
   padding: 20px;
   background: linear-gradient(145deg, #232323, #1b1b1b);
-  border-radius: 12px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
   margin-right: 20px; /* Távolság a termékektől */
 }
@@ -467,7 +457,6 @@ body {
   width: 100%; /* Teljes szélesség a kártyán belül */
   margin-top: 0;
 }
-
 
 .action-icon {
   width: 30px;
@@ -559,5 +548,72 @@ body {
       max-width: 100%;
       padding: 0 10px;
   }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 oszlop mobilon */
+    gap: 10px;
+  }
+
+  .product-card {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .product-image {
+    width: 120px;  /* Kisebb képméret mobilon */
+    height: 120px;
+  }
+
+  .product-name {
+    font-size: 1.2rem;
+  }
+
+  .product-ar {
+    font-size: 1.2rem;
+  }
+
+  .view-button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .action-icon {
+    width: 25px;
+    height: 25px;
+  }
 }
 
+@media screen and (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: 1fr; /* Egyetlen oszlop kis képernyőkön */
+  }
+
+  .product-card {
+    width: 50%;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .product-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .product-name {
+    font-size: 1rem;
+  }
+
+  .product-ar {
+    font-size: 1rem;
+  }
+
+  .view-button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .action-icon {
+    width: 22px;
+    height: 22px;
+  }
+}

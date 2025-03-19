@@ -41,9 +41,9 @@
 
   @media (max-width: 768px) {
     .backbtn {
-        width: 90%; /* Teljes szélesség mobilon */
+        width: 20%;
         text-align: center;
-        margin: 10px auto; /* Középre helyezés */
+        margin: 40px auto;
         display: block;
     }
 }

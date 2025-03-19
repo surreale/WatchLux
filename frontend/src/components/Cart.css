@@ -69,7 +69,8 @@ body.no-scroll {
     background-color: ghostwhite;
     cursor: pointer;
     font-size: 16px;
-    width: 15%;
+    margin-top: 10px;
+    width: 10%;
     text-align: center;
     transition: background 0.3s;
 }
@@ -163,4 +164,10 @@ body.no-scroll {
 .modal-buttons:hover {
   background-color: #49bf8c;
   color: rgb(255, 255, 255);
+}
+
+@media (max-width: 768px) {
+  .checkout-button {
+      width: 50%;
+  }
 }
