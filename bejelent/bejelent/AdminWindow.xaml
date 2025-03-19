@@ -93,7 +93,7 @@
 
 
                             <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" Margin="0,10,10,0" Grid.Column="1">
-                                <Button Content="Betöltés" Width="120" Height="30" FontSize="14"
+                                <Button Content="Betöltés / frissítés" Width="120" Height="30" FontSize="14"
                                         Background="#4CAF50" Foreground="White" BorderThickness="0" 
                                         Click="LoadOraTable_Click"/>
                                 <Button Content="Hozzáadás" Width="120" Height="30" FontSize="14"
@@ -146,8 +146,12 @@
                                        HorizontalAlignment="Center" Margin="0,20,0,10"/>
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,70,0,10" Grid.Row="0">
-                                <Button Content="Számla létrehozása" Width="150" Height="30" FontSize="14"
+                                <Button Content="Betöltés / frissítés" Width="150" Height="30" FontSize="14"
                                         Background="#4CAF50" Foreground="White" BorderThickness="0" Margin="0,0,10,0"
+                                        Click="LoadInvoicesButton_Click"/>
+
+                                <Button Content="Számla létrehozása" Width="150" Height="30" FontSize="14"
+                                        Background="#2196F3" Foreground="White" BorderThickness="0" Margin="0,0,10,0"
                                         Click="CreateInvoiceButton_Click"/>
                                 <Button Content="Számla törlése" Width="150" Height="30" FontSize="14"
                                         Background="#F44336" Foreground="White" BorderThickness="0" Margin="0,0,10,0"
@@ -168,15 +172,18 @@
           GridLinesVisibility="Horizontal"
           BorderBrush="#4CAF50"
           BorderThickness="1"
-          SelectionMode="Extended"
-          SelectionUnit="FullRow"
-          IsReadOnly="True"
-          CanUserAddRows="False"
+          SelectionMode="Single"  
+                                    SelectionUnit="FullRow"
+          IsReadOnly="False"
+                                    
+                                    CanUserAddRows="False"
           CanUserDeleteRows="False"
           CanUserResizeRows="True"
           CanUserResizeColumns="True"
           SelectionChanged="InvoiceDataGrid_SelectionChanged">
                                 
+
+
 
 
                                 <DataGrid.ColumnHeaderStyle>

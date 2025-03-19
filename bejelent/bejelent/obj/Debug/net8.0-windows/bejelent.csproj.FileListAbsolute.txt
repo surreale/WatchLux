@@ -21,11 +21,13 @@ C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\bejelent.csproj.
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\AddOraWindow.baml
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\AdminWindow.baml
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\CreateInvoiceWindow.baml
+C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\EditInvoiceWindow.baml
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\EditOraWindow.baml
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\MainWindow.baml
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\AddOraWindow.g.cs
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\AdminWindow.g.cs
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\CreateInvoiceWindow.g.cs
+C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\EditInvoiceWindow.g.cs
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\EditOraWindow.g.cs
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\MainWindow.g.cs
 C:\Users\13d\Desktop\bejelent\bejelent\obj\Debug\net8.0-windows\App.g.cs

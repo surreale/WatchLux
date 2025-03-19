@@ -16,6 +16,9 @@
     <Compile Update="CreateInvoiceWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="EditInvoiceWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="EditOraWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -28,6 +31,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="CreateInvoiceWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="EditInvoiceWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="EditOraWindow.xaml">

@@ -62,7 +62,7 @@ namespace BejelentkezesApp
                 { "felhasznalonev", "Felhasználónév/  " },
                 { "jelszo", "Jelszó/  " },
                 { "jogosultsag", "Jogosultság/  " },
-                //{ "fizetesmodaz", "Fizetésmód azonosító/  " },
+                { "fizetesmodaz", "Fizetésmód azonosító/  " },
                 { "fizetesmod", "Fizetésmód/  " },
                 { "jotallasaz", "Jótállás azonosító/  " },
                 { "jotallas", "Jótállás/  " },
@@ -95,11 +95,11 @@ namespace BejelentkezesApp
                 { "atokszineaz", "A tok színe azonosító/  " },
                 { "atokszine", "A tok színe/  " },
                 { "szallitasaz", "Szállítás azonisító/  " },
-                //{ "iranyszam", "Irányítószám/  " },
-                //{ "varos", "Város/  " },
+                { "iranyszam", "Irányítószám/  " },
+                { "varos", "Város/  " },
                 { "vasarloaz", "Vásárló azonosító/  " },
-                //{ "tel", "Telefonszám/  " },
-                //{ "email", "Email/  " },
+                { "tel", "Telefonszám/  " },
+                { "email", "Email/  " },
                 { "oraaz", "Óra azonosító/  " },
                 { "megnevezes", "Megnevezés/  " },
                 { "kep1", "Kép1/  " },
@@ -108,14 +108,14 @@ namespace BejelentkezesApp
                 { "ar", "Ár/  " },
                 { "cikkszam", "Cikkszám/  " },
                 { "meretmillimeterben", "Méret milliméterben/  " },
-                //{ "db", "Db  " },
-                //{ "szamlaaz", "Számla azonosító/  " },
-                //{ "cim", "Cím/  " },
-                //{ "vnev", "Vásárló Neve/  " },
-                //{ "oranev", "Óra neve/  " },
-                //{ "sznev", "Szállítási Név/  " },
-                //{ "datum", "Dátum/  " },
-                //{ "adoszam", "Adószám/  " },
+                { "db", "Db  " },
+                { "szamlaaz", "Számla azonosító/  " },
+                { "cim", "Cím/  " },
+                { "vnev", "Vásárló Neve/  " },
+                { "oranev", "Óra neve/  " },
+                { "sznev", "Szállítási Név/  " },
+                { "datum", "Dátum/  " },
+                { "adoszam", "Adószám/  " },
 
             };
 
@@ -624,45 +624,45 @@ namespace BejelentkezesApp
 
         private void DeleteOraRowButton_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (OraDataGrid.SelectedItem == null)
             {
-                
-                DataRowView selectedRow = OraDataGrid.SelectedItem as DataRowView;
-
-                if (selectedRow == null)
-                {
-                    MessageBox.Show("Kérlek, válassz ki egy sort a törléshez!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                
-                int oraAz = Convert.ToInt32(selectedRow["oraaz"]);
-
-                
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string deleteQuery = "DELETE FROM ora WHERE oraaz = @oraaz";
-                    MySqlCommand command = new MySqlCommand(deleteQuery, connection);
-                    command.Parameters.AddWithValue("@oraaz", oraAz);
-
-                    
-                    command.ExecuteNonQuery();
-                }
-
-                
-                MessageBox.Show("A kiválasztott sor törölve lett!", "Siker", MessageBoxButton.OK, MessageBoxImage.Information);
-                LoadOraTable_Click(null, null); 
+                MessageBox.Show("Kérlek, válassz ki egy sort a törléshez!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
-            catch (Exception ex)
+
+            // Megerősítés kérdése a felhasználótól
+            MessageBoxResult result = MessageBox.Show("Biztosan törölni szeretnéd ezt az órát?", "Megerősítés", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
             {
-                MessageBox.Show($"Hiba történt a törlés során: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                try
+                {
+                    DataRowView selectedRow = OraDataGrid.SelectedItem as DataRowView;
+                    int oraAz = Convert.ToInt32(selectedRow["oraaz"]);
+
+                    using (MySqlConnection connection = new MySqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string deleteQuery = "DELETE FROM ora WHERE oraaz = @oraaz";
+                        MySqlCommand command = new MySqlCommand(deleteQuery, connection);
+                        command.Parameters.AddWithValue("@oraaz", oraAz);
+                        command.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("A kiválasztott sor törölve lett!", "Siker", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadOraTable_Click(null, null);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba történt a törlés során: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
 
 
-        
+
+
 
         private void SaveChangesOraButton_Click(object sender, RoutedEventArgs e)
         {
@@ -709,11 +709,14 @@ namespace BejelentkezesApp
 
                     InvoiceDataGrid.ItemsSource = dataTable.DefaultView;
 
+                    InvoiceDataGrid.IsReadOnly = false;
                     InvoiceDataGrid.SelectionMode = DataGridSelectionMode.Single;
                     InvoiceDataGrid.SelectionUnit = DataGridSelectionUnit.FullRow;
-                    InvoiceDataGrid.IsReadOnly = true;  // Kijelölhetővé teszi, de nem szerkeszthető
                     InvoiceDataGrid.CanUserAddRows = false;
                     InvoiceDataGrid.CanUserDeleteRows = false;
+                    InvoiceDataGrid.CanUserResizeRows = true;
+                    InvoiceDataGrid.CanUserResizeColumns = true;
+
                 }
             }
             catch (Exception ex)
@@ -728,61 +731,51 @@ namespace BejelentkezesApp
             CreateInvoiceWindow createInvoiceWindow = new CreateInvoiceWindow();
             createInvoiceWindow.ShowDialog();
 
-            // Frissítjük az InvoiceDataGrid-et
+            
             LoadInvoices();
         }
 
         private void DeleteInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (InvoiceDataGrid.SelectedItem == null)
             {
-                // Ellenőrzi, hogy van-e kiválasztott számla
-                if (InvoiceDataGrid.SelectedItem == null)
+                MessageBox.Show("Kérlek, válassz ki egy számlát a törléshez!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            
+            MessageBoxResult result = MessageBox.Show("Biztosan törölni szeretnéd ezt a számlát?", "Megerősítés", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes) 
+            {
+                try
                 {
-                    MessageBox.Show("Kérlek, válassz ki egy számlát a törléshez!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+                    DataRowView selectedRow = InvoiceDataGrid.SelectedItem as DataRowView;
+                    int szamlaAz = Convert.ToInt32(selectedRow["szamlaaz"]);
 
-                DataRowView selectedRow = InvoiceDataGrid.SelectedItem as DataRowView;
-                int szamlaAz = Convert.ToInt32(selectedRow["szamlaaz"]);
-
-                MessageBoxResult result = MessageBox.Show(
-                    "Biztosan törölni szeretnéd ezt a számlát? A művelet nem vonható vissza!",
-                    "Számla törlése",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning
-                );
-
-                if (result == MessageBoxResult.Yes)
-                {
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
                         connection.Open();
-
-                        // Törli a megrendeléseket, amelyek ehhez a számlához tartoznak
-                        string deleteOrdersQuery = "DELETE FROM megrendeles WHERE szamlaaz = @szamlaaz";
-                        MySqlCommand deleteOrdersCmd = new MySqlCommand(deleteOrdersQuery, connection);
-                        deleteOrdersCmd.Parameters.AddWithValue("@szamlaaz", szamlaAz);
-                        deleteOrdersCmd.ExecuteNonQuery();
-
-                        // Ezután törli magát a számlát
-                        string deleteInvoiceQuery = "DELETE FROM szamla WHERE szamlaaz = @szamlaaz";
-                        MySqlCommand deleteInvoiceCmd = new MySqlCommand(deleteInvoiceQuery, connection);
-                        deleteInvoiceCmd.Parameters.AddWithValue("@szamlaaz", szamlaAz);
-                        deleteInvoiceCmd.ExecuteNonQuery();
+                        string deleteQuery = "DELETE FROM szamla WHERE szamlaaz = @szamlaaz";
+                        MySqlCommand deleteCommand = new MySqlCommand(deleteQuery, connection);
+                        deleteCommand.Parameters.AddWithValue("@szamlaaz", szamlaAz);
+                        deleteCommand.ExecuteNonQuery();
                     }
 
                     MessageBox.Show("A számla sikeresen törölve lett!", "Siker", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    // Frissítjük a számlák listáját
                     LoadInvoices();
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba történt a számla törlése során: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Hiba történt a számla törlésekor:\n{ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            
         }
+
+
+
+
 
 
         private void SaveInvoiceButton_Click(object sender, RoutedEventArgs e)
@@ -792,8 +785,23 @@ namespace BejelentkezesApp
 
         private void UpdateInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Számla módosítása funkció még nincs implementálva.");
+            if (InvoiceDataGrid.SelectedItem == null)
+            {
+                MessageBox.Show("Válassz ki egy számlát!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            DataRowView selectedRow = InvoiceDataGrid.SelectedItem as DataRowView;
+            int szamlaAz = Convert.ToInt32(selectedRow["szamlaaz"]);
+
+            // Az EditInvoiceWindow megnyitása a kiválasztott számlával
+            EditInvoiceWindow editInvoiceWindow = new EditInvoiceWindow(szamlaAz);
+            editInvoiceWindow.ShowDialog();
+
+            LoadInvoices(); // Frissítés a módosítás után
         }
+
+
 
         private void CancelInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
@@ -845,13 +853,20 @@ namespace BejelentkezesApp
                     InvoiceDataGrid.ItemsSource = dataTable.DefaultView;
                 }
 
-                
+                InvoiceDataGrid.IsReadOnly = false;  // 🔧 Engedélyezzük a kattintást
+                InvoiceDataGrid.SelectionMode = DataGridSelectionMode.Single;
+                InvoiceDataGrid.SelectionUnit = DataGridSelectionUnit.FullRow;
+                InvoiceDataGrid.CanUserAddRows = false;
+                InvoiceDataGrid.CanUserDeleteRows = false;
+                InvoiceDataGrid.CanUserResizeRows = true;
+                InvoiceDataGrid.CanUserResizeColumns = true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Hiba történt a számlák betöltésekor: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
 
         private void OraDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -869,22 +884,21 @@ namespace BejelentkezesApp
                 e.Column.Header = columnHeaderMapping[e.PropertyName];
             }
 
-            // Ellenőrizzük, hogy az oszlopok kijelölhetőek-e
             DataGridTextColumn column = e.Column as DataGridTextColumn;
             if (column != null)
             {
-                column.IsReadOnly = true; // Nem szerkeszthető, de kattintható!
-                column.CanUserSort = true; // Engedélyezzük a rendezést
+                column.IsReadOnly = false; // 🔧 Engedélyezzük a kattintást
+                column.CanUserSort = true;
             }
         }
+
+
         private void InvoiceDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (InvoiceDataGrid.SelectedItem == null)
-                return;
-
-            MessageBox.Show("Sor kiválasztva!", "Információ", MessageBoxButton.OK, MessageBoxImage.Information);
+            
         }
 
+     
 
 
         private void InvoiceDataGrid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -899,7 +913,7 @@ namespace BejelentkezesApp
         {
             if (InvoiceTab.IsSelected) // Ha a Számlázás fül aktív
             {
-                LoadInvoices(); // Adatok betöltése
+                // Adatok betöltése
                 InvoiceDataGrid.Focus(); // 👈 Adatgrid fókuszálása
             }
         }

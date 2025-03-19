@@ -164,7 +164,7 @@ namespace BejelentkezesApp {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/bejelent;component/createinvoicewindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/bejelent;V1.0.0.0;component/createinvoicewindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\CreateInvoiceWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

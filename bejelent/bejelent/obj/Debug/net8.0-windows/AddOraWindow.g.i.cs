@@ -268,7 +268,7 @@ namespace BejelentkezesApp {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/bejelent;component/addorawindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/bejelent;V1.0.0.0;component/addorawindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\AddOraWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

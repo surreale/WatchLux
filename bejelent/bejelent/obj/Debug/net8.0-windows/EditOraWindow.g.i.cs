@@ -268,7 +268,7 @@ namespace BejelentkezesApp {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/bejelent;component/editorawindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/bejelent;V1.0.0.0;component/editorawindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\EditOraWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
