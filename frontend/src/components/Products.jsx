@@ -160,7 +160,7 @@ function Products() {
           console.error("❌ Hiba történt a termékek betöltésekor.");
         });
     }
-}, [searchQuery]);
+  }, [searchQuery]);
 
 
 
@@ -497,7 +497,7 @@ function Products() {
       .catch(() => {
         console.error("Hiba történt a szűrés során.");
       });
-};
+  };
 
 
 
@@ -823,18 +823,19 @@ function Products() {
         <div className="products-container">
           <div className="products-header">
             <h2 className="products-title">Termékek</h2>
-            <select
-              value={sortOption}
-              onChange={(e) => handleSortChange(e.target.value)}
-              className="sort-dropdown"
-            >
-              <option value="">Rendezés</option>
-              <option value="abc-asc">ABC sorrendben (növekvő)</option>
-              <option value="abc-desc">ABC sorrendben (csökkenő)</option>
-              <option value="price-asc">Ár szerint (növekvő)</option>
-              <option value="price-desc">Ár szerint (csökkenő)</option>
-            </select>
           </div>
+          <select
+            value={sortOption}
+            onChange={(e) => handleSortChange(e.target.value)}
+            className="sort-dropdown"
+          >
+            <option value="">Rendezés</option>
+            <option value="abc-asc">ABC sorrendben (növekvő)</option>
+            <option value="abc-desc">ABC sorrendben (csökkenő)</option>
+            <option value="price-asc">Ár szerint (növekvő)</option>
+            <option value="price-desc">Ár szerint (csökkenő)</option>
+          </select>
+
           <div className="products-grid">
             {visibleProducts.length > 0 ? (
               visibleProducts.map((product) => (
@@ -884,13 +885,13 @@ function Products() {
                       </button>
                     </div>
                   </div>
-                </div> 
-  ))
-) : (
-  <p className="no-products">Nincs találat.</p>
-)}
+                </div>
+              ))
+            ) : (
+              <p className="no-products">Nincs találat.</p>
+            )}
 
-</div>
+          </div>
 
 
 

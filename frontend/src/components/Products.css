@@ -405,13 +405,14 @@ body {
 .sort-dropdown {
   padding: 5px 10px;
   font-size: 1rem;
-  border-radius: 5px;
+  border-radius: 50px;
   border: 1px solid #ccc;
   cursor: pointer;
   background-color: white;
   height: 35px; /* Fix magasság, hogy egy vonalban legyen a címmel */
   display: flex;
   align-items: center; /* Középre igazítja a szöveget a lenyílón belül */
+  width: 10%;
 }
 
 .filter-clear-button {
@@ -615,5 +616,18 @@ body {
   .action-icon {
     width: 22px;
     height: 22px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .products-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sort-dropdown {
+    width: 40%;
+    margin-top: 10px;
+    margin-left: 20px;
   }
 }
