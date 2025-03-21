@@ -108,14 +108,18 @@ const Checkout = () => {
               <div className="checkout-shipping">
                 <h3>Szállítási adatok</h3>
                 <form className="shipping-form">
-                  {["Név", "E-mail", "Szállítási cím", "Város", "Irányítószám", "Telefonszám"].map(
+                  {["name", "email", "address", "city", "postalCode", "phone"].map(
                     (field) => (
                       <input
                         key={field}
                         type={field === "email" ? "email" : "text"}
                         name={field}
                         placeholder={
-                              field.charAt(0).toUpperCase() + field.slice(1) + "*"
+                          field === "postalCode"
+                            ? "Irányítószám*"
+                            : field === "phone"
+                              ? "Telefonszám*"
+                              : field.charAt(0).toUpperCase() + field.slice(1) + "*"
                         }
                         value={shippingInfo[field]}
                         onChange={handleInputChange}
@@ -136,14 +140,18 @@ const Checkout = () => {
                     Megegyezik a szállítási adatokkal
                   </label>
                   <form className="shipping-form">
-                    {["Név", "E-mail", "Szállítási cím", "Város", "Irányítószám", "Telefonszám"].map(
+                    {["name", "email", "address", "city", "postalCode", "phone"].map(
                       (field) => (
                         <input
                           key={field}
                           type={field === "email" ? "email" : "text"}
                           name={field}
                           placeholder={
-                                field.charAt(0).toUpperCase() + field.slice(1) + "*"
+                            field === "postalCode"
+                              ? "Irányítószám*"
+                              : field === "phone"
+                                ? "Telefonszám*"
+                                : field.charAt(0).toUpperCase() + field.slice(1) + "*"
                           }
                           value={billingInfo[field]}
                           onChange={(e) => handleInputChange(e, true)}
