@@ -14,20 +14,59 @@ const Checkout = () => {
     postalCode: "",
     phone: "",
   });
-  const [showNotification, setShowNotification] = useState(false); //  Értesítés állapota
+  const [billingInfo, setBillingInfo] = useState({
+    name: "",
+    email: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    phone: "",
+  });
+  const [sameAsShipping, setSameAsShipping] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [showPaymentSection, setShowPaymentSection] = useState(false);
   const navigate = useNavigate();
 
-  const totalPrice = cart.reduce((acc, item) => acc + Number(item.ar) * (Number(item.mennyiseg) || 1), 0);
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + Number(item.ar) * (Number(item.mennyiseg) || 1),
+    0
+  );
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e, isBilling = false) => {
     const { name, value } = e.target;
-    setShippingInfo((prev) => ({ ...prev, [name]: value }));
+    if (isBilling) {
+      setBillingInfo((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setShippingInfo((prev) => ({ ...prev, [name]: value }));
+      if (sameAsShipping) {
+        setBillingInfo((prev) => ({ ...prev, [name]: value }));
+      }
+    }
+  };
+
+  const handleSameAsShippingChange = (e) => {
+    const checked = e.target.checked;
+    setSameAsShipping(checked);
+    if (checked) {
+      setBillingInfo({ ...shippingInfo });
+    }
+  };
+
+  const handleNextToPayment = () => {
+    const allFields = [...Object.values(shippingInfo), ...Object.values(billingInfo)];
+    if (allFields.some((value) => value.trim() === "")) {
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
+      return;
+    }
+    setShowPaymentSection(true);
   };
 
   const handlePayment = () => {
-    if (Object.values(shippingInfo).some((value) => value.trim() === "")) {
-      setShowNotification(true); //  Értesítés megjelenítése, ha üres mezők vannak
-      setTimeout(() => setShowNotification(false), 3000); //  Értesítés eltűnik 3 másodperc múlva
+    if (!acceptedTerms) {
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
       return;
     }
     alert("Sikeres fizetés! Köszönjük a vásárlást.");
@@ -40,84 +79,133 @@ const Checkout = () => {
       {cart.length === 0 ? (
         <p className="cl">A kosár üres.</p>
       ) : (
-        <div className="checkout-content">
-          <div className="checkout-cart-summary">
-            <h3>Termékek összegzése</h3>
-            {cart.map((item) => (
-              <div key={item.oraaz} className="checkout-item">
-                <img src={`/images/${item.kep1}`} alt={item.megnevezes} className="checkout-image" />
-                <div className="checkout-details">
-                  <h4>{item.megnevezes}</h4>
-                  <p>Ár: {Number(item.ar).toLocaleString()} Ft</p>
-                  <p>Mennyiség: {item.mennyiseg || 1} db</p>
-                  <p>Összesen: {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft</p>
+        <>
+          <div className="checkout-content">
+            <div className="checkout-cart-summary">
+              <h3>Termékek összegzése</h3>
+              {cart.map((item) => (
+                <div key={item.oraaz} className="checkout-item">
+                  <img
+                    src={`/images/${item.kep1}`}
+                    alt={item.megnevezes}
+                    className="checkout-image"
+                  />
+                  <div className="checkout-details">
+                    <h4>{item.megnevezes}</h4>
+                    <p>Ár: {Number(item.ar).toLocaleString()} Ft</p>
+                    <p>Mennyiség: {item.mennyiseg || 1} db</p>
+                    <p>
+                      Összesen:{" "}
+                      {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft
+                    </p>
+                  </div>
                 </div>
+              ))}
+              <h3>Végösszeg: {totalPrice.toLocaleString()} Ft</h3>
+            </div>
+
+            {!showPaymentSection && (
+              <div className="checkout-shipping">
+                <h3>Szállítási adatok</h3>
+                <form className="shipping-form">
+                  {["name", "email", "address", "city", "postalCode", "phone"].map(
+                    (field) => (
+                      <input
+                        key={field}
+                        type={field === "email" ? "email" : "text"}
+                        name={field}
+                        placeholder={
+                          field === "postalCode"
+                            ? "Irányítószám*"
+                            : field === "phone"
+                              ? "Telefonszám*"
+                              : field.charAt(0).toUpperCase() + field.slice(1) + "*"
+                        }
+                        value={shippingInfo[field]}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    )
+                  )}
+                </form>
+
+                <div className="billing-section">
+                  <h3>Számlázási adatok</h3>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={sameAsShipping}
+                      onChange={handleSameAsShippingChange}
+                    />{" "}
+                    Megegyezik a szállítási adatokkal
+                  </label>
+                  <form className="shipping-form">
+                    {["name", "email", "address", "city", "postalCode", "phone"].map(
+                      (field) => (
+                        <input
+                          key={field}
+                          type={field === "email" ? "email" : "text"}
+                          name={field}
+                          placeholder={
+                            field === "postalCode"
+                              ? "Irányítószám*"
+                              : field === "phone"
+                                ? "Telefonszám*"
+                                : field.charAt(0).toUpperCase() + field.slice(1) + "*"
+                          }
+                          value={billingInfo[field]}
+                          onChange={(e) => handleInputChange(e, true)}
+                          disabled={sameAsShipping}
+                          required
+                        />
+                      )
+                    )}
+                  </form>
+                </div>
+
+                <button className="payment-button" onClick={handleNextToPayment}>
+                  Tovább a fizetéshez
+                </button>
+                <button className="vissza" onClick={() => navigate("/cart")}>
+                  Vissza
+                </button>
               </div>
-            ))}
-            <h3>Végösszeg: {totalPrice.toLocaleString()} Ft</h3>
+            )}
           </div>
 
-          <div className="checkout-shipping">
-            <h3>Szállítási adatok</h3>
-            <form className="shipping-form">
-              <input
-                type="text"
-                name="name"
-                placeholder="Teljes név*"
-                value={shippingInfo.name}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="E-mail*"
-                value={shippingInfo.email}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="address"
-                placeholder="Cím*"
-                value={shippingInfo.address}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="city"
-                placeholder="Város*"
-                value={shippingInfo.city}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="postalCode"
-                placeholder="Irányítószám*"
-                value={shippingInfo.postalCode}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="phone"
-                placeholder="Telefonszám*"
-                value={shippingInfo.phone}
-                onChange={handleInputChange}
-                required
-              />
-            </form>
+          {showPaymentSection && (
+            <div className="payment-container">
+              <h3>Fizetési mód</h3>
+              <p>Csak utánvétes fizetés lehetséges.</p>
 
-            <button className="payment-button" onClick={handlePayment}>
-              Fizetés
-            </button>
-            <button className="vissza" onClick={() => navigate("/cart")}>
-              Vissza
-            </button>
-          </div>
-        </div>
+              <div className="terms">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={acceptedTerms}
+                    onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  />{" "}
+                  Elfogadom és megértettem a{" "}
+                  <a href="/aszf" target="_blank" rel="noopener noreferrer">
+                    WatchLux Általános Szerződési Feltételeit
+                  </a>
+                </label>
+              </div>
+
+              <button
+                className="payment-button"
+                onClick={handlePayment}
+                disabled={!acceptedTerms}
+              >
+                Rendelés leadása
+              </button>
+
+              <button className="vissza2" onClick={() => setShowPaymentSection(false)}>
+                Vissza
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       {showNotification && (
