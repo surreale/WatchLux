@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using MySql.Data.MySqlClient;
 
 namespace BejelentkezesApp
@@ -12,6 +13,7 @@ namespace BejelentkezesApp
         private readonly string connectionString = "server=localhost;user=root;password=root;database=ora;";
         private string selectedTable;
         private readonly string userRole;
+        private bool isLoggingOut = false;
 
 
         private readonly Dictionary<string, string> tableNameMapping = new Dictionary<string, string>
@@ -630,7 +632,7 @@ namespace BejelentkezesApp
                 return;
             }
 
-            // Megerősítés kérdése a felhasználótól
+            
             MessageBoxResult result = MessageBox.Show("Biztosan törölni szeretnéd ezt az órát?", "Megerősítés", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (result == MessageBoxResult.Yes)
@@ -701,7 +703,7 @@ namespace BejelentkezesApp
                 {
                     connection.Open();
 
-                    // A szamlazas nevű view-ból tölti be az adatokat
+                    
                     string query = "SELECT * FROM szamlazas";
                     MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
                     DataTable dataTable = new DataTable();
@@ -794,11 +796,11 @@ namespace BejelentkezesApp
             DataRowView selectedRow = InvoiceDataGrid.SelectedItem as DataRowView;
             int szamlaAz = Convert.ToInt32(selectedRow["szamlaaz"]);
 
-            // Az EditInvoiceWindow megnyitása a kiválasztott számlával
+            
             EditInvoiceWindow editInvoiceWindow = new EditInvoiceWindow(szamlaAz);
             editInvoiceWindow.ShowDialog();
 
-            LoadInvoices(); // Frissítés a módosítás után
+            LoadInvoices(); 
         }
 
 
@@ -817,16 +819,29 @@ namespace BejelentkezesApp
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow loginWindow = new MainWindow();
-            loginWindow.Show();
-            this.Close();
+            MessageBoxResult result = MessageBox.Show(
+                "Biztosan be akarod zárni az admin panelt?",
+                "Kilépés megerősítése",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question
+            );
+
+            if (result == MessageBoxResult.Yes)
+            {
+                isLoggingOut = true; 
+                MainWindow loginWindow = new MainWindow();
+                loginWindow.Show();
+                this.Close();
+            }
         }
+
+
 
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             if (columnHeaderMapping.ContainsKey(e.PropertyName))
             {
-                e.Column.Header = columnHeaderMapping[e.PropertyName]; // Csak a felületen módosítja az oszlop nevét
+                e.Column.Header = columnHeaderMapping[e.PropertyName]; 
             }
         }
 
@@ -841,19 +856,19 @@ namespace BejelentkezesApp
         {
             try
             {
-                object selectedItem = InvoiceDataGrid.SelectedItem; // Mentjük a kijelölést
+                object selectedItem = InvoiceDataGrid.SelectedItem; 
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "SELECT * FROM szamlazas"; // Adatok betöltése
+                    string query = "SELECT * FROM szamlazas"; 
                     MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
                     InvoiceDataGrid.ItemsSource = dataTable.DefaultView;
                 }
 
-                InvoiceDataGrid.IsReadOnly = false;  // 🔧 Engedélyezzük a kattintást
+                InvoiceDataGrid.IsReadOnly = false; 
                 InvoiceDataGrid.SelectionMode = DataGridSelectionMode.Single;
                 InvoiceDataGrid.SelectionUnit = DataGridSelectionUnit.FullRow;
                 InvoiceDataGrid.CanUserAddRows = false;
@@ -887,7 +902,7 @@ namespace BejelentkezesApp
             DataGridTextColumn column = e.Column as DataGridTextColumn;
             if (column != null)
             {
-                column.IsReadOnly = false; // 🔧 Engedélyezzük a kattintást
+                column.IsReadOnly = false; 
                 column.CanUserSort = true;
             }
         }
@@ -911,15 +926,167 @@ namespace BejelentkezesApp
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (InvoiceTab.IsSelected) // Ha a Számlázás fül aktív
+            if (InvoiceTab.IsSelected) 
             {
-                // Adatok betöltése
-                InvoiceDataGrid.Focus(); // 👈 Adatgrid fókuszálása
+                
+                InvoiceDataGrid.Focus(); 
             }
         }
-        
+
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string keresettSzoveg = SearchTextBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(keresettSzoveg) || keresettSzoveg == "Keresés...")
+            {
+                MessageBox.Show("Kérlek, írj be keresési kifejezést!", "Hiányzó adat", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM oralekerdezes WHERE megnevezes LIKE @kereses ORDER BY oraaz ASC";
+                    MySqlCommand command = new MySqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@kereses", $"%{keresettSzoveg}%");
+
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    SearchTextBox.Text = "";
+                    SearchTextBox.Foreground = Brushes.Gray;
+
+                    if (dataTable.Rows.Count == 0)
+                    {
+                        MessageBox.Show("A keresés nem hozott eredményt!", "Nincs találat", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return; 
+                    }
+
+                    OraDataGrid.ItemsSource = dataTable.DefaultView;
+
+                    
+                    SearchTextBox.Text = "Keresés...";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba a keresés során:\n{ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void SearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (SearchTextBox.Text == "Keresés...")
+            {
+                SearchTextBox.Text = "";
+                SearchTextBox.Foreground = Brushes.Black;
+            }
+        }
+
+        private void SearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+            {
+                SearchTextBox.Text = "Keresés...";
+                SearchTextBox.Foreground = Brushes.Gray;
+            }
+        }
+
+        private void InvoiceSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (InvoiceSearchTextBox.Text == "Keresés...")
+            {
+                InvoiceSearchTextBox.Text = "";
+                InvoiceSearchTextBox.Foreground = Brushes.Black;
+            }
+        }
+
+        private void InvoiceSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(InvoiceSearchTextBox.Text))
+            {
+                InvoiceSearchTextBox.Text = "Keresés...";
+                InvoiceSearchTextBox.Foreground = Brushes.Gray;
+            }
+        }
+
+
+        private void InvoiceSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string keresettSzoveg = InvoiceSearchTextBox.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(keresettSzoveg) || keresettSzoveg == "Keresés...")
+            {
+                MessageBox.Show("Kérlek, írj be valamit a keresőmezőbe!", "Hiányzó adat", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    string query = @"SELECT * FROM szamlazas 
+                             WHERE sznev LIKE @keres 
+                                OR email LIKE @keres 
+                                OR tel LIKE @keres";
+
+                    MySqlCommand command = new MySqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@keres", $"%{keresettSzoveg}%");
+
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    if (dataTable.Rows.Count == 0)
+                    {
+                        MessageBox.Show("Nincs találat a keresésre!", "Nincs találat", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+
+                    InvoiceDataGrid.ItemsSource = dataTable.DefaultView;
+
+                    
+                    InvoiceSearchTextBox.Text = "";
+                    InvoiceSearchTextBox.Foreground = Brushes.Gray;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hiba a keresés során:\n{ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        private void Admin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!isLoggingOut) 
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    "Biztosan be akarod zárni az admin panelt?",
+                    "Kilépés megerősítése",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+                if (result != MessageBoxResult.Yes)
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
 
 
 
     }
+
+
+
 }

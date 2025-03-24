@@ -9,12 +9,12 @@
         
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <!-- A fő tartalom -->
+            
             <RowDefinition Height="Auto"/>
-            <!-- Gombok fix alul -->
+            
         </Grid.RowDefinitions>
 
-        <!-- Görgethető űrlap -->
+        
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="0">
             <Grid Margin="20">
                 <Border Background="#2A2A3C" CornerRadius="20" Padding="20">
@@ -73,9 +73,9 @@
                             <ComboBox.Resources>
                                 <Style TargetType="ComboBoxItem">
                                     <Setter Property="Foreground" Value="Black"/>
-                                    <!-- Szöveg fekete lesz -->
+                                    
                                     <Setter Property="Background" Value="White"/>
-                                    <!-- Háttér fehér -->
+                                    
                                 </Style>
                             </ComboBox.Resources>
                         </ComboBox>
@@ -93,7 +93,7 @@
             </Grid>
         </ScrollViewer>
 
-        <!-- Gombok fix alul -->
+        
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,20">
             <Button Content="Mentés" Width="140" Height="40" FontSize="14" Background="#4CAF50"
                     Foreground="White" BorderThickness="0" Margin="10,0" Click="SaveInvoiceButton_Click"/>

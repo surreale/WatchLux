@@ -18,7 +18,7 @@ namespace BejelentkezesApp
         {
             try
             {
-                FizetesiModComboBox.Items.Clear(); // Töröljük a régi elemeket
+                FizetesiModComboBox.Items.Clear(); 
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -33,7 +33,7 @@ namespace BejelentkezesApp
                     }
 
                     if (FizetesiModComboBox.Items.Count > 0)
-                        FizetesiModComboBox.SelectedIndex = 0; // Alapértelmezett elem kijelölése
+                        FizetesiModComboBox.SelectedIndex = 0; 
                 }
             }
             catch (Exception ex)
@@ -56,9 +56,9 @@ namespace BejelentkezesApp
             string oraNev = OraNevTextBox.Text;
             string fizetesiModNev = FizetesiModComboBox.Text;
             string datum = DatumPicker.SelectedDate.HasValue ? DatumPicker.SelectedDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : "";
-            string adoszam = AdoszamTextBox.Text; // opcionális
+            string adoszam = AdoszamTextBox.Text; 
 
-            // Ellenőrzések: csak számokat tartalmazhatnak
+           
             if (!int.TryParse(SzamlaAzonositoTextBox.Text, out _))
             {
                 MessageBox.Show("A számla azonosítónak számnak kell lennie!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -89,14 +89,14 @@ namespace BejelentkezesApp
                 return;
             }
 
-            // Nem kötelező mező: ha nem üres, akkor ellenőrizzük, hogy szám-e
+            
             if (!string.IsNullOrWhiteSpace(adoszam) && !int.TryParse(adoszam, out _))
             {
                 MessageBox.Show("Az adószámnak számnak kell lennie, ha meg van adva!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // Ellenőrizni, hogy minden kötelező mező ki van-e töltve
+            
             if (string.IsNullOrWhiteSpace(vasarloNev) || string.IsNullOrWhiteSpace(szallitasNev) ||
                 string.IsNullOrWhiteSpace(cim) || string.IsNullOrWhiteSpace(varos) ||
                 string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(telefon) ||

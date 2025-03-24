@@ -18,7 +18,7 @@ namespace BejelentkezesApp
             LoadPaymentMethods();
         }
 
-        private int fizetesiModAzErtek = 0; // Globális változó a fizetési mód tárolására
+        private int fizetesiModAzErtek = 0; 
 
         private void LoadInvoiceData()
         {
@@ -60,13 +60,13 @@ namespace BejelentkezesApp
                             DatumPicker.SelectedDate = Convert.ToDateTime(reader["datum"]);
                             AdoszamTextBox.Text = reader["adoszam"] != DBNull.Value ? reader["adoszam"].ToString() : "";
 
-                            // 🔥 Fizetési mód azonosító mentése
+                            
                             fizetesiModAzErtek = Convert.ToInt32(reader["fizetesmodaz"]);
                         }
                     }
                 }
 
-                // Hívjuk meg a fizetési módok betöltését!
+                
                 LoadPaymentMethods();
             }
             catch (Exception ex)
@@ -91,10 +91,10 @@ namespace BejelentkezesApp
                     adapter.Fill(dataTable);
 
                     FizetesiModComboBox.ItemsSource = dataTable.DefaultView;
-                    FizetesiModComboBox.DisplayMemberPath = "fizetesmod";  // Megjelenített érték
-                    FizetesiModComboBox.SelectedValuePath = "fizetesmodaz"; // Kiválasztott érték
+                    FizetesiModComboBox.DisplayMemberPath = "fizetesmod";  
+                    FizetesiModComboBox.SelectedValuePath = "fizetesmodaz"; 
 
-                    // Ha már betöltöttük a számlát, állítsuk be az értéket!
+                    
                     if (FizetesiModComboBox.Items.Count > 0 && fizetesiModAzErtek > 0)
                     {
                         FizetesiModComboBox.SelectedValue = fizetesiModAzErtek;
