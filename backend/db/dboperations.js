@@ -360,21 +360,49 @@ async function getPriceRange() {
 
 async function searchProducts(query) {
   try {
-    const sql = `
-      SELECT * FROM oralekerdezes 
-      WHERE 
+    const keywords = query.trim().split(/\s+/); // szavak szétválasztása szóköz szerint
+    const conditions = [];
+    const values = [];
+
+    for (const word of keywords) {
+      const like = `%${word}%`;
+
+      // Egy szó több mezőben keres
+      conditions.push(`(
         megnevezes LIKE ? OR 
         marka LIKE ? OR 
-        tipus LIKE ?
+        tipus LIKE ? OR
+        CAST(ar AS CHAR) LIKE ? OR
+        nem LIKE ? OR
+        meghajtas LIKE? OR
+        atokszine LIKE ? OR
+        aszamlapszine LIKE ? OR
+        atok LIKE ? OR
+        kristalyuveg LIKE ? OR
+        szamlaptipus LIKE ? OR
+        oraforma LIKE ? OR
+        szij LIKE ? 
+
+        
+      )`);
+      
+      // Minden mezőhöz hozzáadjuk a paramétert
+      values.push(like, like, like, like, like, like, like, like, like, like, like, like, like);
+    }
+
+    const sql = `
+      SELECT * FROM oralekerdezes
+      WHERE ${conditions.join(" AND ")}
     `;
-    const searchQuery = `%${query}%`;
-    const [rows] = await pool.query(sql, [searchQuery, searchQuery, searchQuery]);
+
+    const [rows] = await pool.query(sql, values);
     return rows;
   } catch (error) {
     console.error("❌ Hiba történt a keresés során:", error);
     throw error;
   }
 }
+
 
 async function registerUser(nev, tel, email, jelszo) {
   try {
