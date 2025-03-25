@@ -1036,7 +1036,9 @@ namespace BejelentkezesApp
                     string query = @"SELECT * FROM szamlazas 
                              WHERE sznev LIKE @keres 
                                 OR email LIKE @keres 
-                                OR tel LIKE @keres";
+                                OR tel LIKE @keres
+                                OR cim LIKE @keres
+                                OR DATE_FORMAT(datum, '%Y.%m.%d') LIKE @keres";
 
                     MySqlCommand command = new MySqlCommand(query, connection);
                     command.Parameters.AddWithValue("@keres", $"%{keresettSzoveg}%");
