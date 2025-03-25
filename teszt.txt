@@ -1,0 +1,37 @@
+[Setup]
+; Telepítő alapbeállításai
+AppName=WachLuxInstaller
+AppVersion=2.6.0.2.
+DefaultDirName={pf}\WachLux
+DefaultGroupName=WachLux
+OutputDir=.\Output
+OutputBaseFilename=WatchLuxInstaller
+Compression=lzma
+SolidCompression=yes
+; Telepítő ikon (exe fájl ikonja)
+SetupIconFile=C:\Users\13d\Desktop\bejelent\bejelent\Assets\logo152.bmp
+
+; Bal oldali telepítő kép
+WizardImageFile=C:\Users\13d\Desktop\bejelent\bejelent\Assets\logo152.bmp
+
+; Fejléc logó
+WizardSmallImageFile=C:\Users\13d\Desktop\bejelent\bejelent\Assets\logo152.bmp
+[Languages]
+Name: "english"; MessagesFile: "compiler:Default.isl"
+
+[Setup]
+; Engedélyezze a telepítési mappa kiválasztását
+DisableDirPage=no
+AllowNoIcons=yes
+
+[Files]
+; A telepítendő fájlok
+Source: "C:\Users\13d\Desktop\bejelent\bejelent\bin\Debug\net8.0-windows\*"; DestDir: "{app}"; Flags: ignoreversion
+
+; A képek mappájának hozzáadása
+Source: "C:\Users\13d\Desktop\bejelent\bejelent\Assets\*"; DestDir: "{app}\kepek"; Flags: recursesubdirs createallsubdirs
+
+[Icons]
+;Start menü hivatkozást adunk hozzá
+Name: "{group}\WachLux"; Filename: "{app}\bejelent.exe"
+
