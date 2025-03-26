@@ -141,7 +141,7 @@ namespace BejelentkezesApp
                     
                     var tableNames = tables.AsEnumerable()
                         .Select(row => row["TABLE_NAME"].ToString())
-                        .Where(table => table != "ora") 
+                        .Where(table => table != "ora" && table != "szamla" && table != "megrendeles")
                         .ToList();
 
                     
@@ -217,8 +217,61 @@ namespace BejelentkezesApp
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
-            UpdateTableData("Adminisztráció");
+            if (DataGrid.SelectedItem is not DataRowView selectedRow)
+            {
+                MessageBox.Show("Válassz ki egy sort a módosításhoz!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            EditDataWindow editWindow = new EditDataWindow(selectedRow);
+            if (editWindow.ShowDialog() == true && editWindow.UpdatedData != null)
+            {
+                try
+                {
+                    using MySqlConnection connection = new MySqlConnection(connectionString);
+                    connection.Open();
+
+                    // Lekérdezzük az elsődleges kulcsot
+                    string queryPk = $@"
+                SELECT COLUMN_NAME 
+                FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+                WHERE TABLE_NAME = '{selectedTable}' 
+                AND TABLE_SCHEMA = DATABASE() 
+                AND CONSTRAINT_NAME = 'PRIMARY';";
+                    string primaryKeyColumn = new MySqlCommand(queryPk, connection).ExecuteScalar()?.ToString();
+
+                    if (string.IsNullOrEmpty(primaryKeyColumn))
+                    {
+                        MessageBox.Show("Nem található elsődleges kulcs!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    string updateQuery = $"UPDATE `{selectedTable}` SET ";
+                    foreach (var kvp in editWindow.UpdatedData)
+                    {
+                        updateQuery += $"`{kvp.Key}` = @{kvp.Key}, ";
+                    }
+                    updateQuery = updateQuery.TrimEnd(',', ' ');
+                    updateQuery += $" WHERE `{primaryKeyColumn}` = @key";
+
+                    MySqlCommand cmd = new MySqlCommand(updateQuery, connection);
+                    foreach (var kvp in editWindow.UpdatedData)
+                    {
+                        cmd.Parameters.AddWithValue($"@{kvp.Key}", kvp.Value ?? DBNull.Value);
+                    }
+                    cmd.Parameters.AddWithValue("@key", selectedRow.Row[primaryKeyColumn]);
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("A módosítás sikeres volt!", "Siker", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ListDataButton_Click(null, null);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba a módosítás során:\n{ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
+
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
@@ -1085,6 +1138,63 @@ namespace BejelentkezesApp
         }
 
 
+        private void AddNewRow_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(selectedTable))
+            {
+                MessageBox.Show("Előbb válassz egy táblát a listából!", "Figyelmeztetés", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            DataTable dt = (DataGrid.ItemsSource as DataView)?.Table;
+            if (dt == null)
+            {
+                MessageBox.Show("Nincs adat betöltve!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            AddDataWindow addWindow = new AddDataWindow(dt.Columns);
+            bool? result = addWindow.ShowDialog();
+
+            if (result == true && addWindow.NewData != null)
+            {
+                try
+                {
+                    using (MySqlConnection connection = new MySqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        string insertQuery = $"INSERT INTO `{selectedTable}` (";
+                        string valuesQuery = "VALUES (";
+
+                        foreach (var kvp in addWindow.NewData)
+                        {
+                            insertQuery += $"`{kvp.Key}`, ";
+                            valuesQuery += $"@{kvp.Key}, ";
+                        }
+
+                        insertQuery = insertQuery.TrimEnd(',', ' ') + ")";
+                        valuesQuery = valuesQuery.TrimEnd(',', ' ') + ")";
+
+                        MySqlCommand command = new MySqlCommand($"{insertQuery} {valuesQuery}", connection);
+
+                        foreach (var kvp in addWindow.NewData)
+                        {
+                            command.Parameters.AddWithValue($"@{kvp.Key}", kvp.Value ?? DBNull.Value);
+                        }
+
+                        command.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("Sikeres hozzáadás!", "Siker", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ListDataButton_Click(null, null); // Frissítés
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba a mentés során: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
 
 
     }

@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="AddDataWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="AddOraWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -14,6 +17,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="CreateInvoiceWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="EditDataWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="EditInvoiceWindow.xaml.cs">
@@ -24,6 +30,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="AddDataWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="AddOraWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -31,6 +40,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="CreateInvoiceWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="EditDataWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="EditInvoiceWindow.xaml">
