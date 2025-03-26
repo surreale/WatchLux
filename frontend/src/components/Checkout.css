@@ -183,3 +183,129 @@
         padding: 20px;
     }
 }
+.revolut-card {
+    width: 340px;
+    height: 210px;
+    border-radius: 16px;
+    padding: 20px;
+    background: linear-gradient(135deg, #c13584, #4e00c2, #00008b);
+    color: white;
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.9;
+  }
+  
+  .revolut-logo {
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+  }
+  
+  .revolut-chip {
+    width: 50px;
+    height: 35px;
+    background: linear-gradient(to bottom, #eee, #ccc);
+    border-radius: 6px;
+    position: absolute;
+    top: 70px;
+    right: 30px;
+  }
+  
+  .revolut-card-number {
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-top: 100px;
+    padding-left: 20px;
+  }
+  
+  .revolut-holder {
+    padding-left: 20px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .revolut-exp {
+    position: absolute;
+    bottom: 50px;
+    right: 30px;
+    font-size: 14px;
+  }
+  
+  .revolut-mc-logo {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 30px;
+  }
+  
+  .revolut-mc-logo .circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    opacity: 0.95;
+  }
+  
+  .revolut-mc-logo .red {
+    background-color: #eb001b;
+    left: 0;
+    z-index: 1;
+  }
+  
+  .revolut-mc-logo .yellow {
+    background-color: #f79e1b;
+    left: 10px;
+    z-index: 2;
+  }
+  .checkout-payment-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
+    margin-top: 40px;
+  }
+  
+  .checkout-payment-right {
+    flex: 1;
+    min-width: 350px;
+    max-width: 500px;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .checkout-cart-summary {
+    flex: 1;
+    min-width: 350px;
+    max-width: 500px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+  }
+  @media (max-width: 768px) {
+    .checkout-payment-section {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+    
+  

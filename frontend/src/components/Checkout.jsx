@@ -80,11 +80,9 @@ const Checkout = () => {
   const formatTaxId = (value) => {
     const digits = value.replace(/\D/g, "").slice(0, 11);
     let formatted = "";
-
     if (digits.length > 0) formatted += digits.slice(0, 8);
     if (digits.length > 8) formatted += "-" + digits.slice(8, 9);
     if (digits.length > 9) formatted += "-" + digits.slice(9, 11);
-
     return formatted;
   };
 
@@ -92,25 +90,16 @@ const Checkout = () => {
     const { name, value } = e.target;
     let newValue = value;
 
-    if (name === "taxId") {
-      newValue = formatTaxId(value);
-    } else if (name === "phone") {
-      newValue = formatPhone(value);
-    } else if (name === "name") {
-      newValue = formatName(value);
-    } else if (name === "email" && value.length > 40) {
-      return;
-    } else if (name === "postalCode") {
-      newValue = value.replace(/\D/g, "").slice(0, 15);
-    } else if (name === "city") {
-      newValue = value.replace(/[^a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s\-]/g, "");
-    }
+    if (name === "taxId") newValue = formatTaxId(value);
+    else if (name === "phone") newValue = formatPhone(value);
+    else if (name === "name") newValue = formatName(value);
+    else if (name === "email" && value.length > 40) return;
+    else if (name === "postalCode") newValue = value.replace(/\D/g, "").slice(0, 15);
+    else if (name === "city") newValue = value.replace(/[^a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s\-]/g, "");
 
     if (isBilling) {
       setBillingInfo((prev) => ({ ...prev, [name]: newValue }));
-      if (sameAsShipping) {
-        setShippingInfo((prev) => ({ ...prev, [name]: newValue }));
-      }
+      if (sameAsShipping) setShippingInfo((prev) => ({ ...prev, [name]: newValue }));
     } else {
       setShippingInfo((prev) => ({ ...prev, [name]: newValue }));
     }
@@ -119,9 +108,7 @@ const Checkout = () => {
   const handleSameAsBillingChange = (e) => {
     const checked = e.target.checked;
     setSameAsShipping(checked);
-    if (checked) {
-      setShippingInfo({ ...billingInfo });
-    }
+    if (checked) setShippingInfo({ ...billingInfo });
   };
 
   const handleNextToPayment = () => {
@@ -135,11 +122,10 @@ const Checkout = () => {
     }
 
     const allFields = sameAsShipping
-    ? Object.entries(billingInfo)
-        .filter(([key]) => key !== "taxId") // taxId kihagyva
-        .map(([, val]) => val)
-    : Object.values(shippingInfo);
-  
+      ? Object.entries(billingInfo)
+          .filter(([key]) => key !== "taxId")
+          .map(([, val]) => val)
+      : Object.values(shippingInfo);
 
     if (allFields.some((val) => val.trim() === "")) {
       setShowNotification(true);
@@ -190,32 +176,33 @@ const Checkout = () => {
   return (
     <div className="checkout-page">
       <h2 className="cl">Fizetés</h2>
+
       {cart.length === 0 ? (
         <p className="cl">A kosár üres.</p>
       ) : (
         <>
-          <div className="checkout-content">
-            <div className="checkout-cart-summary">
-              <h3>Termékek összegzése</h3>
-              {cart.map((item) => (
-                <div key={item.oraaz} className="checkout-item">
-                  <img
-                    src={`/images/${item.kep1}`}
-                    alt={item.megnevezes}
-                    className="checkout-image"
-                  />
-                  <div className="checkout-details">
-                    <h4>{item.megnevezes}</h4>
-                    <p>Ár: {Number(item.ar).toLocaleString()} Ft</p>
-                    <p>Mennyiség: {item.mennyiseg || 1} db</p>
-                    <p>Összesen: {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft</p>
+          {!showPaymentSection && (
+            <div className="checkout-content">
+              <div className="checkout-cart-summary">
+                <h3>Termékek összegzése</h3>
+                {cart.map((item) => (
+                  <div key={item.oraaz} className="checkout-item">
+                    <img
+                      src={`/images/${item.kep1}`}
+                      alt={item.megnevezes}
+                      className="checkout-image"
+                    />
+                    <div className="checkout-details">
+                      <h4>{item.megnevezes}</h4>
+                      <p>Ár: {Number(item.ar).toLocaleString()} Ft</p>
+                      <p>Mennyiség: {item.mennyiseg || 1} db</p>
+                      <p>Összesen: {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft</p>
+                    </div>
                   </div>
-                </div>
-              ))}
-              <h3>Végösszeg: {totalPrice.toLocaleString()} Ft</h3>
-            </div>
+                ))}
+                <h3>Végösszeg: {totalPrice.toLocaleString()} Ft</h3>
+              </div>
 
-            {!showPaymentSection && (
               <div className="checkout-shipping">
                 <div className="billing-section">
                   <h3>Számlázási adatok</h3>
@@ -241,7 +228,13 @@ const Checkout = () => {
                       <input
                         key={field}
                         name={field}
-                        placeholder={field === "name" ? "Teljes név*" : field === "email" ? "Email cím*" : field === "postalCode" ? "Irányítószám*" : field === "phone" ? "Telefonszám*" : `${field.charAt(0).toUpperCase() + field.slice(1)}*`}
+                        placeholder={
+                          field === "name" ? "Teljes név*" :
+                          field === "email" ? "Email cím*" :
+                          field === "postalCode" ? "Irányítószám*" :
+                          field === "phone" ? "Telefonszám*" :
+                          `${field.charAt(0).toUpperCase() + field.slice(1)}*`
+                        }
                         value={shippingInfo[field]}
                         onChange={handleInputChange}
                         disabled={sameAsShipping}
@@ -259,35 +252,67 @@ const Checkout = () => {
                   Vissza
                 </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {showPaymentSection && (
-            <div className="payment-container">
-              <h3>Fizetési mód</h3>
-              <p>Csak utánvétes fizetés lehetséges.</p>
-
-              <div className="terms">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={acceptedTerms}
-                    onChange={(e) => setAcceptedTerms(e.target.checked)}
-                  />{" "}
-                  Elfogadom az{" "}
-                  <a href="/aszf" target="_blank" rel="noopener noreferrer">
-                    Általános Szerződési Feltételeket
-                  </a>
-                </label>
+            <div className="checkout-payment-section">
+              <div className="checkout-cart-summary">
+                <h3>Termékek összegzése</h3>
+                {cart.map((item) => (
+                  <div key={item.oraaz} className="checkout-item">
+                    <img
+                      src={`/images/${item.kep1}`}
+                      alt={item.megnevezes}
+                      className="checkout-image"
+                    />
+                    <div className="checkout-details">
+                      <h4>{item.megnevezes}</h4>
+                      <p>Ár: {Number(item.ar).toLocaleString()} Ft</p>
+                      <p>Mennyiség: {item.mennyiseg || 1} db</p>
+                      <p>Összesen: {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft</p>
+                    </div>
+                  </div>
+                ))}
+                <h3>Végösszeg: {totalPrice.toLocaleString()} Ft</h3>
               </div>
 
-              <button className="payment-button" onClick={handlePayment} disabled={!acceptedTerms}>
-                Rendelés leadása
-              </button>
+              <div className="checkout-payment-right">
+                <div className="mock-card-container">
+                  <div className="revolut-card">
+                    <div className="revolut-logo">Revolut</div>
+                    <div className="revolut-chip"></div>
+                    <div className="revolut-card-number">1234 5678 9012 3456</div>
+                    <div className="revolut-holder">CARDHOLDER NAME</div>
+                    <div className="revolut-exp">12/26</div>
+                    <div className="revolut-mc-logo">
+                      <div className="circle red"></div>
+                      <div className="circle yellow"></div>
+                    </div>
+                  </div>
+                </div>
 
-              <button className="vissza2" onClick={() => setShowPaymentSection(false)}>
-                Vissza
-              </button>
+                <div className="terms">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={acceptedTerms}
+                      onChange={(e) => setAcceptedTerms(e.target.checked)}
+                    />{" "}
+                    Elfogadom az{" "}
+                    <a href="/aszf" target="_blank" rel="noopener noreferrer">
+                      Általános Szerződési Feltételeket
+                    </a>
+                  </label>
+                </div>
+
+                <button className="payment-button" onClick={handlePayment} disabled={!acceptedTerms}>
+                  Rendelés leadása
+                </button>
+                <button className="vissza2" onClick={() => setShowPaymentSection(false)}>
+                  Vissza
+                </button>
+              </div>
             </div>
           )}
         </>
