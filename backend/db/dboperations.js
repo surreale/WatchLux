@@ -571,6 +571,9 @@ async function insertOrderItem({ szamlaaz, oraaz, db }) {
   return result;
 }
 
+
+
+
 module.exports = {
   getProducts,
   getProductById,
@@ -604,4 +607,5 @@ module.exports = {
   insertShippingData,
   insertInvoice,
   insertOrderItem
+ 
 };

@@ -86,6 +86,12 @@ export default function Register({ showRegister, handleRegisterClose }) {
         event.preventDefault();
         setHibaUzenet("");
     
+        const nameParts = nev.trim().split(/\s+/);
+        if (nameParts.length < 2) {
+            setHibaUzenet("Kérlek, add meg a teljes nevedet (pl. Vezetéknév Keresztnév)!");
+            return;
+        }
+
         if (!passwordValid) {
             setHibaUzenet("A jelszó nem felel meg a követelményeknek!");
             return;
@@ -102,11 +108,17 @@ export default function Register({ showRegister, handleRegisterClose }) {
                 jelszo
             });
     
-            alert(response.data.message);
-            handleRegisterClose();
-    
-            localStorage.setItem("isLoggedIn", "true");
-            localStorage.setItem("userId", response.data.userId); 
+            if (!response.data.userId) {
+                setHibaUzenet("Nem sikerült regisztrálni: hiányzó user ID.");
+                return;
+              }
+              
+              alert(response.data.message);
+              handleRegisterClose();
+              
+              localStorage.setItem("isLoggedIn", "true");
+              localStorage.setItem("userId", response.data.userId); 
+              
 
             const savedCart = localStorage.getItem("cart");
             if (savedCart) {

@@ -7,32 +7,33 @@ const router = express.Router();
 // 🔹 Regisztráció végpont
 router.post("/register", async (req, res) => {
     try {
-        const { nev, tel, email, jelszo } = req.body;
-
-        if (!nev || !tel || !email || !jelszo) {
-            return res.status(400).json({ error: "Minden mező kitöltése kötelező!" });
-        }
-
-        // 🔹 Jelszó validáció a backendben is
-        if (jelszo.length < 8 || !/[A-Z]/.test(jelszo) || !/[a-z]/.test(jelszo)) {
-            return res.status(400).json({ error: "A jelszónak legalább 8 karakter hosszúnak kell lennie, és tartalmaznia kell kis- és nagybetűt." });
-        }
-
-        const existingUser = await db.checkExistingUser(email, tel);
-        if (existingUser) {
-            return res.status(400).json({ error: "Már létezik ilyen e-mail vagy telefonszám!" });
-        }
-
-        const hashedPassword = crypto.createHash("sha256").update(jelszo).digest("hex");
-
-        await db.registerUser(nev, tel.replace("+", ""), email, hashedPassword);
-
-        res.status(201).json({ message: "Sikeres regisztráció!" });
+      const { nev, tel, email, jelszo } = req.body;
+  
+      if (!nev || !tel || !email || !jelszo) {
+        return res.status(400).json({ error: "Minden mező kitöltése kötelező!" });
+      }
+  
+      if (jelszo.length < 8 || !/[A-Z]/.test(jelszo) || !/[a-z]/.test(jelszo)) {
+        return res.status(400).json({ error: "A jelszónak legalább 8 karakter hosszúnak kell lennie, és tartalmaznia kell kis- és nagybetűt." });
+      }
+  
+      const existingUser = await db.checkExistingUser(email, tel);
+      if (existingUser) {
+        return res.status(400).json({ error: "Már létezik ilyen e-mail vagy telefonszám!" });
+      }
+  
+      const hashedPassword = crypto.createHash("sha256").update(jelszo).digest("hex");
+  
+      const result = await db.registerUser(nev, tel.replace("+", ""), email, hashedPassword);
+  
+      // 🔥 Itt visszaküldjük a userId-t
+      res.status(201).json({ message: "Sikeres regisztráció!", userId: result.insertId });
     } catch (error) {
-        console.error("❌ Hiba történt a regisztráció során:", error);
-        res.status(500).json({ error: "Szerverhiba, próbáld újra később!" });
+      console.error("❌ Hiba történt a regisztráció során:", error);
+      res.status(500).json({ error: "Szerverhiba, próbáld újra később!" });
     }
-});
+  });
+  
 
 router.post("/login", async (req, res) => {
     try {
@@ -118,5 +119,28 @@ router.get("/profile", async (req, res) => {
     }
 });
 
-
+router.post("/address", async (req, res) => {
+    try {
+      const { userId, name, address, postalCode, city } = req.body;
+  
+      if (!userId || !name || !address || !postalCode || !city) {
+        return res.status(400).json({ error: "Minden mezőt ki kell tölteni!" });
+      }
+  
+      const result = await db.insertShippingData({
+        name,
+        address,
+        postalCode,
+        city,
+      });
+  
+      // kapcsoljuk össze a vásárlóval is, ha kell (pl. külön tábla esetén)
+  
+      res.status(201).json({ message: "Számlázási adatok elmentve!", id: result.insertId });
+    } catch (error) {
+      console.error("❌ Hiba a számlázási adatok mentésekor:", error);
+      res.status(500).json({ error: "Szerverhiba a számlázási adatok mentésekor." });
+    }
+  });
+  
 module.exports = router;
