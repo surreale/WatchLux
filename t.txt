@@ -1,1 +1,0 @@
-inno setup compiler 6.4.1
