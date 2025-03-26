@@ -1,21 +1,21 @@
 [Setup]
 ; Telepítő alapbeállításai
-AppName=WachLuxInstaller
+AppName=WatchLuxInstaller
 AppVersion=2.6.0.2.
-DefaultDirName={pf}\WachLux
-DefaultGroupName=WachLux
+DefaultDirName={pf}\WatchLux
+DefaultGroupName=WatchLux
 OutputDir=.\Output
 OutputBaseFilename=WatchLuxInstaller
 Compression=lzma
 SolidCompression=yes
 ; Telepítő ikon (exe fájl ikonja)
-SetupIconFile=C:\Users\13d\Desktop\bejelent\bejelent\Assets\logo152.bmp
+SetupIconFile=C:\Users\MSI\Desktop\bejelent\bejelent\Assets\logo152.ico
 
 ; Bal oldali telepítő kép
-WizardImageFile=C:\Users\13d\Desktop\bejelent\bejelent\Assets\logo152.bmp
+WizardImageFile=C:\Users\MSI\Desktop\bejelent\bejelent\Assets\logo152.bmp
 
 ; Fejléc logó
-WizardSmallImageFile=C:\Users\13d\Desktop\bejelent\bejelent\Assets\logo152.bmp
+WizardSmallImageFile=C:\Users\MSI\Desktop\bejelent\bejelent\Assets\logo152.bmp
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
@@ -26,12 +26,12 @@ AllowNoIcons=yes
 
 [Files]
 ; A telepítendő fájlok
-Source: "C:\Users\13d\Desktop\bejelent\bejelent\bin\Debug\net8.0-windows\*"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\MSI\Desktop\bejelent\bejelent\bin\Debug\net8.0-windows\*"; DestDir: "{app}"; Flags: ignoreversion
 
 ; A képek mappájának hozzáadása
-Source: "C:\Users\13d\Desktop\bejelent\bejelent\Assets\*"; DestDir: "{app}\kepek"; Flags: recursesubdirs createallsubdirs
+Source: "C:\Users\MSI\Desktop\bejelent\bejelent\Assets\*"; DestDir: "{app}\kepek"; Flags: recursesubdirs createallsubdirs
 
 [Icons]
 ;Start menü hivatkozást adunk hozzá
-Name: "{group}\WachLux"; Filename: "{app}\bejelent.exe"
+Name: "{group}\WatchLux"; Filename: "{app}\bejelent.exe"
 
