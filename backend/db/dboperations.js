@@ -550,10 +550,19 @@ async function insertShippingData({ name, address, postalCode, city }) {
 }
 
 async function insertInvoice({ vasarloaz, szallitasaz, fizetesmodaz, adoszam }) {
-  const query = `INSERT INTO szamla (vasarloaz, szallitasaz, fizetesmodaz, adoszam, datum) VALUES (?, ?, ?, ?, NOW())`;
-  const [result] = await pool.query(query, [vasarloaz, szallitasaz, fizetesmodaz, adoszam]);
+  const query = `
+    INSERT INTO szamla (vasarloaz, szallitasaz, fizetesmodaz, adoszam, datum)
+    VALUES (?, ?, ?, ?, NOW())
+  `;
+  const [result] = await pool.query(query, [
+    vasarloaz,
+    szallitasaz,
+    fizetesmodaz,
+    adoszam,
+  ]);
   return result;
 }
+
 
 
 async function insertOrderItem({ szamlaaz, oraaz, db }) {

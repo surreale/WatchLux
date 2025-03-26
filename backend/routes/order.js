@@ -51,7 +51,7 @@ router.post("/finalize", async (req, res) => {
       vasarloaz,
       szallitasaz,
       fizetesmodaz: 2, // utánvét
-      adoszam: null,
+      adoszam: billing.taxId || null, // ✅ Adószám mentése, ha van
     });
 
     const szamlaaz = szamlaRes.insertId;
