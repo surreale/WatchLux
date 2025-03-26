@@ -1,0 +1,109 @@
+﻿<Window x:Class="BejelentkezesApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Bejelentkezés" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Background="#1E1E2D">
+    
+    
+
+    <Window.Resources>
+        
+        <Style TargetType="TextBox" x:Key="RoundedTextBox">
+            <Setter Property="Background" Value="#2A2A3C"/>
+            
+            <Setter Property="Foreground" Value="White"/>
+            
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"
+                                          x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        
+        <Style TargetType="PasswordBox" x:Key="RoundedPasswordBox">
+            <Setter Property="Background" Value="#2A2A3C"/>
+            
+            <Setter Property="Foreground" Value="White"/>
+            
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+                                <AdornerDecorator>
+                                    <ScrollViewer Name="PART_ContentHost" />
+                                </AdornerDecorator>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        
+        <Style TargetType="Button" x:Key="RoundedButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+
+
+        <Image Source="pack://application:,,,/Assets/login.jpg.webp" Stretch="UniformToFill" Opacity="0.3" />
+
+
+
+
+
+
+        <Border Background="#1E1E2D" CornerRadius="20" Width="500" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.8">
+            <Grid>
+                
+                <TextBlock Text="Bejelentkezés" FontSize="26" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="0,20,0,10"/>
+
+                <StackPanel Margin="50,20,50,20" VerticalAlignment="Center">
+                    
+                    <TextBlock Text="Felhasználónév" FontSize="16" Foreground="White" Margin="0,0,0,5"/>
+                    <TextBox Name="UsernameTextBox" Style="{StaticResource RoundedTextBox}" Height="45" Margin="0,0,0,20"/>
+
+                    
+                    <TextBlock Text="Jelszó" FontSize="16" Foreground="White" Margin="0,0,0,5"/>
+                    <PasswordBox Name="PasswordBox" Style="{StaticResource RoundedPasswordBox}" Height="45" Margin="0,0,0,20"/>
+
+                    
+                    <Button Content="Bejelentkezés" Background="#4CAF50" Width="200" Height="45"
+                            Click="LoginButton_Click" HorizontalAlignment="Center"
+                            Style="{StaticResource RoundedButton}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
