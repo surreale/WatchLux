@@ -506,6 +506,62 @@ async function changeUserPassword(userId, oldPassword, newPassword) {
   }
 }
 
+
+
+async function insertOrGetGuestBuyer({ name, email, phone }) {
+  try {
+    const [existing] = await pool.query(
+      `SELECT vasarloaz FROM vasarlo 
+       WHERE nev = ? AND email = ? AND tel = ? AND jelszo IS NULL`,
+      [name, email, phone]
+    );
+
+    if (existing.length > 0) {
+      console.log("🔁 Létező vendég:", existing[0]);
+      return { insertId: existing[0].vasarloaz };
+    }
+
+    const [result] = await pool.query(
+      "INSERT INTO vasarlo (nev, email, tel, jelszo) VALUES (?, ?, ?, ?)",
+      [name, email, phone, null]
+    );
+    console.log("✅ Új vendég beszúrva:", result);
+    return result;
+  } catch (error) {
+    console.error("❌ HIBA a vendég mentésekor:", error);
+    throw error;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+async function insertShippingData({ name, address, postalCode, city }) {
+  const query = `INSERT INTO szallitassz (nev, cim, iranyszam, varos) VALUES (?, ?, ?, ?)`;
+  const [result] = await pool.query(query, [name, address, postalCode, city]);
+  return result;
+}
+
+async function insertInvoice({ vasarloaz, szallitasaz, fizetesmodaz, adoszam }) {
+  const query = `INSERT INTO szamla (vasarloaz, szallitasaz, fizetesmodaz, adoszam, datum) VALUES (?, ?, ?, ?, NOW())`;
+  const [result] = await pool.query(query, [vasarloaz, szallitasaz, fizetesmodaz, adoszam]);
+  return result;
+}
+
+
+async function insertOrderItem({ szamlaaz, oraaz, db }) {
+  const query = `INSERT INTO megrendeles (szamlaaz, oraaz, db) VALUES (?, ?, ?)`;
+  const [result] = await pool.query(query, [szamlaaz, oraaz, db]);
+  return result;
+}
+
 module.exports = {
   getProducts,
   getProductById,
@@ -534,5 +590,9 @@ module.exports = {
   getUserByEmail,
   getUserProfile,
   updateUserProfile,
-  changeUserPassword
+  changeUserPassword,
+  insertOrGetGuestBuyer,
+  insertShippingData,
+  insertInvoice,
+  insertOrderItem
 };

@@ -1,26 +1,38 @@
 .checkout-page {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    overflow: hidden;
     background-color: #fff;
+    overflow-x: hidden;
+    padding-bottom: 150px;
+}
+
+.checkout-page h2.cl {
+    margin-top: 80px; /* biztosít helyet a fix menü alatt */
+    color: #000;
 }
 
 .checkout-content {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    align-items: center;
+    gap: 30px;
+    align-items: flex-start;
     justify-content: center;
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
 }
 
-.checkout-cart-summary, .checkout-shipping {
+.checkout-cart-summary,
+.checkout-shipping {
     flex: 1;
-    min-width: 300px;
+    min-width: 350px;
+    max-width: 500px;
     background-color: #fff;
     padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
 }
 
 .checkout-item {
@@ -28,7 +40,7 @@
     align-items: center;
     background: white;
     padding: 10px;
-    margin: 10px;
+    margin: 10px 0;
     border-radius: 30px;
 }
 
@@ -52,8 +64,8 @@
 }
 
 .shipping-form input {
-    width: 70%;
-    padding: 8px;
+    width: 90%;
+    padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 50px;
@@ -64,106 +76,110 @@
     color: black;
     border: 1px solid black;
     border-radius: 50px;
-    padding: 10px 15px;
+    padding: 10px 20px;
     cursor: pointer;
     text-align: center;
     transition: background 0.3s;
-    width: 40%;
-    margin-right: 10px;
+    min-width: 160px;
+    font-weight: bold;
 }
 
 .payment-button:hover {
     background-color: #49bf8c;
-    color: rgb(255, 255, 255);
+    color: white;
 }
 
-.cl {
-    color: rgb(0, 0, 0);
-}
-
-.vegosszeg {
-    margin-top: 40px;
-}
-
-.checkout-cart-summary {
-    flex: 1; /* Nagyobb lesz a bal oldal */
-    min-width: 400px; /* Minimális szélesség */
-    background-color: #fff;
-    padding: 20px;
-}
-
-.checkout-shipping {
-    flex: 1; /* Kisebb lesz a jobb oldal */
-    min-width: 300px;
-    background-color: #fff;
-    padding: 20px;
-}
-
-.checkout-content {
-    display: flex;
-    gap: 30px; /* Nagyobb távolság a két rész között */
-    align-items: flex-start; /* Felül igazítja a két részt */
-    justify-content: center; /* Középre igazítja az egész tartalmat */
-}
-
-.vissza {
-    background-color: ghostwhite;
-    color: black;
-    border: 1px solid black;
-    border-radius: 50px;
-    padding: 10px 15px;
-    transition: background 0.3s;
-    width: 10%;
-}
-
-.vissza:hover {
-    background-color: #e81d1d;
-    color: rgb(255, 255, 255);
-}
-
-.payment-container {
-    margin-top: 40px;
-    border-top: 1px solid #ddd;
-    padding: 30px;
-    background-color: #f9f9f9;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 20px;
-  }
-  
-  .terms {
-    margin: 20px 0;
-    font-size: 14px;
-  }
-  
-  .terms a {
-    color: #007bff;
-    text-decoration: underline;
-  }
-  
-  .terms a:hover {
-    text-decoration: none;
-  }
-
+.vissza,
 .vissza2 {
     background-color: ghostwhite;
     color: black;
     border: 1px solid black;
     border-radius: 50px;
-    padding: 10px 15px;
+    padding: 10px 20px;
     transition: background 0.3s;
-    width: 20%;
+    min-width: 120px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
+.vissza:hover,
 .vissza2:hover {
     background-color: #e81d1d;
-    color: rgb(255, 255, 255);
+    color: white;
+}
+
+.payment-container {
+    position: sticky;
+    bottom: 0;
+    background-color: #f9f9f9;
+    padding: 30px;
+    z-index: 100;
+    border-top: 1px solid #ddd;
+    max-width: 600px;
+    margin: auto;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.terms {
+    margin: 20px 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+.terms a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.terms a:hover {
+    text-decoration: none;
+}
+
+.notification {
+    background-color: #ffcccc;
+    color: #b30000;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.progress-bar {
+    height: 4px;
+    background-color: #b30000;
+    animation: progress 3s linear;
+    margin-top: 5px;
+    border-radius: 2px;
+}
+
+@keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
 }
 
 @media (max-width: 768px) {
-    .payment-button, .vissza {
-        width: 25%;
-        max-width: none;
+    .checkout-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .shipping-form input {
+        width: 95%;
+    }
+
+    .payment-button,
+    .vissza,
+    .vissza2 {
+        width: 90%;
+        margin: 10px auto;
+        text-align: center;
+    }
+
+    .payment-container {
+        border-radius: 0;
+        padding: 20px;
     }
 }

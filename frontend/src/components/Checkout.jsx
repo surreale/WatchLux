@@ -3,9 +3,14 @@ import { CartContext } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 import "./Notification.css";
+const rawUserId = localStorage.getItem("userId");
+const userId = !rawUserId || rawUserId === "null" ? null : parseInt(rawUserId);
+
 
 const Checkout = () => {
   const { cart } = useContext(CartContext);
+  const navigate = useNavigate();
+
   const [shippingInfo, setShippingInfo] = useState({
     name: "",
     email: "",
@@ -14,6 +19,7 @@ const Checkout = () => {
     postalCode: "",
     phone: "",
   });
+
   const [billingInfo, setBillingInfo] = useState({
     name: "",
     email: "",
@@ -22,11 +28,11 @@ const Checkout = () => {
     postalCode: "",
     phone: "",
   });
+
   const [sameAsShipping, setSameAsShipping] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [showPaymentSection, setShowPaymentSection] = useState(false);
-  const navigate = useNavigate();
 
   const totalPrice = cart.reduce(
     (acc, item) => acc + Number(item.ar) * (Number(item.mennyiseg) || 1),
@@ -54,7 +60,10 @@ const Checkout = () => {
   };
 
   const handleNextToPayment = () => {
-    const allFields = [...Object.values(shippingInfo), ...Object.values(billingInfo)];
+    const allFields = sameAsShipping
+      ? Object.values(shippingInfo)
+      : [...Object.values(shippingInfo), ...Object.values(billingInfo)];
+
     if (allFields.some((value) => value.trim() === "")) {
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
@@ -63,15 +72,39 @@ const Checkout = () => {
     setShowPaymentSection(true);
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (!acceptedTerms) {
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
       return;
     }
-    alert("Sikeres fizetés! Köszönjük a vásárlást.");
-    navigate("/");
+  
+    try {
+      const response = await fetch("http://localhost:8080/order/finalize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId, // ez most már biztosan null lesz, ha nincs bejelentkezve
+          cart,
+          shipping: shippingInfo,
+          billing: billingInfo,
+          sameAsShipping,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Hiba a rendelés mentésekor.");
+      }
+  
+      alert("✅ Sikeres rendelés! Köszönjük a vásárlást.");
+      localStorage.removeItem("cart");
+      navigate("/");
+    } catch (error) {
+      console.error("❌ Rendelés hiba:", error);
+      alert("Hiba történt a rendelés leadásakor.");
+    }
   };
+  
 
   return (
     <div className="checkout-page">
@@ -94,10 +127,7 @@ const Checkout = () => {
                     <h4>{item.megnevezes}</h4>
                     <p>Ár: {Number(item.ar).toLocaleString()} Ft</p>
                     <p>Mennyiség: {item.mennyiseg || 1} db</p>
-                    <p>
-                      Összesen:{" "}
-                      {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft
-                    </p>
+                    <p>Összesen: {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft</p>
                   </div>
                 </div>
               ))}
@@ -108,25 +138,23 @@ const Checkout = () => {
               <div className="checkout-shipping">
                 <h3>Szállítási adatok</h3>
                 <form className="shipping-form">
-                  {["name", "email", "address", "city", "postalCode", "phone"].map(
-                    (field) => (
-                      <input
-                        key={field}
-                        type={field === "email" ? "email" : "text"}
-                        name={field}
-                        placeholder={
-                          field === "postalCode"
-                            ? "Irányítószám*"
-                            : field === "phone"
-                              ? "Telefonszám*"
-                              : field.charAt(0).toUpperCase() + field.slice(1) + "*"
-                        }
-                        value={shippingInfo[field]}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    )
-                  )}
+                  {["name", "email", "address", "city", "postalCode", "phone"].map((field) => (
+                    <input
+                      key={field}
+                      type={field === "email" ? "email" : "text"}
+                      name={field}
+                      placeholder={
+                        field === "postalCode"
+                          ? "Irányítószám*"
+                          : field === "phone"
+                          ? "Telefonszám*"
+                          : field.charAt(0).toUpperCase() + field.slice(1) + "*"
+                      }
+                      value={shippingInfo[field]}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  ))}
                 </form>
 
                 <div className="billing-section">
@@ -140,26 +168,24 @@ const Checkout = () => {
                     Megegyezik a szállítási adatokkal
                   </label>
                   <form className="shipping-form">
-                    {["name", "email", "address", "city", "postalCode", "phone"].map(
-                      (field) => (
-                        <input
-                          key={field}
-                          type={field === "email" ? "email" : "text"}
-                          name={field}
-                          placeholder={
-                            field === "postalCode"
-                              ? "Irányítószám*"
-                              : field === "phone"
-                                ? "Telefonszám*"
-                                : field.charAt(0).toUpperCase() + field.slice(1) + "*"
-                          }
-                          value={billingInfo[field]}
-                          onChange={(e) => handleInputChange(e, true)}
-                          disabled={sameAsShipping}
-                          required
-                        />
-                      )
-                    )}
+                    {["name", "email", "address", "city", "postalCode", "phone"].map((field) => (
+                      <input
+                        key={field}
+                        type={field === "email" ? "email" : "text"}
+                        name={field}
+                        placeholder={
+                          field === "postalCode"
+                            ? "Irányítószám*"
+                            : field === "phone"
+                            ? "Telefonszám*"
+                            : field.charAt(0).toUpperCase() + field.slice(1) + "*"
+                        }
+                        value={billingInfo[field]}
+                        onChange={(e) => handleInputChange(e, true)}
+                        disabled={sameAsShipping}
+                        required
+                      />
+                    ))}
                   </form>
                 </div>
 
@@ -185,9 +211,9 @@ const Checkout = () => {
                     checked={acceptedTerms}
                     onChange={(e) => setAcceptedTerms(e.target.checked)}
                   />{" "}
-                  Elfogadom és megértettem a{" "}
+                  Elfogadom és megértettem az{" "}
                   <a href="/aszf" target="_blank" rel="noopener noreferrer">
-                    WatchLux Általános Szerződési Feltételeit
+                    Általános Szerződési Feltételeket
                   </a>
                 </label>
               </div>
