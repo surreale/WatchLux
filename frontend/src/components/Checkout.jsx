@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { CartContext } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 import "./Notification.css";
+import axios from "axios";
 
 const rawUserId = localStorage.getItem("userId");
 const userId = !rawUserId || rawUserId === "null" ? null : parseInt(rawUserId);
@@ -34,6 +35,25 @@ const Checkout = () => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [showPaymentSection, setShowPaymentSection] = useState(false);
+
+  useEffect(() => {
+    if (userId) {
+      axios
+        .get(`http://localhost:8080/auth/profile?userId=${userId}`)
+        .then((res) => {
+          const { nev, tel, email } = res.data;
+          setBillingInfo((prev) => ({
+            ...prev,
+            name: nev,
+            phone: tel,
+            email: email,
+          }));
+        })
+        .catch((err) => {
+          console.error("❌ Hiba a felhasználói adatok lekérésekor:", err);
+        });
+    }
+  }, []);
 
   const totalPrice = cart.reduce(
     (acc, item) => acc + Number(item.ar) * (Number(item.mennyiseg) || 1),
@@ -81,30 +101,26 @@ const Checkout = () => {
     } else if (name === "email" && value.length > 40) {
       return;
     } else if (name === "postalCode") {
-      newValue = value.replace(/\D/g, "").slice(0, 15); // 💥 Itt a lényeg!
+      newValue = value.replace(/\D/g, "").slice(0, 15);
     } else if (name === "city") {
       newValue = value.replace(/[^a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s\-]/g, "");
     }
-    
-    
-    
-
 
     if (isBilling) {
       setBillingInfo((prev) => ({ ...prev, [name]: newValue }));
+      if (sameAsShipping) {
+        setShippingInfo((prev) => ({ ...prev, [name]: newValue }));
+      }
     } else {
       setShippingInfo((prev) => ({ ...prev, [name]: newValue }));
-      if (sameAsShipping) {
-        setBillingInfo((prev) => ({ ...prev, [name]: newValue }));
-      }
     }
   };
 
-  const handleSameAsShippingChange = (e) => {
+  const handleSameAsBillingChange = (e) => {
     const checked = e.target.checked;
     setSameAsShipping(checked);
     if (checked) {
-      setBillingInfo({ ...shippingInfo, taxId: "" });
+      setShippingInfo({ ...billingInfo });
     }
   };
 
@@ -119,16 +135,18 @@ const Checkout = () => {
     }
 
     const allFields = sameAsShipping
-      ? Object.values(shippingInfo)
-      : Object.entries(billingInfo)
-          .filter(([key]) => key !== "taxId")
-          .map(([, val]) => val);
+    ? Object.entries(billingInfo)
+        .filter(([key]) => key !== "taxId") // taxId kihagyva
+        .map(([, val]) => val)
+    : Object.values(shippingInfo);
+  
 
     if (allFields.some((val) => val.trim() === "")) {
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
       return;
     }
+
     setShowPaymentSection(true);
   };
 
@@ -199,120 +217,39 @@ const Checkout = () => {
 
             {!showPaymentSection && (
               <div className="checkout-shipping">
-                <h3>Szállítási adatok</h3>
-                <form className="shipping-form">
-  <input
-    name="name"
-    placeholder="Teljes név*"
-    value={shippingInfo.name}
-    onChange={handleInputChange}
-    required
-  />
-  <input
-    name="email"
-    placeholder="Email cím*"
-    value={shippingInfo.email}
-    onChange={handleInputChange}
-    required
-  />
-  <input
-    name="address"
-    placeholder="Cím*"
-    value={shippingInfo.address}
-    onChange={handleInputChange}
-    required
-  />
-  <input
-    name="city"
-    placeholder="Város*"
-    value={shippingInfo.city}
-    onChange={handleInputChange}
-    required
-  />
-  <input
-    name="postalCode"
-    placeholder="Irányítószám*"
-    value={shippingInfo.postalCode}
-    onChange={handleInputChange}
-    required
-  />
-  <input
-    name="phone"
-    placeholder="Telefonszám*"
-    value={shippingInfo.phone}
-    onChange={handleInputChange}
-    required
-  />
-</form>
-
-
                 <div className="billing-section">
                   <h3>Számlázási adatok</h3>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={sameAsShipping}
-                      onChange={handleSameAsShippingChange}
-                    />{" "}
-                    Megegyezik a szállítási adatokkal
-                  </label>
                   <form className="shipping-form">
-  <input
-    name="name"
-    placeholder="Teljes név*"
-    value={billingInfo.name}
-    onChange={(e) => handleInputChange(e, true)}
-    disabled={sameAsShipping}
-    required
-  />
-  <input
-    name="email"
-    placeholder="Email cím*"
-    value={billingInfo.email}
-    onChange={(e) => handleInputChange(e, true)}
-    disabled={sameAsShipping}
-    required
-  />
-  <input
-    name="address"
-    placeholder="Cím*"
-    value={billingInfo.address}
-    onChange={(e) => handleInputChange(e, true)}
-    disabled={sameAsShipping}
-    required
-  />
-  <input
-    name="city"
-    placeholder="Város*"
-    value={billingInfo.city}
-    onChange={(e) => handleInputChange(e, true)}
-    disabled={sameAsShipping}
-    required
-  />
-  <input
-    name="postalCode"
-    placeholder="Irányítószám*"
-    value={billingInfo.postalCode}
-    onChange={(e) => handleInputChange(e, true)}
-    disabled={sameAsShipping}
-    required
-  />
-  <input
-    name="phone"
-    placeholder="Telefonszám*"
-    value={billingInfo.phone}
-    onChange={(e) => handleInputChange(e, true)}
-    disabled={sameAsShipping}
-    required
-  />
-  <input
-    name="taxId"
-    placeholder="Adószám (opcionális)"
-    value={billingInfo.taxId}
-    onChange={(e) => handleInputChange(e, true)}
-  />
-</form>
+                    <input name="name" placeholder="Teljes név*" value={billingInfo.name} onChange={(e) => handleInputChange(e, true)} required />
+                    <input name="email" placeholder="Email cím*" value={billingInfo.email} onChange={(e) => handleInputChange(e, true)} required />
+                    <input name="address" placeholder="Cím*" value={billingInfo.address} onChange={(e) => handleInputChange(e, true)} required />
+                    <input name="city" placeholder="Város*" value={billingInfo.city} onChange={(e) => handleInputChange(e, true)} required />
+                    <input name="postalCode" placeholder="Irányítószám*" value={billingInfo.postalCode} onChange={(e) => handleInputChange(e, true)} required />
+                    <input name="phone" placeholder="Telefonszám*" value={billingInfo.phone} onChange={(e) => handleInputChange(e, true)} required />
+                    <input name="taxId" placeholder="Adószám (opcionális)" value={billingInfo.taxId} onChange={(e) => handleInputChange(e, true)} />
+                  </form>
+                </div>
 
+                <label>
+                  <input type="checkbox" checked={sameAsShipping} onChange={handleSameAsBillingChange} /> Megegyezik a számlázási adatokkal
+                </label>
+
+                <div className="shipping-section">
+                  <h3>Szállítási adatok</h3>
+                  <form className="shipping-form">
+                    {["name", "email", "address", "city", "postalCode", "phone"].map((field) => (
+                      <input
+                        key={field}
+                        name={field}
+                        placeholder={field === "name" ? "Teljes név*" : field === "email" ? "Email cím*" : field === "postalCode" ? "Irányítószám*" : field === "phone" ? "Telefonszám*" : `${field.charAt(0).toUpperCase() + field.slice(1)}*`}
+                        value={shippingInfo[field]}
+                        onChange={handleInputChange}
+                        disabled={sameAsShipping}
+                        className={sameAsShipping ? "disabled" : ""}
+                        required
+                      />
+                    ))}
+                  </form>
                 </div>
 
                 <button className="payment-button" onClick={handleNextToPayment}>
@@ -344,11 +281,7 @@ const Checkout = () => {
                 </label>
               </div>
 
-              <button
-                className="payment-button"
-                onClick={handlePayment}
-                disabled={!acceptedTerms}
-              >
+              <button className="payment-button" onClick={handlePayment} disabled={!acceptedTerms}>
                 Rendelés leadása
               </button>
 
