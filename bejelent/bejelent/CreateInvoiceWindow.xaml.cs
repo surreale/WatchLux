@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using MySql.Data.MySqlClient;
 
 namespace BejelentkezesApp
@@ -18,7 +19,7 @@ namespace BejelentkezesApp
         {
             try
             {
-                FizetesiModComboBox.Items.Clear(); 
+                FizetesiModComboBox.Items.Clear();
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
@@ -33,7 +34,7 @@ namespace BejelentkezesApp
                     }
 
                     if (FizetesiModComboBox.Items.Count > 0)
-                        FizetesiModComboBox.SelectedIndex = 0; 
+                        FizetesiModComboBox.SelectedIndex = 0;
                 }
             }
             catch (Exception ex)
@@ -56,9 +57,9 @@ namespace BejelentkezesApp
             string oraNev = OraNevTextBox.Text;
             string fizetesiModNev = FizetesiModComboBox.Text;
             string datum = DatumPicker.SelectedDate.HasValue ? DatumPicker.SelectedDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : "";
-            string adoszam = AdoszamTextBox.Text; 
+            string adoszam = AdoszamTextBox.Text;
 
-           
+
             if (!int.TryParse(SzamlaAzonositoTextBox.Text, out _))
             {
                 MessageBox.Show("A számla azonosítónak számnak kell lennie!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -71,11 +72,12 @@ namespace BejelentkezesApp
                 return;
             }
 
-            if (!int.TryParse(TelefonTextBox.Text, out _))
+            if (!long.TryParse(TelefonTextBox.Text, out _))
             {
                 MessageBox.Show("A telefonszámnak számnak kell lennie!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
 
             if (!int.TryParse(OraAzonositoTextBox.Text, out _))
             {
@@ -89,14 +91,14 @@ namespace BejelentkezesApp
                 return;
             }
 
-            
+
             if (!string.IsNullOrWhiteSpace(adoszam) && !int.TryParse(adoszam, out _))
             {
                 MessageBox.Show("Az adószámnak számnak kell lennie, ha meg van adva!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            
+
             if (string.IsNullOrWhiteSpace(vasarloNev) || string.IsNullOrWhiteSpace(szallitasNev) ||
                 string.IsNullOrWhiteSpace(cim) || string.IsNullOrWhiteSpace(varos) ||
                 string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(telefon) ||

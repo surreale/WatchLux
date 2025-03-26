@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Security.Cryptography;
+
 
 namespace BejelentkezesApp
 {
@@ -11,60 +14,69 @@ namespace BejelentkezesApp
     {
         public Dictionary<string, object> NewData { get; private set; }
         private readonly DataColumnCollection columns;
+        private readonly string currentTableName;
 
-        // 🔁 Oszlop címke szótár
+
         private readonly Dictionary<string, string> columnHeaderMapping = new()
         {
-            { "id", "Felhasználó azonosító/" },
-            { "nev", "Név/" },
-            { "felhasznalonev", "Felhasználónév/" },
-            { "jelszo", "Jelszó/" },
-            { "jogosultsag", "Jogosultság/" },
-            { "vasarloaz", "Vásárló azonosító/" },
-            { "vnev", "Vásárló Neve/" },
-            { "tel", "Telefonszám/" },
-            { "email", "Email/" },
-            { "szallitasaz", "Szállítás azonosító/" },
-            { "sznev", "Szállítási Név/" },
-            { "cim", "Cím/" },
-            { "iranyszam", "Irányítószám/" },
-            { "varos", "Város/" },
-            { "szamlaaz", "Számla azonosító/" },
-            { "datum", "Dátum/" },
-            { "adoszam", "Adószám/" },
-            { "oraaz", "Óra azonosító/" },
-            { "oranev", "Óra neve/" },
-            { "db", "Darabszám/" },
-            { "ar", "Ár/" },
-            { "cikkszam", "Cikkszám/" },
-            { "megnevezes", "Megnevezés/" },
-            { "tipus", "Típus/" },
-            { "marka", "Márka/" },
-            { "jotallas", "Jótállás/" },
-            { "szij", "Szíj/" },
-            { "szijszine", "Szíj színe/" },
-            { "atok", "Tok/" },
-            { "atokszine", "Tok színe/" },
-            { "szamlaptipus", "Számlap típus/" },
-            { "szamlapszine", "Számlap színe/" },
-            { "meretmillimeterben", "Méret (mm)/" },
-            { "sulygrammban", "Súly (g)/" },
-            { "vizallosag", "Vízállóság/" },
-            { "meghajtas", "Meghajtás/" },
-            { "kristalyuveg", "Üveg típusa/" },
-            { "datumkijelzes", "Dátumkijelzés/" },
-            { "extrafunkcio", "Extrafunkció/" },
-            { "raktar", "Raktár/" },
-            { "oraforma", "Óraforma/" },
-            { "nem", "Nem/" },
-            { "maxcsuklomili", "Max. csukló méret (mm)/" },
-            { "fizetesmod", "Fizetési mód/" }
+            { "id", "Felhasználó azonosító:" },
+            { "nev", "Név:" },
+            { "felhasznalonev", "Felhasználónév:" },
+            { "jelszo", "Jelszó (elég a szöveget beírni, a rendszer mentés után TITKOSÍT):" },
+            { "jogosultsag", "Jogosultság:" },
+            { "vasarloaz", "Vásárló azonosító:" },
+            { "vnev", "Vásárló Neve:" },
+            { "tel", "Telefonszám:" },
+            { "email", "Email:" },
+            { "szallitasaz", "Szállítás azonosító:" },
+            { "sznev", "Szállítási Név:" },
+            { "cim", "Cím:" },
+            { "iranyszam", "Irányítószám:" },
+            { "varos", "Város:" },
+            { "szamlaaz", "Számla azonosító:" },
+            { "datum", "Dátum:" },
+            { "adoszam", "Adószám:" },
+            { "oraaz", "Óra azonosító:" },
+            { "oranev", "Óra neve:" },
+            { "db", "Darabszám:" },
+            { "ar", "Ár:" },
+            { "cikkszam", "Cikkszám:" },
+            { "megnevezes", "Megnevezés:" },
+            { "tipus", "Típus:" },
+            { "marka", "Márka:" },
+            { "jotallas", "Jótállás:" },
+            { "szij", "Szíj:" },
+            { "szijszine", "Szíj színe:" },
+            { "atok", "Tok:" },
+            { "atokszine", "Tok színe:" },
+            { "szamlaptipus", "Számlap típus:" },
+            { "szamlapszine", "Számlap színe:" },
+            { "meretmillimeterben", "Méret (mm):" },
+            { "sulygrammban", "Súly (g):" },
+            { "vizallosag", "Vízállóság:" },
+            { "meghajtas", "Meghajtás:" },
+            { "kristalyuveg", "Üveg típusa:" },
+            { "datumkijelzes", "Dátumkijelzés:" },
+            { "extrafunkcio", "Extrafunkció:" },
+            { "raktar", "Raktár:" },
+            { "oraforma", "Óraforma:" },
+            { "nem", "Nem:" },
+            { "maxcsuklomili", "Max. csukló méret (mm):" },
+            { "fizetesmod", "Fizetési mód:" }
         };
 
         public AddDataWindow(DataColumnCollection columnDefinitions)
         {
             InitializeComponent();
             columns = columnDefinitions;
+            GenerateForm();
+        }
+
+        public AddDataWindow(DataColumnCollection columnDefinitions, string tableName)
+        {
+            InitializeComponent();
+            columns = columnDefinitions;
+            currentTableName = tableName.ToLower();
             GenerateForm();
         }
 
@@ -83,7 +95,6 @@ namespace BejelentkezesApp
                     Margin = new Thickness(0, 5, 0, 5)
                 };
 
-                // 🔤 Oszlop felirat mapping alapján
                 string labelText = columnHeaderMapping.TryGetValue(column.ColumnName, out string mappedLabel)
                     ? mappedLabel
                     : column.ColumnName;
@@ -123,6 +134,13 @@ namespace BejelentkezesApp
                 {
                     string columnName = tb.Tag.ToString();
                     string value = tb.Text.Trim();
+
+                    
+                    if ((currentTableName == "felhasznalok" || currentTableName == "vasarlo") && columnName == "jelszo")
+                    {
+                        value = HashPassword(value);
+                    }
+
                     NewData[columnName] = string.IsNullOrWhiteSpace(value) ? DBNull.Value : value;
                 }
             }
@@ -136,5 +154,16 @@ namespace BejelentkezesApp
             DialogResult = false;
             Close();
         }
+
+        private string HashPassword(string plainText)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(plainText);
+                byte[] hash = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+        }
+
     }
 }

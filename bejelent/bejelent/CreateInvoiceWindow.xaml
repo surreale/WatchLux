@@ -5,16 +5,16 @@
         WindowStartupLocation="CenterScreen" Background="#1E1E2D" ResizeMode="NoResize">
 
     <Grid>
-        
-        
+
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            
+
             <RowDefinition Height="Auto"/>
-            
+
         </Grid.RowDefinitions>
 
-        
+
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="0">
             <Grid Margin="20">
                 <Border Background="#2A2A3C" CornerRadius="20" Padding="20">
@@ -73,9 +73,9 @@
                             <ComboBox.Resources>
                                 <Style TargetType="ComboBoxItem">
                                     <Setter Property="Foreground" Value="Black"/>
-                                    
+
                                     <Setter Property="Background" Value="White"/>
-                                    
+
                                 </Style>
                             </ComboBox.Resources>
                         </ComboBox>
@@ -93,7 +93,7 @@
             </Grid>
         </ScrollViewer>
 
-        
+
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,20">
             <Button Content="Mentés" Width="140" Height="40" FontSize="14" Background="#4CAF50"
                     Foreground="White" BorderThickness="0" Margin="10,0" Click="SaveInvoiceButton_Click"/>
