@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { CartContext } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
@@ -14,28 +14,39 @@ const Cart = () => {
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
 
+  // Scroll tiltása, ha modal nyitva
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showModal]);
+
   const totalPrice = cart.reduce(
     (acc, item) => acc + Number(item.ar) * (Number(item.mennyiseg) || 1),
     0
   );
 
+  const saveCartToLocalStorage = () => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  };
 
-const saveCartToLocalStorage = () => {
-  localStorage.setItem("cart", JSON.stringify(cart));
-};
+  const handleProceedToCheckout = () => {
+    saveCartToLocalStorage();
+    localStorage.setItem("cartBackup", JSON.stringify(cart)); // 🔥 Kosár mentése
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-const handleProceedToCheckout = () => {
-  saveCartToLocalStorage();
-  localStorage.setItem("cartBackup", JSON.stringify(cart)); // 🔥 Kosár mentése
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
-  if (isLoggedIn) {
+    if (isLoggedIn) {
       navigate("/checkout");
-  } else {
+    } else {
       setShowModal(true);
-  }
-};
-
+    }
+  };
 
   return (
     <div className="cart-page">
@@ -99,13 +110,21 @@ const handleProceedToCheckout = () => {
       )}
 
       {/* Modal ablak a fizetési mód kiválasztásához */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+      <Modal
+  show={showModal}
+  onHide={() => setShowModal(false)}
+  centered
+  backdrop={false}  // <- EZ A KIBASZOTT LÉNYEG
+  keyboard={false}
+  dialogClassName="modal-center-override"
+>
+
         <Modal.Header closeButton>
           <Modal.Title>Fizetés módja</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>Hogyan szeretnéd folytatni a rendelést?</p>
-          <div>
+          <div className="modal-button-group">
             <Button className="modal-buttons" onClick={() => navigate("/checkout")}>Vendégként folytatom</Button>
             <Button className="modal-buttons" onClick={() => { setShowLogin(true); setShowModal(false); }}>Bejelentkezés</Button>
             <Button className="modal-buttons" onClick={() => { setShowRegister(true); setShowModal(false); }}>Regisztráció</Button>
@@ -114,7 +133,6 @@ const handleProceedToCheckout = () => {
       </Modal>
 
       <Login showLogin={showLogin} handleLoginClose={() => setShowLogin(false)} onLoginSuccess={() => setShowLogin(false)} />
-      
       <Register showRegister={showRegister} handleRegisterClose={() => setShowRegister(false)} />
     </div>
   );

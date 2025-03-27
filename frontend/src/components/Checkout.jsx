@@ -96,7 +96,8 @@ const Checkout = () => {
     else if (name === "name") newValue = formatName(value);
     else if (name === "email" && value.length > 40) return;
     else if (name === "postalCode") newValue = value.replace(/\D/g, "").slice(0, 15);
-    else if (name === "city") newValue = value.replace(/[^a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s\-]/g, "");
+    else if (name === "city") newValue = value.replace(/[^a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s-]/g, "");
+
 
     if (isBilling) {
       setBillingInfo((prev) => ({ ...prev, [name]: newValue }));
