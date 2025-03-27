@@ -65,7 +65,8 @@ router.post("/finalize", async (req, res) => {
       });
     }
 
-    res.status(201).json({ message: "✅ Rendelés sikeresen mentve!" });
+    res.status(201).json({ message: "✅ Rendelés sikeresen mentve!", invoiceId: szamlaaz });
+
   } catch (error) {
     console.error("❌ Hiba a rendelés mentésekor:", error);
     res.status(500).json({ error: "Szerverhiba történt!", details: error.message });

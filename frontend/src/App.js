@@ -16,6 +16,8 @@ import Login from './components/Login'; // 🔹 Bejelentkezési oldal importál�
 import { useState } from 'react';
 import Profile from './components/Profile'; 
 import Aszf from "./components/Aszf";
+import OrderSummary from './components/OrderSummary';
+
 function App() {
   const [showLogin, setShowLogin] = useState(false);
 
@@ -55,6 +57,8 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/profile" element={<Profile showProfile={true} handleProfileClose={() => {}} />} /> 
           <Route path="/aszf" element={<Aszf />} />
+          <Route path="/order-summary" element={<OrderSummary />} />
+
         </Routes>
 
         <Footer />

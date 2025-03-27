@@ -35,6 +35,7 @@ const Checkout = () => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [showPaymentSection, setShowPaymentSection] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   useEffect(() => {
     if (userId) {
@@ -128,6 +129,7 @@ const Checkout = () => {
       : Object.values(shippingInfo);
 
     if (allFields.some((val) => val.trim() === "")) {
+      setNotificationMessage("⚠️ Kérlek, tölts ki minden kötelező mezőt!");
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
       return;
@@ -138,17 +140,18 @@ const Checkout = () => {
 
   const handlePayment = async () => {
     if (!acceptedTerms) {
+      setNotificationMessage("⚠️ Kérlek, fogadd el az Általános Szerződési Feltételeket!");
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
       return;
     }
-
+  
     const taxIdRegex = /^\d{8}-\d{1}-\d{2}$/;
     if (billingInfo.taxId && !taxIdRegex.test(billingInfo.taxId)) {
       alert("❌ Hibás adószám formátum! Használj ilyen formátumot: 12345678-1-12");
       return;
     }
-
+  
     try {
       const response = await fetch("http://localhost:8080/order/finalize", {
         method: "POST",
@@ -161,17 +164,28 @@ const Checkout = () => {
           sameAsShipping,
         }),
       });
-
+  
       if (!response.ok) throw new Error("Hiba a rendelés mentésekor.");
-
-      alert("✅ Sikeres rendelés! Köszönjük a vásárlást.");
+  
+      const result = await response.json();
+      console.log("❕ Backend válasz:", result); // Debug: válasz ellenőrzése
+  
+      navigate("/order-summary", {
+        state: {
+          invoiceId: result.invoiceId || "ismeretlen", // Ha nincs invoiceId, akkor "ismeretlen"
+          savedShipping: sameAsShipping ? billingInfo : shippingInfo,
+          orderCart: cart,
+          totalPrice,
+        },
+      });
+  
       localStorage.removeItem("cart");
-      navigate("/");
     } catch (error) {
       console.error("❌ Rendelés hiba:", error);
       alert("Hiba történt a rendelés leadásakor.");
     }
   };
+  
 
   return (
     <div className="checkout-page">
@@ -181,7 +195,7 @@ const Checkout = () => {
         <p className="cl">A kosár üres.</p>
       ) : (
         <>
-          {!showPaymentSection && (
+          {!showPaymentSection ? (
             <div className="checkout-content">
               <div className="checkout-cart-summary">
                 <h3>Termékek összegzése</h3>
@@ -228,17 +242,17 @@ const Checkout = () => {
                       <input
                         key={field}
                         name={field}
-                        placeholder={
-                          field === "name" ? "Teljes név*" :
-                          field === "email" ? "Email cím*" :
-                          field === "postalCode" ? "Irányítószám*" :
-                          field === "phone" ? "Telefonszám*" :
-                          `${field.charAt(0).toUpperCase() + field.slice(1)}*`
-                        }
+                        placeholder={{
+                          name: "Teljes név*",
+                          email: "Email cím*",
+                          address: "Cím*",
+                          city: "Város*",
+                          postalCode: "Irányítószám*",
+                          phone: "Telefonszám*",
+                        }[field]}
                         value={shippingInfo[field]}
                         onChange={handleInputChange}
                         disabled={sameAsShipping}
-                        className={sameAsShipping ? "disabled" : ""}
                         required
                       />
                     ))}
@@ -248,14 +262,10 @@ const Checkout = () => {
                 <button className="payment-button" onClick={handleNextToPayment}>
                   Tovább a fizetéshez
                 </button>
-                <button className="vissza" onClick={() => navigate("/cart")}>
-                  Vissza
-                </button>
+                <button className="vissza" onClick={() => navigate("/cart")}>Vissza</button>
               </div>
             </div>
-          )}
-
-          {showPaymentSection && (
+          ) : (
             <div className="checkout-payment-section">
               <div className="checkout-cart-summary">
                 <h3>Termékek összegzése</h3>
@@ -298,17 +308,14 @@ const Checkout = () => {
                       type="checkbox"
                       checked={acceptedTerms}
                       onChange={(e) => setAcceptedTerms(e.target.checked)}
-                    />{" "}
-                    Elfogadom az{" "}
-                    <a href="/aszf" target="_blank" rel="noopener noreferrer">
-                      Általános Szerződési Feltételeket
-                    </a>
+                    /> Elfogadom az <a href="/aszf" target="_blank" rel="noopener noreferrer">Általános Szerződési Feltételeket</a>
                   </label>
                 </div>
 
-                <button className="payment-button" onClick={handlePayment} disabled={!acceptedTerms}>
+                <button className="payment-button" onClick={handlePayment}>
                   Rendelés leadása
                 </button>
+
                 <button className="vissza2" onClick={() => setShowPaymentSection(false)}>
                   Vissza
                 </button>
@@ -320,7 +327,7 @@ const Checkout = () => {
 
       {showNotification && (
         <div className="notification">
-          Kérjük, töltsd ki az összes mezőt!
+          {notificationMessage}
           <div className="progress-bar"></div>
         </div>
       )}

@@ -84,7 +84,8 @@ function Menu() {
         location.pathname !== "/cart" &&
         location.pathname !== "/kedvencek" &&
         location.pathname !== "/checkout" &&
-        location.pathname !== "/aszf" && <HeroText />}
+        location.pathname !== "/aszf" &&
+        location.pathname !== "/order-summary" && <HeroText />}
 
       <Navbar expand="lg" className={`bg-light navbar-custom ${showNavbar ? "show" : "hide"}`} collapseOnSelect>
         <Container fluid>
