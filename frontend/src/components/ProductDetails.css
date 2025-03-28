@@ -1,4 +1,4 @@
-/* === ALAP KONFIGURÁCIÓ === */
+
 .product-details-container {
   top: 10px;
   max-width: 1200px;
@@ -10,7 +10,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Vissza gomb */
+
 .back-button {
   background-color: #ddd;
   color: black;
@@ -27,21 +27,21 @@
   color: rgb(180, 73, 73);
 }
 
-/* Két oszlopos elrendezés */
+
 .product-details {
   display: flex;
   gap: 40px;
   align-items: flex-start;
 }
 
-/* === KÉP MEGJELENÍTÉS === */
+
 .image-section {
   flex: 1;
   text-align: center;
   position: relative;
 }
 
-/* Fő kép - kattintható nagyítás */
+
 .main-image {
   width: 100%;
   max-width: 400px;
@@ -50,12 +50,12 @@
   transition: transform 0.3s ease-in-out;
 }
 
-/* Ha a kép nagyított állapotban van */
+
 .main-image.zoomed {
-  transform: scale(1.3); /* 30%-kal nagyobb méret */
+  transform: scale(1.3);
 }
 
-/* Kisképek (előnézeti képek) */
+
 .thumbnail-section {
   display: flex;
   justify-content: center;
@@ -76,25 +76,25 @@
   border: 2px solid #d32f2f;
 }
 
-/* === INFORMÁCIÓK MEGJELENÍTÉSE === */
+
 .info-section {
   flex: 1;
 }
 
-/* Termék neve */
+
 .product-title {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-/* Márka */
+
 .product-brand {
   font-size: 1.2rem;
   color: #666;
 }
 
-/* Ár */
+
 .product-price {
   font-size: 2rem;
   font-weight: bold;
@@ -102,7 +102,7 @@
   margin: 10px 0;
 }
 
-/* Raktár státusz */
+
 .product-stock {
   font-size: 1rem;
   color: #69c46c;
@@ -115,13 +115,13 @@
   margin: 10px 0;
 }
 
-/* Raktár státusz */
+
 .raktar {
   font-size: 1rem;
   color: #ffffff;
 }
 
-/* === GOMBOK (Kosárba, Kedvencek) === */
+
 .buttons {
   display: flex;
   gap: 15px;
@@ -159,7 +159,7 @@
   color: white;
 }
 
-/* === TERMÉK RÉSZLETEK DIZÁJN === */
+
 .product-info {
   margin-top: 20px;
 }
@@ -172,7 +172,7 @@
   padding-bottom: 5px;
 }
 
-/* Részletes adatok - rácsos elrendezés */
+
 .info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -180,7 +180,7 @@
   margin-top: 15px;
 }
 
-/* Kategória box */
+
 .info-grid div {
   background: #f8f8f8;
   padding: 15px;
@@ -194,7 +194,7 @@
   padding-bottom: 5px;
 }
 
-/* === RESZPONZÍV DESIGN === */
+
 @media (max-width: 1024px) {
   .product-details {
     flex-direction: column;

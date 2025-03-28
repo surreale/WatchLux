@@ -9,7 +9,7 @@
 }
 
 .checkout-page h2.cl {
-    margin-top: 80px; /* biztosít helyet a fix menü alatt */
+    margin-top: 80px; 
     color: #000;
 }
 
@@ -326,18 +326,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* <-- nagyobb z-index */
+    z-index: 9999; 
   }
   
   .modal {
-    position: fixed; /* <-- ez eddig hiányzott! */
+    position: fixed; 
     background: white;
     padding: 2rem;
     border-radius: 10px;
     max-width: 600px;
     width: 90%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 10000; /* <-- még nagyobb, hogy biztos felül legyen */
+    z-index: 10000; 
   }
   
   

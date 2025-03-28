@@ -4,7 +4,7 @@ const db = require("../db/dboperations");
 
 const router = express.Router();
 
-// 🔹 Regisztráció végpont
+
 router.post("/register", async (req, res) => {
     try {
       const { nev, tel, email, jelszo } = req.body;
@@ -26,10 +26,10 @@ router.post("/register", async (req, res) => {
   
       const result = await db.registerUser(nev, tel.replace("+", ""), email, hashedPassword);
   
-      // 🔥 Itt visszaküldjük a userId-t
+      
       res.status(201).json({ message: "Sikeres regisztráció!", userId: result.insertId });
     } catch (error) {
-      console.error("❌ Hiba történt a regisztráció során:", error);
+      console.error(" Hiba történt a regisztráció során:", error);
       res.status(500).json({ error: "Szerverhiba, próbáld újra később!" });
     }
   });
@@ -43,10 +43,10 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ error: "Az e-mail és a jelszó megadása kötelező!" });
         }
 
-        // 🔹 Jelszó SHA-256 titkosítása
+        
         const hashedPassword = crypto.createHash("sha256").update(jelszo).digest("hex");
 
-        // 🔹 Ellenőrizzük, hogy létezik-e a felhasználó
+       
         const user = await db.getUserByEmail(email);
 
         if (!user || user.jelszo !== hashedPassword) {
@@ -55,13 +55,13 @@ router.post("/login", async (req, res) => {
 
         res.status(200).json({ message: "Sikeres bejelentkezés!", user });
     } catch (error) {
-        console.error("❌ Hiba történt a bejelentkezés során:", error);
+        console.error(" Hiba történt a bejelentkezés során:", error);
         res.status(500).json({ error: "Szerverhiba, próbáld újra később!" });
     }
 });
 router.get("/profile", async (req, res) => {
     try {
-        const userId = req.query.userId;  // 🔥 Mostantól az userId helyesen jön frontendről
+        const userId = req.query.userId;  
 
         if (!userId) {
             return res.status(400).json({ error: "Nincs bejelentkezett felhasználó!" });
@@ -74,12 +74,12 @@ router.get("/profile", async (req, res) => {
 
         res.json(userData);
     } catch (error) {
-        console.error("❌ Hiba történt a profil lekérésekor:", error);
+        console.error(" Hiba történt a profil lekérésekor:", error);
         res.status(500).json({ error: "Hiba történt a profil lekérésekor." });
     }
 });
   
-  // 🔹 Profil frissítése
+  
   router.put("/update", async (req, res) => {
     try {
         const { userId, nev, tel } = req.body;
@@ -96,13 +96,13 @@ router.get("/profile", async (req, res) => {
 
         res.json({ message: "Profil frissítve!" });
     } catch (error) {
-        console.error("❌ Hiba történt a profil frissítésekor:", error);
+        console.error(" Hiba történt a profil frissítésekor:", error);
         res.status(500).json({ error: "Szerverhiba történt!" });
     }
 });
 
   
-  // 🔹 Jelszó módosítása
+  
   router.put("/change-password", async (req, res) => {
     try {
         const { userId, oldPassword, newPassword } = req.body;
@@ -114,7 +114,7 @@ router.get("/profile", async (req, res) => {
         await db.changeUserPassword(userId, oldPassword, newPassword);
         res.json({ message: "Sikeres jelszó módosítás!" });
     } catch (error) {
-        console.error("❌ Hiba történt a jelszó módosítása közben:", error);
+        console.error(" Hiba történt a jelszó módosítása közben:", error);
         res.status(400).json({ error: error.message });
     }
 });
@@ -134,7 +134,7 @@ router.post("/address", async (req, res) => {
         city,
       });
   
-      // kapcsoljuk össze a vásárlóval is, ha kell (pl. külön tábla esetén)
+      
   
       res.status(201).json({ message: "Számlázási adatok elmentve!", id: result.insertId });
     } catch (error) {

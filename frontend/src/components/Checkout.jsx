@@ -8,8 +8,10 @@ import axios from "axios";
 const rawUserId = localStorage.getItem("userId");
 const userId = !rawUserId || rawUserId === "null" ? null : parseInt(rawUserId);
 
+
 const Checkout = () => {
-  const { cart } = useContext(CartContext);
+  const { cart, clearCart } = useContext(CartContext);
+
   const navigate = useNavigate();
 
   const [shippingInfo, setShippingInfo] = useState({
@@ -36,6 +38,7 @@ const Checkout = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [showPaymentSection, setShowPaymentSection] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
+  
 
   useEffect(() => {
     if (userId) {
@@ -51,7 +54,7 @@ const Checkout = () => {
           }));
         })
         .catch((err) => {
-          console.error("❌ Hiba a felhasználói adatok lekérésekor:", err);
+          console.error(" Hiba a felhasználói adatok lekérésekor:", err);
         });
     }
   }, []);
@@ -119,7 +122,7 @@ const Checkout = () => {
     const emailValid = isValidEmail(billingInfo.email);
 
     if (!phoneValid || !nameValid || !emailValid) {
-      alert("⚠️ Hibás név, telefonszám vagy email.");
+      alert(" Hibás név, telefonszám vagy email.");
       return;
     }
 
@@ -130,7 +133,7 @@ const Checkout = () => {
       : Object.values(shippingInfo);
 
     if (allFields.some((val) => val.trim() === "")) {
-      setNotificationMessage("⚠️ Kérlek, tölts ki minden kötelező mezőt!");
+      setNotificationMessage(" Kérlek, tölts ki minden kötelező mezőt!");
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
       return;
@@ -141,7 +144,7 @@ const Checkout = () => {
 
   const handlePayment = async () => {
     if (!acceptedTerms) {
-      setNotificationMessage("⚠️ Kérlek, fogadd el az Általános Szerződési Feltételeket!");
+      setNotificationMessage(" Kérlek, fogadd el az Általános Szerződési Feltételeket!");
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 3000);
       return;
@@ -149,7 +152,7 @@ const Checkout = () => {
   
     const taxIdRegex = /^\d{8}-\d{1}-\d{2}$/;
     if (billingInfo.taxId && !taxIdRegex.test(billingInfo.taxId)) {
-      alert("❌ Hibás adószám formátum! Használj ilyen formátumot: 12345678-1-12");
+      alert(" Hibás adószám formátum! Használj ilyen formátumot: 12345678-1-12");
       return;
     }
   
@@ -169,11 +172,11 @@ const Checkout = () => {
       if (!response.ok) throw new Error("Hiba a rendelés mentésekor.");
   
       const result = await response.json();
-      console.log("❕ Backend válasz:", result); // Debug: válasz ellenőrzése
+      console.log("❕ Backend válasz:", result); 
   
       navigate("/order-summary", {
         state: {
-          invoiceId: result.invoiceId || "ismeretlen", // Ha nincs invoiceId, akkor "ismeretlen"
+          invoiceId: result.invoiceId || "ismeretlen", 
           savedShipping: sameAsShipping ? billingInfo : shippingInfo,
           orderCart: cart,
           totalPrice,
@@ -181,6 +184,8 @@ const Checkout = () => {
       });
   
       localStorage.removeItem("cart");
+      clearCart(); 
+
     } catch (error) {
       console.error("❌ Rendelés hiba:", error);
       alert("Hiba történt a rendelés leadásakor.");

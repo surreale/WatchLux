@@ -14,8 +14,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 250px; /* Fix szélesség, hogy ne nyúljon túl */
-  text-align: center; /* Szöveg középre */
+  width: 250px; 
+  text-align: center; 
   animation: slideIn 0.5s forwards, slideOut 0.5s 2.5s forwards;
   margin-top: 60px;
 }

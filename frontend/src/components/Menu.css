@@ -41,59 +41,56 @@ body {
   height: 40px;
 }
 
-/* NAVBAR LINK STÍLUSOK */
+
 .navbar-nav .nav-link {
   font-weight: 500;
   font-size: 16px;
   color: #495057;
   padding: 8px 16px;
   transition: transform 0.2s ease, border 0.3s ease-in-out;
-  border-radius: 50px; /* Lekerekített sarkok */
-  border: 1px solid transparent; /* Alapértelmezett átlátszó keret */
+  border-radius: 50px; 
+  border: 1px solid transparent; 
 }
 
 .navbar-nav .nav-link:hover {
-  transform: scale(1.1); /* Kisebb nagyítás hover állapotban */
-  border-color: #838383; /* Csak a keret színe változik */
+  transform: scale(1.1);
+  border-color: #838383;
 }
 
 
-/* KERESŐ SÁV */
+
 .search-bar {
   display: flex;
-  justify-content: center; /* Középre igazítás */
+  justify-content: center; 
   align-items: center;
-  margin: 0 auto; /* Középre helyezés */
-  /*
-  max-width: 100px; /* Maximális szélesség */
-  /*
-  width: 500px; /* Teljes szélesség */
+  margin: 0 auto; 
+  
   margin-right: 45em;
 }
 
 .search-bar .search-input {
-  width: 200%; /* Rugalmas szélesség */
-  max-width: 400px; /* Maximális szélesség */
-  border-radius: 50px; /* Kör alakú sarkok */
-  padding: 12px 50px 12px 40px; /* Margók a kereső ikon számára */
-  border: 1px solid #ced4da; /* Szürke szegély */
-  background-color: #f8f9fa; /* Világos háttér */
-  font-size: 14px; /* Szöveg mérete */
-  color: #495057; /* Szöveg színe */
+  width: 200%; 
+  max-width: 400px; 
+  border-radius: 50px; 
+  padding: 12px 50px 12px 40px; 
+  border: 1px solid #ced4da; 
+  background-color: #f8f9fa; 
+  font-size: 14px;
+  color: #495057; 
   transition: all 0.3s ease;
 }
 
 .search-bar .search-input:focus {
-  border-color: #e4d5b7; /* Halvány barna fókusz szegély */
-  box-shadow: 0 0 8px rgba(255, 87, 87, 0.5); /* Árnyék fókuszban */
-  background-color: #ffffff; /* Fehér háttér fókuszban */
+  border-color: #e4d5b7; 
+  box-shadow: 0 0 8px rgba(255, 87, 87, 0.5); 
+  background-color: #ffffff; 
 }
 
 .search-icon-container {
   position: absolute;
-  left: 15px; /* Pozíció ikonhoz */
+  left: 15px; 
   top: 50%;
-  transform: translateY(-50%); /* Vertikális középre igazítás */
+  transform: translateY(-50%);
 }
 
 .search-icon {
@@ -102,11 +99,11 @@ body {
   opacity: 0.8;
 }
 
-/* FELHASZNÁLÓ MENÜ */
+
 .user-cart-container {
   display: flex;
   align-items: center;
-  gap: 15px; /* Távolság az ikonok között */
+  gap: 15px; 
 }
 
 .user-icon {
@@ -117,7 +114,7 @@ body {
 }
 
 .user-icon:hover {
-  transform: scale(1.1); /* Kisebb nagyítás hover állapotban */
+  transform: scale(1.1);
   opacity: 0.9;
 }
 
@@ -125,7 +122,7 @@ body {
   position: relative;
 }
 
-/* Alapállapot: Rejtett legördülősáv */
+
 .user-menu-dropdown {
   top: 100%;
   right: 0;
@@ -136,31 +133,31 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 10px 0;
-  opacity: 0; /* Alapértelmezés szerint láthatatlan */
-  transform: scaleY(0); /* Alapértelmezés szerint összehúzva */
-  transform-origin: top; /* Az animáció fentről indul */
-  visibility: hidden; /* Láthatatlanná teszi */
-  transition: opacity 0.2s ease-in, transform 0.2s ease-in; /* Gyors megnyitás */
+  opacity: 0; 
+  transform: scaleY(0); 
+  transform-origin: top; 
+  visibility: hidden; 
+  transition: opacity 0.2s ease-in, transform 0.2s ease-in; 
 }
 
-/* Amikor a menü aktív, és látható */
+
 .user-menu-container .user-menu-dropdown {
-  opacity: 1; /* Láthatóvá válik */
-  transform: scaleY(1); /* Kibontakozik */
-  visibility: visible; /* Láthatóvá teszi */
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Lassabb eltűnés */
+  opacity: 1;
+  transform: scaleY(1); 
+  visibility: visible; 
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out; 
 }
 
-/* Hover vagy kattintás esetén láthatóvá válik */
+
 .user-menu-container:hover .user-menu-dropdown,
 .user-menu-container:focus-within .user-menu-dropdown {
-  opacity: 1; /* Láthatóvá válik */
-  transform: scaleY(1); /* Kibontakozik */
-  visibility: visible; /* Láthatóvá teszi */
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Lassabb eltűnés */
+  opacity: 1; 
+  transform: scaleY(1); 
+  visibility: visible; 
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out; 
 }
 
-/* Hover állapot a legördülősáv elemein */
+
 .user-menu-dropdown li {
   padding: 10px;
   text-align: center;
@@ -170,23 +167,23 @@ body {
 }
 
 .user-menu-dropdown li:hover {
-  background: #ffcba4; /* Hover szín */
-  transform: scale(1.05); /* Kisebb nagyítás */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Árnyék */
+  background: #ffcba4; 
+  transform: scale(1.05); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Linkek hover stílusa (pl. Profil és Kijelentkezés) */
+
 .user-menu-dropdown li a {
-  color: inherit; /* Örökli a hover szövegszínt */
-  text-decoration: none; /* Alapértelmezett link aláhúzás eltávolítása */
-  transition: color 0.3s ease; /* Szövegszín animáció */
+  color: inherit; 
+  text-decoration: none; 
+  transition: color 0.3s ease;
 }
 
 .user-menu-dropdown li a:hover {
-  color: #000; /* Szöveg színe fekete lesz hover állapotban */
+  color: #000; 
 }
 
-/* KOSÁR IKON */
+
 .kosar-icon {
   width: 30px;
   height: 30px;
@@ -199,25 +196,25 @@ body {
   opacity: 0.9;
 }
 
-/* MOBILBARÁT NÉZET */
+
 @media (max-width: 768px) {
   .search-bar {
     margin: 10px auto;
-    max-width: 90%; /* Mobilon kisebb szélesség */
+    max-width: 90%; 
   }
 
   .search-bar .search-input {
-    max-width: 100%; /* Mobilon teljes szélesség */
-    padding: 10px 40px 10px 35px; /* Csökkentett margók */
+    max-width: 100%; 
+    padding: 10px 40px 10px 35px; 
   }
 
   .search-icon {
-    width: 16px; /* Kisebb ikon mobilon */
+    width: 16px; 
     height: 16px;
   }
 
   .user-cart-container {
-    gap: 10px; /* Kevesebb távolság ikonok között */
+    gap: 10px; 
   }
 
   .navbar-toggler {

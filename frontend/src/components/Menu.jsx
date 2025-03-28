@@ -65,15 +65,15 @@ function Menu() {
     setIsLoggedIn(false);
     setShowUserMenu(false);
 
-    setShowToast({ visible: true, message: "❌ Sikeres kijelentkezés!", type: "error" });
+    setShowToast({ visible: true, message: "Sikeres kijelentkezés!", type: "error" });
     setTimeout(() => {
       setShowToast({ visible: false, message: "", type: "" });
-      navigate("/"); // 2 másodperc után átirányítás a főoldalra
+      navigate("/"); 
     }, 2000);
   };
   const handleLoginSuccess = () => {
-    setIsLoggedIn(true);  // 🔥 Beállítja a bejelentkezési állapotot
-    setShowToast({ visible: true, message: "✅ Sikeres bejelentkezés!", type: "success" });
+    setIsLoggedIn(true);  
+    setShowToast({ visible: true, message: " Sikeres bejelentkezés!", type: "success" });
     setTimeout(() => setShowToast({ visible: false, message: "", type: "" }), 2000);
   };
   

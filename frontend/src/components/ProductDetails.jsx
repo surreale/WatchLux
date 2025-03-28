@@ -18,7 +18,7 @@ function ProductDetails() {
   const [isZoomed, setIsZoomed] = useState(false);
   const [quantity, setQuantity] = useState(1); 
 
-  // Termékadatok betöltése az API-ból
+  
   useEffect(() => {
     axios
       .get(`http://localhost:8080/ora/oralekerdezes/${id}`)
@@ -33,19 +33,19 @@ function ProductDetails() {
       });
   }, [id]);
 
-    // Mennyiség kezelése
+    
     const handleQuantityChange = (value) => {
       if (value >= 1 && value <= 20) {
         setQuantity(value);
       }
     };
 
-// Kosárba rakás eseménykezelő
+
 const handleAddToCart = () => {
   if (!product) return;
 
   if (cart.some((item) => item.oraaz === product.oraaz)) {
-    removeFromCart(product.oraaz);  // Ha már a kosárban van, akkor töröljük
+    removeFromCart(product.oraaz);  
   } else {
     addToCart({
       oraaz: product.oraaz,
@@ -58,7 +58,7 @@ const handleAddToCart = () => {
 };
 
 
-  // Kedvencek kezelése
+ 
   const isFavorite = product ? favorites.some((item) => item.oraaz === product.oraaz) : false;
   const handleToggleFavorite = () => {
     if (!product) return;

@@ -14,7 +14,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const navigate = useNavigate();
 
-    // Ha a modal megnyílik, törölje a mezőket
+   
     useEffect(() => {
         if (showLogin) {
             setEmail("");
@@ -49,7 +49,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
 
                 const savedCart = localStorage.getItem("cart");
                 if (savedCart) {
-                    localStorage.setItem("cartRestore", savedCart); // Átmenetileg tároljuk a visszatöltéshez
+                    localStorage.setItem("cartRestore", savedCart); 
                 }
                 
                 handleLoginClose();
@@ -114,7 +114,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
                 </Modal.Body>
             </Modal>
 
-            {/* 🔥 Smooth toast üzenet a lap tetején */}
+            
             <div className={`toast-container ${showToast ? "show" : "hide"}`}>
                 Sikeres bejelentkezés!
             </div>

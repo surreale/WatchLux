@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = "nagyon_titkos_jelszo"; // Cseréld le egy biztonságosabb értékre
+const JWT_SECRET = "nagyon_titkos_jelszo";
 
-// 🔹 Token ellenőrző middleware
+
 function authenticateToken(req, res, next) {
     const token = req.header("Authorization");
 

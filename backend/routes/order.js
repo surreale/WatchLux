@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db/dboperations");
 
-// 🔒 Bejelentkezett felhasználó ellenőrzés
+
 async function isValidUserId(userId) {
   if (!userId || isNaN(userId)) return false;
 
@@ -20,22 +20,22 @@ router.post("/finalize", async (req, res) => {
   try {
     let vasarloaz = null;
 
-    // ✅ Biztonságos ellenőrzés
+    
     if (await isValidUserId(userId)) {
       vasarloaz = parseInt(userId);
-      console.log("🔐 Bejelentkezett felhasználó:", vasarloaz);
+      console.log(" Bejelentkezett felhasználó:", vasarloaz);
     } else {
-      // 🆕 Vendég vásárló beszúrása
+      
       const newVasarlo = await db.insertOrGetGuestBuyer({
         name: billing.name,
         email: billing.email,
         phone: billing.phone,
       });
       vasarloaz = newVasarlo.insertId;
-      console.log("✅ Új vendég mentve:", vasarloaz);
+      console.log(" Új vendég mentve:", vasarloaz);
     }
 
-    // 📦 Szállítási adatok
+    
     const szallitasAdatok = sameAsShipping ? billing : shipping;
     const szallitasszRes = await db.insertShippingData({
       name: szallitasAdatok.name,
@@ -46,17 +46,17 @@ router.post("/finalize", async (req, res) => {
 
     const szallitasaz = szallitasszRes.insertId;
 
-    // 🧾 Számla
+   
     const szamlaRes = await db.insertInvoice({
       vasarloaz,
       szallitasaz,
-      fizetesmodaz: 2, // utánvét
-      adoszam: billing.taxId || null, // ✅ Adószám mentése, ha van
+      fizetesmodaz: 2, 
+      adoszam: billing.taxId || null, 
     });
 
     const szamlaaz = szamlaRes.insertId;
 
-    // 🛒 Megrendelések mentése
+   
     for (const item of cart) {
       await db.insertOrderItem({
         szamlaaz,
@@ -65,10 +65,10 @@ router.post("/finalize", async (req, res) => {
       });
     }
 
-    res.status(201).json({ message: "✅ Rendelés sikeresen mentve!", invoiceId: szamlaaz });
+    res.status(201).json({ message: " Rendelés sikeresen mentve!", invoiceId: szamlaaz });
 
   } catch (error) {
-    console.error("❌ Hiba a rendelés mentésekor:", error);
+    console.error(" Hiba a rendelés mentésekor:", error);
     res.status(500).json({ error: "Szerverhiba történt!", details: error.message });
   }
 });

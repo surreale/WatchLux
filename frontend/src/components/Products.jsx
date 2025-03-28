@@ -26,7 +26,7 @@ function Products() {
 
   const [hoverState, setHoverState] = useState({});
 
-  //  Itt helyezd el a handleCartToggle függvényt!
+  
   const handleCartToggle = (product) => {
     if (cart.some((item) => item.oraaz === product.oraaz)) {
       removeFromCart(product.oraaz);
@@ -41,9 +41,9 @@ function Products() {
   };
 
 
-  //  Itt helyezd el a handleFavToggle függvényt, például a handleCartToggle után
+  
   const handleFavToggle = (product) => {
-    if (product && product.oraaz && product.megnevezes) {  //  Ellenőrizzük, hogy a product nem undefined
+    if (product && product.oraaz && product.megnevezes) { 
       addToFavorites({
         oraaz: product.oraaz,
         megnevezes: product.megnevezes,
@@ -96,15 +96,15 @@ function Products() {
   const [maxPrice, setMaxPrice] = useState(100000);
   const [priceRange, setPriceRange] = useState([0, 100000]);
   const scrollToTop = () => { window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const [sortOption, setSortOption] = useState(""); // Rendezési opció állapota
+  const [sortOption, setSortOption] = useState(""); 
 
   const handleSortChange = (option) => {
     setSortOption(option);
 
-    // 👉 Ha a rendezési opció üres (tehát "Rendezés" van kiválasztva), töltse be alaphelyzetben az összes órát
+   
     if (option === "") {
-      handleFilterChange();  // Hívjuk meg a `handleFilterChange` függvényt, hogy alaphelyzetbe töltse a termékeket
-      return; // Megszakítjuk a további rendezési logikát
+      handleFilterChange();  
+      return; 
     }
 
     let sortedProducts = [...filteredProducts];
@@ -157,7 +157,7 @@ function Products() {
           setTotalPages(Math.ceil(response.data.length / productsPerPage));
         })
         .catch(() => {
-          console.error("❌ Hiba történt a termékek betöltésekor.");
+          console.error(" Hiba történt a termékek betöltésekor.");
         });
     }
   }, [searchQuery]);
@@ -170,7 +170,7 @@ function Products() {
         setBrands(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a márkák betöltésekor.");
+        console.error(" Hiba történt a márkák betöltésekor.");
       });
   }, []);
 
@@ -180,7 +180,7 @@ function Products() {
         setGenders(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a nemek betöltésekor.");
+        console.error(" Hiba történt a nemek betöltésekor.");
       });
   }, []);
 
@@ -190,7 +190,7 @@ function Products() {
         setMeghajtasok(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a meghajtások betöltésekor.");
+        console.error(" Hiba történt a meghajtások betöltésekor.");
       });
   }, []);
 
@@ -200,7 +200,7 @@ function Products() {
         setVizallosagok(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a vízállóságok betöltésekor.");
+        console.error(" Hiba történt a vízállóságok betöltésekor.");
       });
   }, []);
 
@@ -210,7 +210,7 @@ function Products() {
         setSulyok(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a súlyok betöltésekor.");
+        console.error(" Hiba történt a súlyok betöltésekor.");
       });
   }, []);
 
@@ -220,7 +220,7 @@ function Products() {
         setTipusok(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a típusok betöltésekor.");
+        console.error(" Hiba történt a típusok betöltésekor.");
       });
   }, []);
 
@@ -230,7 +230,7 @@ function Products() {
         setDatumkijelzesek(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a dátumkijelzések betöltésekor.");
+        console.error(" Hiba történt a dátumkijelzések betöltésekor.");
       });
   }, []);
 
@@ -240,7 +240,7 @@ function Products() {
         setExtrafunkciok(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt az extrafunkciók betöltésekor.");
+        console.error(" Hiba történt az extrafunkciók betöltésekor.");
       });
   }, []);
 
@@ -250,7 +250,7 @@ function Products() {
         setAtokszinek(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a tok színek betöltésekor.");
+        console.error(" Hiba történt a tok színek betöltésekor.");
       });
   }, []);
 
@@ -261,7 +261,7 @@ function Products() {
         setAszamlapszinek(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a számlap színek betöltésekor.");
+        console.error(" Hiba történt a számlap színek betöltésekor.");
       });
   }, []);
 
@@ -272,7 +272,7 @@ function Products() {
         setAtokList(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a tok anyagok betöltésekor.");
+        console.error(" Hiba történt a tok anyagok betöltésekor.");
       });
   }, []);
 
@@ -283,7 +283,7 @@ function Products() {
         setKristalyuvegek(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a kristályüveg típusok betöltésekor.");
+        console.error(" Hiba történt a kristályüveg típusok betöltésekor.");
       });
   }, []);
 
@@ -294,7 +294,7 @@ function Products() {
         setSzamlaptipusok(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a számlaptípusok betöltésekor.");
+        console.error(" Hiba történt a számlaptípusok betöltésekor.");
       });
   }, []);
 
@@ -305,7 +305,7 @@ function Products() {
         setOraformak(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt az óraformák betöltésekor.");
+        console.error(" Hiba történt az óraformák betöltésekor.");
       });
   }, []);
 
@@ -316,7 +316,7 @@ function Products() {
         setSzijszinek(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a szíjak színeinek betöltésekor.");
+        console.error(" Hiba történt a szíjak színeinek betöltésekor.");
       });
   }, []);
 
@@ -327,7 +327,7 @@ function Products() {
         setSzijak(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a szíjak anyagának betöltésekor.");
+        console.error(" Hiba történt a szíjak anyagának betöltésekor.");
       });
   }, []);
 
@@ -338,7 +338,7 @@ function Products() {
         setMaxCsuklomilik(response.data);
       })
       .catch(() => {
-        console.error("❌ Hiba történt a maximális csuklóméretek betöltésekor.");
+        console.error(" Hiba történt a maximális csuklóméretek betöltésekor.");
       });
   }, []);
 
@@ -350,11 +350,11 @@ function Products() {
           const max = response.data.maxAr;
           setMinPrice(min);
           setMaxPrice(max);
-          setPriceRange([min, max]); // Beállítjuk a csúszka kezdőértékeit
+          setPriceRange([min, max]);
         }
       })
       .catch(() => {
-        console.error("❌ Hiba történt az árak lekérésekor.");
+        console.error(" Hiba történt az árak lekérésekor.");
       });
   }, []);
 
@@ -363,7 +363,7 @@ function Products() {
 
 
   const handleClearFilters = () => {
-    // Összes szűrő állapotának alaphelyzetbe állítása
+    
     setSortOption("");
     setSelectedBrand("");
     setSelectedGender("");
@@ -382,9 +382,9 @@ function Products() {
     setSelectedSzijszine("");
     setSelectedSzij("");
     setSelectedMaxCsuklomili("");
-    setPriceRange([minPrice, maxPrice]); // Ártartomány visszaállítása
+    setPriceRange([minPrice, maxPrice]); 
 
-    // Alapértelmezett terméklista betöltése
+   
     axios.get("http://localhost:8080/ora/oralekerdezes")
       .then((response) => {
         setFilteredProducts(response.data);
@@ -401,7 +401,7 @@ function Products() {
   const handleFilterChange = () => {
     const params = new URLSearchParams();
 
-    //  Csak akkor igaz, ha valóban van aktív szűrő
+   
     const hasActiveFilters = (
       selectedBrand ||
       selectedGender ||
@@ -424,7 +424,7 @@ function Products() {
       priceRange[1] < maxPrice
     );
 
-    // Ha nincs aktív szűrő, frissítse az URL-t és töltse be az alapértelmezett termékeket
+   
     if (!hasActiveFilters) {
       window.history.pushState({}, "", `/products`);
       axios.get("http://localhost:8080/ora/oralekerdezes")
@@ -436,10 +436,10 @@ function Products() {
         .catch(() => {
           console.error("Hiba történt az alapértelmezett terméklista betöltésekor.");
         });
-      return; // Ne fusson le a további szűrési logika
+      return; 
     }
 
-    //  Ha van aktív szűrő, építjük a lekérdezés paramétereit és frissítjük az URL-t
+    
     if (selectedBrand) params.set("marka", selectedBrand);
     if (selectedGender) params.set("nem", selectedGender);
     if (selectedMeghajtas) params.set("meghajtas", selectedMeghajtas);
@@ -462,7 +462,7 @@ function Products() {
       params.set("maxAr", priceRange[1]);
     }
 
-    // Frissítjük az URL-t a kiválasztott szűrőkkel
+    
     const newUrl = `/products?${params.toString()}`;
     window.history.pushState({}, "", newUrl);
 
@@ -470,7 +470,7 @@ function Products() {
       .then((response) => {
         let filtered = response.data;
 
-        //  Ha van rendezési opció, alkalmazzuk azt, de csak a szűrt adatokra
+        
         if (sortOption) {
           switch (sortOption) {
             case "abc-asc":
@@ -510,36 +510,34 @@ function Products() {
   const startIndex = (currentPage - 1) * productsPerPage;
   const visibleProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
 
-  // Kosár gomb képeinek kezelése
-  // Kosár gomb képeinek kezelése
-  // Kosár gomb képeinek kezelése
+  
   const getCartImage = (id) => {
     if (cart.some((item) => item.oraaz === id)) {
-      // Ha a termék a kosárban van, jelenítse meg a `cartremo.jpeg`-t
-      return cart3;  // cartremo.jpeg (amikor kivehető)
+      
+      return cart3; 
     } else {
-      // Ha a termék NINCS a kosárban, jelenítse meg a `cartplus.jpeg`-t
-      return cart2;  // cartplus.jpeg (amikor hozzáadható)
+      
+      return cart2;  
     }
   };
 
 
-  // Kedvencek gomb képeinek kezelése
+  
   const getFavImage = (id) => {
     if (favorites.some((item) => item.oraaz === id)) {
-      return hoverState[id] === "fav" ? fav2 : fav3;  // Ha már a kedvencekben van, `favadded.jpeg` képet használja
+      return hoverState[id] === "fav" ? fav2 : fav3;  
     }
-    return hoverState[id] === "fav" ? fav2 : fav1;  // Ha nincs a kedvencekben, `favsel.jpeg` vagy `fav.jpeg` használata
+    return hoverState[id] === "fav" ? fav2 : fav1;  
   };
 
 
 
-  // Egér belépés
+  
   const handleMouseEnter = (type, id) => {
     setHoverState((prev) => ({ ...prev, [id]: type }));
   };
 
-  // Egér kilépés
+  
   const handleMouseLeave = (type, id) => {
     setHoverState((prev) => {
       const newState = { ...prev };
@@ -745,15 +743,15 @@ function Products() {
                 min={minPrice}
                 max={maxPrice}
                 values={priceRange}
-                onChange={(values) => setPriceRange(values)}  // Frissítjük az állapotot húzás közben
-                onFinalChange={() => handleFilterChange()} //  Amikor elengeded a csúszkát, frissíti a termékeket
+                onChange={(values) => setPriceRange(values)}  
+                onFinalChange={() => handleFilterChange()} 
                 renderTrack={({ props, children }) => (
                   <div
                     {...props}
                     style={{
                       height: "6px",
                       width: "100%",
-                      background: "#fff",  // Fehér színű csúszka
+                      background: "#fff",  
                       borderRadius: "4px",
                       position: "relative",
                       display: "flex",
@@ -779,7 +777,7 @@ function Products() {
                     style={{
                       height: "16px",
                       width: "16px",
-                      backgroundColor: "#fff",  // Fehér színű húzógomb
+                      backgroundColor: "#fff", 
                       border: "2px solid #007bff",
                       borderRadius: "50%",
                       cursor: "pointer",
@@ -914,7 +912,7 @@ function Products() {
             </div>
           )}
           <div className="products-container">
-            {/* Termékek listája */}
+            
           </div>
         </div>
       </div>

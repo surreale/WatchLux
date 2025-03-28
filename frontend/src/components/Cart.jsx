@@ -14,7 +14,7 @@ const Cart = () => {
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
 
-  // Scroll tiltása, ha modal nyitva
+  
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = "hidden";
@@ -109,12 +109,12 @@ const Cart = () => {
         </div>
       )}
 
-      {/* Modal ablak a fizetési mód kiválasztásához */}
+      {}
       <Modal
   show={showModal}
   onHide={() => setShowModal(false)}
   centered
-  backdrop={false}  // <- EZ A KIBASZOTT LÉNYEG
+  backdrop={false}  
   keyboard={false}
   dialogClassName="modal-center-override"
 >

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db/dboperations");
 
-// Márkák lekérése a szűrőhöz
+
 router.get('/filtered', async (req, res) => {
   try {
     const { marka } = req.query;

@@ -185,7 +185,7 @@ body.no-scroll {
   font-weight: bold;
 }
 
-/* Modal gombok középre igazítása */
+
 .modal-button-group {
   display: flex;
   flex-direction: column;
@@ -200,7 +200,7 @@ body.no-scroll {
   border-radius: 20px;
 }
 
-/* Modal teljes középre igazítása */
+
 .custom-centered-modal {
   display: flex;
   align-items: center;
@@ -213,14 +213,14 @@ body.no-scroll {
   transform: translate(0%, 0%) !important;
 }
 
-/* Modal pozícionálás képernyő közepére */
+
 .modal-center-override {
   position: fixed !important;
   top: 50% !important;
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
   margin: 0 !important;
-  z-index: 1060; /* Bootstrap modal z-index */
+  z-index: 1060;
 }
 
 .modal {

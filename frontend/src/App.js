@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Menu from './components/Menu';
 import Footer from './components/Footer';
-import Products from './components/Products'; // Termékek oldal importálása
-import filmImage from './assets/film.jpg'; // Háttérkép importálása
+import Products from './components/Products'; 
+import filmImage from './assets/film.jpg'; 
 import ProductDetails from './components/ProductDetails';
 import { CartProvider } from "./components/CartContext";
 import Cart from "./components/Cart";
@@ -12,7 +12,7 @@ import { FavoritesProvider } from './components/FavoritesContext';
 import Favorites from './components/Favorites';
 import Checkout from "./components/Checkout";
 import "./components/Checkout.css";
-import Login from './components/Login'; // 🔹 Bejelentkezési oldal importálása
+import Login from './components/Login'; 
 import { useState } from 'react';
 import Profile from './components/Profile'; 
 import Aszf from "./components/Aszf";
@@ -31,7 +31,7 @@ function App() {
   };
 
   const mainStyle = {
-    backgroundImage: `url(${filmImage})`, // Template string a háttérképhez
+    backgroundImage: `url(${filmImage})`, 
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -44,12 +44,12 @@ function App() {
     <CartProvider>
     <Router>
       <div style={appStyle} className="main-content">
-        <Menu onLoginClick={handleLoginOpen} /> {/* 🔹 Gomb a bejelentkezéshez */}
+        <Menu onLoginClick={handleLoginOpen} /> {}
         
         <Routes>
-          {/* Főoldal */}
+          
           <Route path="/" element={<main style={mainStyle} />} />
-          {/* Termékek oldal */}
+         
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart/" element={<Cart />} />
@@ -63,7 +63,7 @@ function App() {
 
         <Footer />
 
-        {/* 🔹 Bejelentkezési modál */}
+        
         <Login showLogin={showLogin} handleLoginClose={handleLoginClose} />
       </div>
     </Router>

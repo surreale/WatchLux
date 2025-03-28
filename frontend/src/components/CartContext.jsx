@@ -6,7 +6,11 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [notifications, setNotifications] = useState([]); // Több értesítés tárolása
-
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem("cart");
+  };
+  
   // Betöltjük a kosarat a localStorage-ból, ha van elmentett adat
   useEffect(() => {
     const savedCart = localStorage.getItem("cart");
@@ -74,7 +78,8 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCartQuantity }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateCartQuantity, clearCart }}>
+
       {children}
       <div className="notification-container">
         {notifications.map((notif) => (
@@ -84,6 +89,7 @@ export const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
+
 
 // Több értesítést támogató komponens
 const Notification = ({ message }) => {

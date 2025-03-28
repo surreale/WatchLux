@@ -123,14 +123,14 @@ async function getFilterData(filters) {
     sql += " WHERE " + conditions.join(" AND ");
   }
 
-  console.log("🔍 SQL lekérdezés:", sql, "Értékek:", values);
+  console.log(" SQL lekérdezés:", sql, "Értékek:", values);
 
   try {
     const [rows] = await pool.query(sql, values);
-    console.log("✅ Szűrt termékek:", rows);
+    console.log(" Szűrt termékek:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba a getFilterData() futtatása közben:", error);
+    console.error(" Hiba a getFilterData() futtatása közben:", error);
     throw error;
   }
 }
@@ -139,94 +139,94 @@ async function getBrands() {
   try {
     console.log("🔍 Márkák lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT marka FROM oralekerdezes");
-    console.log("✅ Lekérdezett márkák:", rows);
+    console.log(" Lekérdezett márkák:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a márkák lekérésekor:", error);
+    console.error(" Hiba történt a márkák lekérésekor:", error);
     throw error;
   }
 }
 
 async function getGenders() {
   try {
-    console.log("🔍 Nemek lekérdezése az adatbázisból...");
+    console.log("Nemek lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT nem FROM oralekerdezes");
-    console.log("✅ Lekérdezett nemek:", rows);
+    console.log("Lekérdezett nemek:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a nemek lekérésekor:", error);
+    console.error(" Hiba történt a nemek lekérésekor:", error);
     throw error;
   }
 }
 
 async function getMeghajtasok() {
   try {
-    console.log("🔍 Meghajtások lekérdezése az adatbázisból...");
+    console.log(" Meghajtások lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT meghajtas FROM oralekerdezes");
-    console.log("✅ Lekérdezett meghajtások:", rows);
+    console.log(" Lekérdezett meghajtások:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a meghajtások lekérésekor:", error);
+    console.error(" Hiba történt a meghajtások lekérésekor:", error);
     throw error;
   }
 }
 
 async function getVizallosagok() {
   try {
-    console.log("🔍 Vízállóságok lekérdezése az adatbázisból...");
+    console.log(" Vízállóságok lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT vizallosag FROM oralekerdezes");
-    console.log("✅ Lekérdezett vízállóságok:", rows);
+    console.log(" Lekérdezett vízállóságok:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a vízállóságok lekérésekor:", error);
+    console.error(" Hiba történt a vízállóságok lekérésekor:", error);
     throw error;
   }
 }
 
 async function getSulyok() {
   try {
-    console.log("🔍 Súlyok lekérdezése az adatbázisból...");
+    console.log(" Súlyok lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT sulygrammban FROM oralekerdezes ORDER BY CAST(sulygrammban AS UNSIGNED)");
-    console.log("✅ Lekérdezett súlyok:", rows);
+    console.log(" Lekérdezett súlyok:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a súlyok lekérésekor:", error);
+    console.error(" Hiba történt a súlyok lekérésekor:", error);
     throw error;
   }
 }
 
 async function getTipusok() {
   try {
-    console.log("🔍 Típusok lekérdezése az adatbázisból...");
+    console.log(" Típusok lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT tipus FROM oralekerdezes");
-    console.log("✅ Lekérdezett típusok:", rows);
+    console.log(" Lekérdezett típusok:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a típusok lekérésekor:", error);
+    console.error(" Hiba történt a típusok lekérésekor:", error);
     throw error;
   }
 }
 
 async function getDatumkijelzesek() {
   try {
-    console.log("🔍 Dátumkijelzések lekérdezése az adatbázisból...");
+    console.log(" Dátumkijelzések lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT datumkijelzes FROM oralekerdezes");
-    console.log("✅ Lekérdezett dátumkijelzések:", rows);
+    console.log(" Lekérdezett dátumkijelzések:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a dátumkijelzések lekérésekor:", error);
+    console.error(" Hiba történt a dátumkijelzések lekérésekor:", error);
     throw error;
   }
 }
 
 async function getExtrafunkciok() {
   try {
-    console.log("🔍 Extrafunkciók lekérdezése az adatbázisból...");
+    console.log(" Extrafunkciók lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT extrafunkcio FROM oralekerdezes");
-    console.log("✅ Lekérdezett extrafunkciók:", rows);
+    console.log(" Lekérdezett extrafunkciók:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt az extrafunkciók lekérésekor:", error);
+    console.error(" Hiba történt az extrafunkciók lekérésekor:", error);
     throw error;
   }
 }
@@ -235,139 +235,139 @@ async function getExtrafunkciok() {
 
 async function getAtokszinek() {
   try {
-    console.log("🔍 Tok színek lekérdezése az adatbázisból...");
+    console.log(" Tok színek lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT atokszine FROM oralekerdezes");
-    console.log("✅ Lekérdezett tok színek:", rows);
+    console.log(" Lekérdezett tok színek:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a tok színek lekérésekor:", error);
+    console.error(" Hiba történt a tok színek lekérésekor:", error);
     throw error;
   }
 }
 
 async function getAszamlapszinek() {
   try {
-    console.log("🔍 Számlap színek lekérdezése az adatbázisból...");
+    console.log(" Számlap színek lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT aszamlapszine FROM oralekerdezes");
-    console.log("✅ Lekérdezett számlap színek:", rows);
+    console.log(" Lekérdezett számlap színek:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a számlap színek lekérésekor:", error);
+    console.error(" Hiba történt a számlap színek lekérésekor:", error);
     throw error;
   }
 }
 
 async function getAtok() {
   try {
-    console.log("🔍 Tok anyagok lekérdezése az adatbázisból...");
+    console.log("Tok anyagok lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT atok FROM oralekerdezes");
-    console.log("✅ Lekérdezett tok anyagok:", rows);
+    console.log(" Lekérdezett tok anyagok:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a tok anyagok lekérésekor:", error);
+    console.error(" Hiba történt a tok anyagok lekérésekor:", error);
     throw error;
   }
 }
 
 async function getKristalyuvegek() {
   try {
-    console.log("🔍 Kristályüveg típusok lekérdezése az adatbázisból...");
+    console.log("Kristályüveg típusok lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT kristalyuveg FROM oralekerdezes");
-    console.log("✅ Lekérdezett kristályüveg típusok:", rows);
+    console.log(" Lekérdezett kristályüveg típusok:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a kristályüveg típusok lekérésekor:", error);
+    console.error(" Hiba történt a kristályüveg típusok lekérésekor:", error);
     throw error;
   }
 }
 
 async function getSzamlaptipusok() {
   try {
-    console.log("🔍 Számlaptípusok lekérdezése az adatbázisból...");
+    console.log("Számlaptípusok lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT szamlaptipus FROM oralekerdezes");
-    console.log("✅ Lekérdezett számlaptípusok:", rows);
+    console.log("Lekérdezett számlaptípusok:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a számlaptípusok lekérésekor:", error);
+    console.error("Hiba történt a számlaptípusok lekérésekor:", error);
     throw error;
   }
 }
 
 async function getOraformak() {
   try {
-    console.log("🔍 Óraformák lekérdezése az adatbázisból...");
+    console.log(" Óraformák lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT oraforma FROM oralekerdezes");
-    console.log("✅ Lekérdezett óraformák:", rows);
+    console.log("Lekérdezett óraformák:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt az óraformák lekérésekor:", error);
+    console.error("Hiba történt az óraformák lekérésekor:", error);
     throw error;
   }
 }
 
 async function getSzijszinek() {
   try {
-    console.log("🔍 Szíjak színének lekérdezése az adatbázisból...");
+    console.log(" Szíjak színének lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT szijszine FROM oralekerdezes");
-    console.log("✅ Lekérdezett szíjak színei:", rows);
+    console.log("Lekérdezett szíjak színei:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a szíjak színének lekérésekor:", error);
+    console.error("Hiba történt a szíjak színének lekérésekor:", error);
     throw error;
   }
 }
 
 async function getSzijk() {
   try {
-    console.log("🔍 Szíjak anyagának lekérdezése az adatbázisból...");
+    console.log(" Szíjak anyagának lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT szij FROM oralekerdezes");
-    console.log("✅ Lekérdezett szíjak anyagai:", rows);
+    console.log("Lekérdezett szíjak anyagai:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a szíjak anyagának lekérésekor:", error);
+    console.error("Hiba történt a szíjak anyagának lekérésekor:", error);
     throw error;
   }
 }
 
 async function getMaxCsuklomili() {
   try {
-    console.log("🔍 Maximális csuklóméret lekérdezése az adatbázisból...");
+    console.log(" Maximális csuklóméret lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT DISTINCT maxcsuklomili FROM oralekerdezes ORDER BY maxcsuklomili");
-    console.log("✅ Lekérdezett maximális csuklóméretek:", rows);
+    console.log("Lekérdezett maximális csuklóméretek:", rows);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a maximális csuklóméret lekérésekor:", error);
+    console.error("Hiba történt a maximális csuklóméret lekérésekor:", error);
     throw error;
   }
 }
 
 async function getPriceRange() {
   try {
-    console.log("🔍 Árintervallum lekérdezése az adatbázisból...");
+    console.log(" Árintervallum lekérdezése az adatbázisból...");
     const [rows] = await pool.query("SELECT MIN(ar) AS minAr, MAX(ar) AS maxAr FROM oralekerdezes");
     
     if (rows.length > 0) {
-      console.log("✅ Lekérdezett árintervallum:", rows[0]);
-      return { minAr: rows[0].minAr, maxAr: rows[0].maxAr }; // Visszaad egy objektumot
+      console.log("Lekérdezett árintervallum:", rows[0]);
+      return { minAr: rows[0].minAr, maxAr: rows[0].maxAr }; 
     } else {
-      return { minAr: 0, maxAr: 100000 }; // Ha nincs adat, egy alapértelmezett tartományt küld vissza
+      return { minAr: 0, maxAr: 100000 }; 
     }
   } catch (error) {
-    console.error("❌ Hiba történt az árintervallum lekérésekor:", error);
+    console.error("Hiba történt az árintervallum lekérésekor:", error);
     throw error;
   }
 }
 
 async function searchProducts(query) {
   try {
-    const keywords = query.trim().split(/\s+/); // szavak szétválasztása szóköz szerint
+    const keywords = query.trim().split(/\s+/); 
     const conditions = [];
     const values = [];
 
     for (const word of keywords) {
       const like = `%${word}%`;
 
-      // Egy szó több mezőben keres
+      
       conditions.push(`(
         megnevezes LIKE ? OR 
         marka LIKE ? OR 
@@ -386,7 +386,7 @@ async function searchProducts(query) {
         
       )`);
       
-      // Minden mezőhöz hozzáadjuk a paramétert
+      
       values.push(like, like, like, like, like, like, like, like, like, like, like, like, like);
     }
 
@@ -398,7 +398,7 @@ async function searchProducts(query) {
     const [rows] = await pool.query(sql, values);
     return rows;
   } catch (error) {
-    console.error("❌ Hiba történt a keresés során:", error);
+    console.error("Hiba történt a keresés során:", error);
     throw error;
   }
 }
@@ -414,7 +414,7 @@ async function registerUser(nev, tel, email, jelszo) {
       const [result] = await pool.query(sqlQuery, [nev, tel, email, jelszo]);
       return result;
   } catch (error) {
-      console.error("❌ Hiba a regisztráció során:", error);
+      console.error("Hiba a regisztráció során:", error);
       throw error;
   }
 }
@@ -426,9 +426,9 @@ async function checkExistingUser(email, tel) {
       `;
       const [rows] = await pool.query(sqlQuery, [email, tel]);
 
-      return rows.length > 0 ? true : false; // Ha talál egyezést, akkor true-t ad vissza
+      return rows.length > 0 ? true : false; 
   } catch (error) {
-      console.error("❌ Hiba az ellenőrzés során:", error);
+      console.error(" Hiba az ellenőrzés során:", error);
       throw error;
   }
 }
@@ -440,7 +440,7 @@ async function getUserByEmail(email) {
       const [rows] = await pool.query(sqlQuery, [email]);
       return rows.length > 0 ? rows[0] : null;
   } catch (error) {
-      console.error("❌ Hiba a felhasználó lekérésekor:", error);
+      console.error(" Hiba a felhasználó lekérésekor:", error);
       throw error;
   }
 } 
@@ -483,7 +483,7 @@ async function changeUserPassword(userId, oldPassword, newPassword) {
       const oldPasswordHash = crypto.createHash("sha256").update(oldPassword).digest("hex");
       const newPasswordHash = crypto.createHash("sha256").update(newPassword).digest("hex");
 
-      // 🔹 Ellenőrizzük, hogy a régi jelszó helyes-e
+      
       const checkQuery = `SELECT jelszo FROM vasarlo WHERE vasarloaz = ?`;
       const [rows] = await pool.query(checkQuery, [userId]);
 
@@ -495,13 +495,13 @@ async function changeUserPassword(userId, oldPassword, newPassword) {
           throw new Error("Hibás régi jelszó!");
       }
 
-      // 🔹 Jelszó frissítése
+      
       const updateQuery = `UPDATE vasarlo SET jelszo = ? WHERE vasarloaz = ?`;
       await pool.query(updateQuery, [newPasswordHash, userId]);
 
       return { message: "Sikeres jelszó módosítás!" };
   } catch (error) {
-      console.error("❌ Hiba történt a jelszó módosítása közben:", error);
+      console.error("Hiba történt a jelszó módosítása közben:", error);
       throw error;
   }
 }
@@ -517,7 +517,7 @@ async function insertOrGetGuestBuyer({ name, email, phone }) {
     );
 
     if (existing.length > 0) {
-      console.log("🔁 Létező vendég:", existing[0]);
+      console.log("Létező vendég:", existing[0]);
       return { insertId: existing[0].vasarloaz };
     }
 
@@ -525,10 +525,10 @@ async function insertOrGetGuestBuyer({ name, email, phone }) {
       "INSERT INTO vasarlo (nev, email, tel, jelszo) VALUES (?, ?, ?, ?)",
       [name, email, phone, null]
     );
-    console.log("✅ Új vendég beszúrva:", result);
+    console.log("Új vendég beszúrva:", result);
     return result;
   } catch (error) {
-    console.error("❌ HIBA a vendég mentésekor:", error);
+    console.error("HIBA a vendég mentésekor:", error);
     throw error;
   }
 }

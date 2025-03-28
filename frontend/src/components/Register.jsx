@@ -14,19 +14,19 @@ export default function Register({ showRegister, handleRegisterClose }) {
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordTouched, setPasswordTouched] = useState(false);
 
-    // Név mező kezelése (csak betűk és szóköz engedélyezett, max 30 karakter)
+    
     const handleNevChange = (e) => {
         let input = e.target.value;
 
-        // Csak betűk, szóközök és kötőjelek engedélyezése
+       
         let cleanInput = input.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s-]/g, "");
 
-        // Szavak első betűjének nagybetűsítése
+        
         let formattedInput = cleanInput
             .toLowerCase()
             .replace(/(^\w|[\s-]\w)/g, (match) => match.toUpperCase());
 
-        // Max 30 karakter
+        
         if (formattedInput.length > 40) {
             formattedInput = formattedInput.substring(0, 40);
         }
@@ -34,7 +34,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
         setNev(formattedInput);
     };
 
-    // Email kezelése (max 30 karakter)
+    
     const handleEmailChange = (e) => {
         let input = e.target.value;
         if (input.length > 30) {
@@ -43,22 +43,22 @@ export default function Register({ showRegister, handleRegisterClose }) {
         setEmail(input);
     };
 
-    // Telefonszám kezelése (fix +36, utána 9 szám)
+    
     const handleTelChange = (e) => {
         let input = e.target.value;
 
-        // Ha nem +36-tal kezdődik, visszaállítja
+       
         if (!input.startsWith("+36")) {
             input = "+36";
         }
 
-        // Csak számokat engedélyez a +36 után
-        let cleanNumber = input.replace(/\D/g, "").substring(2, 11); // Max 9 szám
+        
+        let cleanNumber = input.replace(/\D/g, "").substring(2, 11); 
 
         setTel("+36" + cleanNumber);
     };
 
-    // Jelszó validáció (min. 8 karakter, kis- és nagybetű)
+    
     const isValidPassword = (password) => {
         const minLength = password.length >= 8;
         const hasUpper = /[A-Z]/.test(password);
@@ -69,7 +69,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
     const handlePasswordChange = (e) => {
         let input = e.target.value;
 
-        // Max 30 karakter
+       
         if (input.length > 30) {
             input = input.substring(0, 30);
         }
@@ -97,7 +97,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
             return;
         }
     
-        // Telefonszámból a "+" eltávolítása, de a 36 marad
+        
         const phoneNumber = tel.replace("+", "");
     
         try {

@@ -5,9 +5,9 @@ export const FavoritesContext = createContext();
 
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState([]);
-  const [notifications, setNotifications] = useState([]); // Több értesítés támogatása
+  const [notifications, setNotifications] = useState([]); 
 
-  // Kedvencek betöltése localStorage-ból
+  
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites"));
     if (storedFavorites) {
@@ -15,12 +15,12 @@ export const FavoritesProvider = ({ children }) => {
     }
   }, []);
 
-  // Kedvencek mentése localStorage-ba
+ 
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
 
-  // Termék hozzáadása vagy eltávolítása a kedvencekből (ÉRINTETT FUNKCIÓ)
+ 
   const addToFavorites = (product) => {
     setFavorites((prevFavorites) => {
       const exists = prevFavorites.some((item) => item.oraaz === product.oraaz);
@@ -34,7 +34,7 @@ export const FavoritesProvider = ({ children }) => {
     });
   };
 
-  // Új értesítés hozzáadása (több értesítés támogatása)
+
   const addNotification = (message) => {
     const id = Date.now();
     setNotifications((prev) => [...prev, { id, message }]);
@@ -55,7 +55,7 @@ export const FavoritesProvider = ({ children }) => {
   );
 };
 
-// Notification komponens
+
 const Notification = ({ message }) => {
   return (
     <div className="notification">

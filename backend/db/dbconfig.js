@@ -1,4 +1,4 @@
-//mysql2
+
 const config = {
     host: 'localhost',
     user: process.env.DB_USER,
