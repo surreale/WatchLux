@@ -1,8 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { CartContext } from "./CartContext";
 import { useNavigate } from "react-router-dom";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+
 import Register from "./Register";
 import Login from "./Login";
 import "./Cart.css";
@@ -109,28 +108,57 @@ const Cart = () => {
         </div>
       )}
 
-      {}
-      <Modal
-  show={showModal}
-  onHide={() => setShowModal(false)}
-  centered
-  backdrop={false}  
-  keyboard={false}
-  dialogClassName="modal-center-override"
->
+{showModal && (
+  <div className="modal-overlay" onClick={() => setShowModal(false)}>
+    <div className="modal-custom" onClick={(e) => e.stopPropagation()}>
+      <button
+        onClick={() => setShowModal(false)}
+        style={{
+          float: "right",
+          background: "transparent",
+          border: "none",
+          fontSize: "20px",
+        }}
+      >
+        ✕
+      </button>
+      <h2 className="modal-title">Fizetés módja</h2>
+      <p style={{ textAlign: "center", marginBottom: "20px" }}>
+        Hogyan szeretnéd folytatni a rendelést?
+      </p>
+      <div className="modal-button-group">
+        <button
+          className="btn-primary"
+          onClick={() => {
+            setShowModal(false);
+            navigate("/checkout");
+          }}
+        >
+          Vendégként folytatom
+        </button>
+        <button
+          className="btn-primary"
+          onClick={() => {
+            setShowModal(false);
+            setShowLogin(true);
+          }}
+        >
+          Bejelentkezés
+        </button>
+        <button
+          className="btn-primary"
+          onClick={() => {
+            setShowModal(false);
+            setShowRegister(true);
+          }}
+        >
+          Regisztráció
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-        <Modal.Header closeButton>
-          <Modal.Title>Fizetés módja</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>Hogyan szeretnéd folytatni a rendelést?</p>
-          <div className="modal-button-group">
-            <Button className="modal-buttons" onClick={() => navigate("/checkout")}>Vendégként folytatom</Button>
-            <Button className="modal-buttons" onClick={() => { setShowLogin(true); setShowModal(false); }}>Bejelentkezés</Button>
-            <Button className="modal-buttons" onClick={() => { setShowRegister(true); setShowModal(false); }}>Regisztráció</Button>
-          </div>
-        </Modal.Body>
-      </Modal>
 
       <Login showLogin={showLogin} handleLoginClose={() => setShowLogin(false)} onLoginSuccess={() => setShowLogin(false)} />
       <Register showRegister={showRegister} handleRegisterClose={() => setShowRegister(false)} />

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Navbar, Nav, Form, Container } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "./CartContext";
+
 import Logo from "./logo.png";
 import Login from "./Login";
 import Register from "./Register";
@@ -10,13 +11,16 @@ import Kosar from "./kosar.jpeg";
 import Felhasznalo from "./felhasznalo.jpeg";
 import Kedvencek from "./kedvencek.jpeg";
 import HeroText from "./HeroText";
+import Profile from "./Profile";
+
 import "./Menu.css";
 import "./toast.css";
-import Profile from "./Profile";
+
 function Menu() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { cart } = useContext(CartContext);
+  const { cart, clearCart } = useContext(CartContext);
+
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -27,8 +31,6 @@ function Menu() {
   const [showToast, setShowToast] = useState({ visible: false, message: "", type: "" });
   const [showProfile, setShowProfile] = useState(false);
 
- 
-  
   useEffect(() => {
     const handleScroll = () => {
       setShowNavbar(window.scrollY <= lastScrollY);
@@ -60,25 +62,40 @@ function Menu() {
   };
   const handleProfileShow = () => setShowProfile(true);
   const handleProfileClose = () => setShowProfile(false);
+
   const handleLogout = () => {
+    // 🔐 Törlés localStorage-ból
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("cartBackup");
+    localStorage.removeItem("cartRestore");
+    localStorage.removeItem("savedBilling");
+    localStorage.removeItem("savedShipping");
+
+    // 🧹 Kosár törlése contextből is
+    clearCart();
+
     setIsLoggedIn(false);
     setShowUserMenu(false);
 
+    // ✅ Visszajelzés + navigáció
     setShowToast({ visible: true, message: "Sikeres kijelentkezés!", type: "error" });
     setTimeout(() => {
       setShowToast({ visible: false, message: "", type: "" });
-      navigate("/"); 
+      navigate("/");
     }, 2000);
   };
+
   const handleLoginSuccess = () => {
-    setIsLoggedIn(true);  
-    setShowToast({ visible: true, message: " Sikeres bejelentkezés!", type: "success" });
+    setIsLoggedIn(true);
+    setShowToast({ visible: true, message: "Sikeres bejelentkezés!", type: "success" });
     setTimeout(() => setShowToast({ visible: false, message: "", type: "" }), 2000);
   };
-  
+
   return (
     <>
+      {/* Hero szöveg megjelenítése csak főoldalon */}
       {!location.pathname.startsWith("/product/") &&
         location.pathname !== "/products" &&
         location.pathname !== "/cart" &&
@@ -123,31 +140,33 @@ function Menu() {
                 />
               </div>
             </Form>
+
             <div className="d-flex align-items-center user-cart-container">
               <div className="user-icon user-menu-container position-relative">
                 <img src={Felhasznalo} alt="Felhasználó" className="user-icon" onClick={toggleUserMenu} />
                 {showUserMenu && (
                   <div className="user-menu-dropdown position-absolute bg-white rounded shadow">
                     <ul className="list-unstyled mb-0">
-                    {isLoggedIn ? (
-    <>
-        <li className="menu-item" onClick={handleProfileShow}>Profilom</li>
-        <li className="menu-item" onClick={handleLogout}>Kijelentkezés</li>
-    </>
-) : (
-    <>
-        <li className="menu-item" onClick={handleRegisterShow}>Regisztráció</li>
-        <li className="menu-item" onClick={handleLoginShow}>Bejelentkezés</li>
-    </>
-)}
-
+                      {isLoggedIn ? (
+                        <>
+                          <li className="menu-item" onClick={handleProfileShow}>Profilom</li>
+                          <li className="menu-item" onClick={handleLogout}>Kijelentkezés</li>
+                        </>
+                      ) : (
+                        <>
+                          <li className="menu-item" onClick={handleRegisterShow}>Regisztráció</li>
+                          <li className="menu-item" onClick={handleLoginShow}>Bejelentkezés</li>
+                        </>
+                      )}
                     </ul>
                   </div>
                 )}
               </div>
+
               <Nav.Link as={Link} to="/kedvencek" className="position-relative">
                 <img src={Kedvencek} alt="Kedvencek" className="kosar-icon" />
               </Nav.Link>
+
               <Nav.Link as={Link} to="/cart" className="position-relative">
                 <img src={Kosar} alt="Kosár" className="kosar-icon" />
                 {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
@@ -157,13 +176,16 @@ function Menu() {
         </Container>
       </Navbar>
 
-      <Login 
-    showLogin={showLogin} 
-    handleLoginClose={handleLoginClose} 
-    onLoginSuccess={handleLoginSuccess} 
-/>
+      {/* Modális ablakok */}
+      <Login
+        showLogin={showLogin}
+        handleLoginClose={handleLoginClose}
+        onLoginSuccess={handleLoginSuccess}
+      />
       <Register showRegister={showRegister} handleRegisterClose={handleRegisterClose} />
       <Profile showProfile={showProfile} handleProfileClose={handleProfileClose} />
+
+      {/* Toast üzenet */}
       {showToast.visible && <div className={`toast-container ${showToast.type} show`}>{showToast.message}</div>}
     </>
   );

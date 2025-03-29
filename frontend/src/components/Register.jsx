@@ -1,7 +1,4 @@
 import { useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import axios from "axios";
 import "./Register.css";
 
@@ -14,19 +11,13 @@ export default function Register({ showRegister, handleRegisterClose }) {
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordTouched, setPasswordTouched] = useState(false);
 
-    
     const handleNevChange = (e) => {
         let input = e.target.value;
-
-       
         let cleanInput = input.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s-]/g, "");
-
-        
         let formattedInput = cleanInput
             .toLowerCase()
             .replace(/(^\w|[\s-]\w)/g, (match) => match.toUpperCase());
 
-        
         if (formattedInput.length > 40) {
             formattedInput = formattedInput.substring(0, 40);
         }
@@ -34,7 +25,6 @@ export default function Register({ showRegister, handleRegisterClose }) {
         setNev(formattedInput);
     };
 
-    
     const handleEmailChange = (e) => {
         let input = e.target.value;
         if (input.length > 30) {
@@ -43,22 +33,15 @@ export default function Register({ showRegister, handleRegisterClose }) {
         setEmail(input);
     };
 
-    
     const handleTelChange = (e) => {
         let input = e.target.value;
-
-       
         if (!input.startsWith("+36")) {
             input = "+36";
         }
-
-        
-        let cleanNumber = input.replace(/\D/g, "").substring(2, 11); 
-
+        let cleanNumber = input.replace(/\D/g, "").substring(2, 11);
         setTel("+36" + cleanNumber);
     };
 
-    
     const isValidPassword = (password) => {
         const minLength = password.length >= 8;
         const hasUpper = /[A-Z]/.test(password);
@@ -68,12 +51,9 @@ export default function Register({ showRegister, handleRegisterClose }) {
 
     const handlePasswordChange = (e) => {
         let input = e.target.value;
-
-       
         if (input.length > 30) {
             input = input.substring(0, 30);
         }
-
         setJelszo(input);
         setPasswordValid(isValidPassword(input));
     };
@@ -85,7 +65,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setHibaUzenet("");
-    
+
         const nameParts = nev.trim().split(/\s+/);
         if (nameParts.length < 2) {
             setHibaUzenet("Kérlek, add meg a teljes nevedet (pl. Vezetéknév Keresztnév)!");
@@ -96,10 +76,9 @@ export default function Register({ showRegister, handleRegisterClose }) {
             setHibaUzenet("A jelszó nem felel meg a követelményeknek!");
             return;
         }
-    
-        
+
         const phoneNumber = tel.replace("+", "");
-    
+
         try {
             const response = await axios.post("http://localhost:8080/auth/register", {
                 nev,
@@ -107,93 +86,86 @@ export default function Register({ showRegister, handleRegisterClose }) {
                 email,
                 jelszo
             });
-    
+
             if (!response.data.userId) {
                 setHibaUzenet("Nem sikerült regisztrálni: hiányzó user ID.");
                 return;
-              }
-              
-              alert(response.data.message);
-              handleRegisterClose();
-              
-              localStorage.setItem("isLoggedIn", "true");
-              localStorage.setItem("userId", response.data.userId); 
-              
+            }
+
+            alert(response.data.message);
+            handleRegisterClose();
+
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userId", response.data.userId);
 
             const savedCart = localStorage.getItem("cart");
             if (savedCart) {
                 localStorage.setItem("cartRestore", savedCart);
             }
-    
+
             window.location.reload();
-    
+
         } catch (error) {
             setHibaUzenet(error.response?.data?.error || "Hiba történt a regisztráció során!");
         }
     };
-    
+
+    if (!showRegister) return null;
 
     return (
-        <Modal show={showRegister} onHide={handleRegisterClose} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Regisztráció</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+        <div className="modal-overlay" onClick={handleRegisterClose}>
+            <div className="modal-custom" onClick={(e) => e.stopPropagation()}>
+                <button onClick={handleRegisterClose} style={{ float: "right", background: "transparent", border: "none", fontSize: "20px" }}>✕</button>
+                <h2 className="modal-title">Regisztráció</h2>
+
                 {hibaUzenet && <p className="text-danger">{hibaUzenet}</p>}
 
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Név</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Adja meg a nevét"
-                            value={nev}
-                            onChange={handleNevChange}
-                        />
-                    </Form.Group>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Név"
+                        value={nev}
+                        onChange={handleNevChange}
+                        className="form-control"
+                        required
+                    />
+                    <input
+                        type="text"
+                        placeholder="Telefonszám"
+                        value={tel}
+                        onChange={handleTelChange}
+                        className="form-control"
+                        required
+                    />
+                    <input
+                        type="email"
+                        placeholder="E-mail cím"
+                        value={email}
+                        onChange={handleEmailChange}
+                        className="form-control"
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder="Jelszó"
+                        value={jelszo}
+                        onChange={handlePasswordChange}
+                        onFocus={handlePasswordFocus}
+                        className="form-control"
+                        required
+                    />
+                    {passwordTouched && (
+                        <p className={passwordValid ? "text-success" : "text-danger"}>
+                            A jelszónak legalább 8 karakter hosszúnak kell lennie,
+                            kis- és nagybetűt is tartalmaznia kell.
+                        </p>
+                    )}
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>Telefonszám</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Adja meg a telefonszámát"
-                            value={tel}
-                            onChange={handleTelChange}
-                        />
-                    </Form.Group>
-
-                    <Form.Group className="mb-3">
-                        <Form.Label>E-mail cím</Form.Label>
-                        <Form.Control
-                            type="email"
-                            placeholder="Adja meg az e-mail címét"
-                            value={email}
-                            onChange={handleEmailChange}
-                        />
-                    </Form.Group>
-
-                    <Form.Group className="mb-3">
-                        <Form.Label>Jelszó</Form.Label>
-                        <Form.Control
-                            type="password"
-                            placeholder="Adja meg a jelszavát"
-                            value={jelszo}
-                            onChange={handlePasswordChange}
-                            onFocus={handlePasswordFocus}
-                        />
-                        {passwordTouched && (
-                            <p className={passwordValid ? "text-success" : "text-danger"}>
-                                A jelszónak legalább 8 karakter hosszúnak kell lennie, 
-                                tartalmaznia kell kis- és nagybetűt.
-                            </p>
-                        )}
-                    </Form.Group>
-
-                    <Button variant="primary" type="submit" disabled={!passwordValid}>
+                    <button type="submit" className="btn-primary" disabled={!passwordValid}>
                         Regisztráció
-                    </Button>
-                </Form>
-            </Modal.Body>
-        </Modal>
+                    </button>
+                </form>
+            </div>
+        </div>
     );
 }

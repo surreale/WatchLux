@@ -1,250 +1,346 @@
 .cart-page {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background-color: ghostwhite;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: ghostwhite;
 }
 
 .cl {
-  color: rgb(0, 0, 0);
+color: rgb(0, 0, 0);
 }
 
 body.no-scroll {
-    overflow: hidden;
+  overflow: hidden;
 }
-  
-  .cart-items {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .cart-item {
-    display: flex;
-    align-items: center;
-    background: white;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 30px;
-    box-shadow: 0px 5px 10px rgb(144, 216, 255);
-  }
-  
-  .cart-image {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    margin-right: 10px;
-  }
-  
-  .cart-details {
-    flex-grow: 1;
-    text-align: left;
-  }
-  
-  .remove-button {
-    background: red;
-    color: white;
-    padding: 8px;
-    border-radius: 50px;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
 
-  .remove-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgb(154, 215, 255);
+.cart-items {
+display: flex;
+flex-direction: column;
+align-items: center;
 }
-  
-  .checkout-button {
-    color: black;
-    border: 1px solid black;
-    border-radius: 50px;
-    padding: 10px;
-    background-color: ghostwhite;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    width: 10%;
-    text-align: center;
-    transition: background 0.3s;
+
+.cart-item {
+display: flex;
+align-items: center;
+background: white;
+padding: 10px;
+margin: 10px;
+border-radius: 30px;
+box-shadow: 0px 5px 10px rgb(144, 216, 255);
+}
+
+.cart-image {
+width: 80px;
+height: 80px;
+object-fit: contain;
+margin-right: 10px;
+}
+
+.cart-details {
+flex-grow: 1;
+text-align: left;
+}
+
+.remove-button {
+background: red;
+color: white;
+padding: 8px;
+border-radius: 50px;
+cursor: pointer;
+border: none;
+outline: none;
+transition: all 0.3s ease-in-out;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.remove-button:hover {
+transform: scale(1.05);
+box-shadow: 0 8px 20px rgb(154, 215, 255);
+}
+
+.checkout-button {
+color: black;
+border: 1px solid black;
+border-radius: 50px;
+padding: 10px;
+background-color: ghostwhite;
+cursor: pointer;
+font-size: 16px;
+margin-top: 10px;
+width: 10%;
+text-align: center;
+transition: background 0.3s;
 }
 
 .checkout-button:hover {
-  background-color: #49bf8c;
-  color: rgb(255, 255, 255);
+background-color: #49bf8c;
+color: rgb(255, 255, 255);
 }
 
 .cen {
-    color: beige;
-    font-size: 300%;
+color: beige;
+font-size: 300%;
 }
-  
+
 .cart-item p {
-  margin: 5px 0;
+margin: 5px 0;
 }
 
 .cart-item .cart-details p {
-  font-size: 14px;
-  color: #333;
+font-size: 14px;
+color: #333;
 }
 
 .cart-summary {
-  position: fixed;
-  right: 20px;
-  bottom: 60px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  padding: 15px;
-  text-align: center;
-  z-index: 100;
+position: fixed;
+right: 20px;
+bottom: 60px;
+background-color: #fff;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+border-radius: 10px;
+padding: 15px;
+text-align: center;
+z-index: 100;
 }
 
 .cart-summary h3 {
-  margin-bottom: 10px;
-  color: #333;
+margin-bottom: 10px;
+color: #333;
 }
 
 .fizetes {
-  background-color: ghostwhite;
-  color: black;
-  border: 1px solid black;
-  border-radius: 50px;
-  padding: 10px 15px;
-  cursor: pointer;
-  text-align: center;
-  transition: background 0.3s;
+background-color: ghostwhite;
+color: black;
+border: 1px solid black;
+border-radius: 50px;
+padding: 10px 15px;
+cursor: pointer;
+text-align: center;
+transition: background 0.3s;
 }
 
 .fizetes:hover {
-  background-color: #49bf8c;
-  color: rgb(255, 255, 255);
+background-color: #49bf8c;
+color: rgb(255, 255, 255);
 }
 
 .quantity-control {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+display: flex;
+align-items: center;
+gap: 5px;
 }
 
 .quantity-control input {
-  width: 50px;
-  text-align: center;
-  font-size: 16px;
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+width: 50px;
+text-align: center;
+font-size: 16px;
+padding: 5px;
+border-radius: 5px;
+border: 1px solid #ccc;
 }
 
 .clickable {
-  cursor: pointer;
-  text-decoration: underline;
-  color: #007bff;
-  transition: color 0.3s;
+cursor: pointer;
+text-decoration: underline;
+color: #007bff;
+transition: color 0.3s;
 }
 
 .clickable:hover {
-  color: #0056b3;
+color: #0056b3;
+}
+
+/* ===== MODAL (egységes középre igazított, saját modalokhoz) ===== */
+.modal-custom {
+position: fixed;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 1050;
+background: white;
+padding: 30px;
+border-radius: 25px;
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+max-width: 400px;
+width: 90%;
+text-align: center;
+}
+
+.modal-custom h2 {
+font-size: 22px;
+margin-bottom: 20px;
+}
+
+.modal-button-group {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 10px;
+margin-top: 20px;
 }
 
 .modal-buttons {
-  background-color: ghostwhite;
-  border: 1px solid black;
-  border-radius: 50px;
-  margin-top: 2px;
-  transition: background 0.3s;
+width: 250px;
+font-weight: bold;
+padding: 12px;
+border-radius: 25px;
+background-color: ghostwhite;
+color: black;
+border: 1px solid black;
+transition: background 0.3s, color 0.3s;
+cursor: pointer;
 }
 
 .modal-buttons:hover {
-  background-color: #49bf8c;
-  color: rgb(255, 255, 255);
+background-color: #49bf8c;
+color: white;
 }
 
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .checkout-button {
-      width: 50%;
+.checkout-button {
+    width: 50%;
+}
+}
+.modal-custom input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.modal-custom input:focus {
+  border-color: #49bf8c;
+  box-shadow: 0 0 0 2px rgba(73, 191, 140, 0.2);
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5); /* sötét áttetsző háttér */
+  z-index: 1040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Háttér overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5); /* <-- EZ sötétíti el a hátteret */
+  z-index: 1040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Modal doboz (panel) */
+.modal-custom {
+  background: #f8f9fa;
+  border-radius: 50px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  z-index: 1050;
+}
+
+/* Modal címsor */
+.modal-title {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  color: black;
+  margin-bottom: 20px;
+}
+
+/* Input mezők */
+.form-control {
+  border-radius: 50px;
+  border: 2px solid #ced4da;
+  transition: all 0.3s ease-in-out;
+  font-size: 16px;
+  padding: 12px 16px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+/* Gomb */
+.btn-primary, .modal-buttons {
+  width: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border: none;
+  transition: all 0.3s ease-in-out;
+  color: white;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.btn-primary:hover, .modal-buttons:hover {
+  background-color: #49bf8c;
+  color: white;
+}
+
+/* Gombok listában (pl. vendég/bejelentkezés/regisztráció) */
+.modal-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.text-danger {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #dc3545;
+}
+
+.text-success {
+  font-size: 14px;
+  margin-top: 5px;
+  color: #28a745;
+}
+
+/* Mobilra reszponzív */
+@media (max-width: 576px) {
+  .modal-custom {
+    padding: 20px;
+  }
+
+  .modal-title {
+    font-size: 20px;
+  }
+
+  .form-control {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .btn-primary {
+    font-size: 16px;
+    padding: 10px;
   }
 }
-
-.modal-button-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.modal-buttons {
-  width: 250px;
-  font-weight: bold;
-}
-
-
-.modal-button-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.modal-buttons {
-  width: 250px;
-  font-weight: bold;
-  border-radius: 20px;
-}
-
-
-.custom-centered-modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-}
-
-.custom-centered-modal .modal-dialog {
-  margin: auto !important;
-  transform: translate(0%, 0%) !important;
-}
-
-
-.modal-center-override {
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  margin: 0 !important;
-  z-index: 1060;
-}
-
-.modal {
-  width: 100%;
-  height: 100%;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.modal-content {
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-
-
-.modal-backdrop.show {
-  display: none !important;
-}
-
-html, body {
-  background: none !important;
-}
-
