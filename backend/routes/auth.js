@@ -142,5 +142,40 @@ router.post("/address", async (req, res) => {
       res.status(500).json({ error: "Szerverhiba a számlázási adatok mentésekor." });
     }
   });
+
+  router.delete("/delete-profile", async (req, res) => {
+    try {
+      const { userId } = req.body;
+  
+      if (!userId) {
+        return res.status(400).json({ error: "Hiányzó userId!" });
+      }
+  
+      const result = await db.deleteUser(userId);
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ error: "Felhasználó nem található!" });
+      }
+  
+      res.status(200).json({ message: "Felhasználó törölve!" });
+    } catch (error) {
+      console.error("Hiba a profil törlésekor:", error);
+      res.status(500).json({ error: "Szerverhiba a törlés során!" });
+    }
+  });
+  
+  // routes/auth.js (vagy egy külön rendelés route-ba is lehet tenni)
+router.get("/orders/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const orders = await db.getOrdersByUserId(userId);
+    res.json(orders);
+  } catch (error) {
+    console.error("❌ Hiba a rendelések lekérésekor:", error);
+    res.status(500).json({ error: "Nem sikerült lekérni a rendeléseket." });
+  }
+});
+
+  
   
 module.exports = router;

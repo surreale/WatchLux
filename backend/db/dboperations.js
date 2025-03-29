@@ -572,6 +572,32 @@ async function insertOrderItem({ szamlaaz, oraaz, db }) {
 }
 
 
+async function deleteUser(userId) {
+  try {
+    const [result] = await pool.query("DELETE FROM vasarlo WHERE vasarloaz = ?", [userId]);
+    return result;
+  } catch (error) {
+    console.error("❌ Hiba a felhasználó törlésekor:", error);
+    throw error;
+  }
+}
+async function getOrdersByUserId(userId) {
+  try {
+    const query = `
+      SELECT sz.szamlaaz, sz.datum, o.megnevezes, m.db, o.ar
+      FROM szamla sz
+      JOIN megrendeles m ON sz.szamlaaz = m.szamlaaz
+      JOIN oralekerdezes o ON m.oraaz = o.oraaz
+      WHERE sz.vasarloaz = ?
+      ORDER BY sz.datum DESC
+    `;
+    const [rows] = await pool.query(query, [userId]);
+    return rows;
+  } catch (error) {
+    console.error("❌ Hiba a rendelések lekérdezésekor:", error);
+    throw error;
+  }
+}
 
 
 module.exports = {
@@ -606,6 +632,8 @@ module.exports = {
   insertOrGetGuestBuyer,
   insertShippingData,
   insertInvoice,
-  insertOrderItem
+  insertOrderItem,
+  deleteUser,
+  getOrdersByUserId
  
 };

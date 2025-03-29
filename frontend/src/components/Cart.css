@@ -154,20 +154,7 @@ color: #0056b3;
 }
 
 /* ===== MODAL (egységes középre igazított, saját modalokhoz) ===== */
-.modal-custom {
-position: fixed;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-z-index: 1050;
-background: white;
-padding: 30px;
-border-radius: 25px;
-box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-max-width: 400px;
-width: 90%;
-text-align: center;
-}
+
 
 .modal-custom h2 {
 font-size: 22px;
@@ -219,43 +206,44 @@ color: white;
   border-color: #49bf8c;
   box-shadow: 0 0 0 2px rgba(73, 191, 140, 0.2);
 }
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.5); /* sötét áttetsző háttér */
-  z-index: 1040;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 
 /* Háttér overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.5); /* <-- EZ sötétíti el a hátteret */
-  z-index: 1040;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  overflow: hidden;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+}
+
+.modal-custom {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 30px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  z-index: 1050;
+  text-align: center;
 }
 
 
-/* Modal doboz (panel) */
-.modal-custom {
-  background: #f8f9fa;
-  border-radius: 50px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-  padding: 30px;
-  width: 90%;
-  max-width: 500px;
-  z-index: 1050;
+/* === Ensure page doesn't scroll when modal is open === */
+body.modal-open {
+  overflow: hidden;
 }
 
 /* Modal címsor */
@@ -343,4 +331,124 @@ color: white;
     font-size: 16px;
     padding: 10px;
   }
+}
+.btn-delete-account {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+.modal-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-primary,
+.btn-danger {
+  width: 100%;
+  padding: 12px;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background-color: #0066e0;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #004bb5;
+}
+
+.btn-danger {
+  background-color: #e00000;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #b80000;
+}
+
+.delete-success-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.delete-success-box {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+.order-history {
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.order-item {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+.modal-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-custom::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.modal-custom::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.modal-custom::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content-scrollable {
+  max-height: 75vh;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-top: 20px;
+}
+
+.modal-content-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content-scrollable::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.modal-content-scrollable::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
 }

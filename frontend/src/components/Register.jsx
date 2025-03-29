@@ -123,7 +123,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
-                        placeholder="Név"
+                        placeholder="Név*"
                         value={nev}
                         onChange={handleNevChange}
                         className="form-control"
@@ -139,7 +139,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
                     />
                     <input
                         type="email"
-                        placeholder="E-mail cím"
+                        placeholder="E-mail cím*"
                         value={email}
                         onChange={handleEmailChange}
                         className="form-control"
@@ -147,7 +147,7 @@ export default function Register({ showRegister, handleRegisterClose }) {
                     />
                     <input
                         type="password"
-                        placeholder="Jelszó"
+                        placeholder="Jelszó*"
                         value={jelszo}
                         onChange={handlePasswordChange}
                         onFocus={handlePasswordFocus}
