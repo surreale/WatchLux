@@ -14,79 +14,87 @@ const OrderSummary = () => {
   }
 
   const handleDownloadInvoice = async () => {
-    const doc = new jsPDF("p", "mm", "a4", true);
+    const doc = new jsPDF("p", "mm", "a4");
     const pageWidth = doc.internal.pageSize.getWidth();
+  
+    // Font betöltése
+    const dejaVuFont = await fetch("/fonts/dejavu-base64.txt").then(res => res.text());
+    doc.addFileToVFS("DejaVuSans.ttf", dejaVuFont);
+    doc.addFont("DejaVuSans.ttf", "DejaVu", "normal");
+    doc.setFont("DejaVu");
+  
     const today = new Date();
     const formattedDate = today.toLocaleDateString("hu-HU");
     const orderDate = formattedDate;
     const dueDate = formattedDate;
-
-    
-    const robotoFont = await fetch("/fonts/Roboto-Regular.ttf")
+  
+    // Logó beillesztése
+    const logoImg = await fetch("/logo152.png")
       .then(res => res.blob())
       .then(blob => new Promise(resolve => {
         const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.onload = () => resolve(reader.result);
         reader.readAsDataURL(blob);
       }));
-
-    doc.addFileToVFS("Roboto-Regular.ttf", robotoFont);
-    doc.addFont("Roboto-Regular.ttf", "Roboto", "normal");
-    doc.setFont("Roboto");
-
-    
-    const logoImg = await fetch("/logo152.png").then(res => res.blob()).then(blob => new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    }));
-
-    doc.addImage(logoImg, "PNG", 14, 10, 30, 30);
-
+    doc.addImage(logoImg, "PNG", 15, 10, 25, 25);
+  
+    // Cégnév és adatok
+    doc.setFontSize(16);
+    doc.text("WatchLux", 45, 15);
+    doc.setFontSize(10);
+    doc.text("Mezőtúr, Stromfeld Aurél u. 7.", 45, 21);
+    doc.text("service@watchlux.hu | +36 20 627 0071", 45, 26);
+    doc.text("Adószám: 12345678-2-12 | Bankszámlaszám: 12345678-12345678-12345678", 45, 31);
+  
+    // Számla cím és azonosító
     doc.setFontSize(22);
-    doc.setTextColor(40);
-    doc.setFont(undefined, "bold");
-    doc.text("Számla", pageWidth / 2, 20, { align: "center" });
-
-   
-    doc.setFontSize(11);
+    doc.text("Számla", pageWidth / 2, 45, { align: "center" });
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+    doc.text(`Számla azonosító: ${invoiceId}`, pageWidth - 70, 52);
+  
+    // Szállító és Vevő blokk
     doc.setTextColor(0);
-    doc.setFont(undefined, "normal");
-    doc.text("Eladó:", 14, 50);
-    doc.setFont(undefined, "bold");
-    doc.text("WatchLux", 14, 56);
-    doc.setFont(undefined, "normal");
-    doc.text("Mezőtúr, Stromfeld Aurél u. 7.", 14, 62);
-    doc.text("service@watchlux.hu", 14, 68);
-    doc.text("+36 20 627 0071", 14, 74);
-    doc.text("Adószám: 12345678-2-12", 14, 80);
-    doc.text("Bankszámlaszám: 11111111-11111111-11111111", 14, 86);
+    doc.setFontSize(11);
+    doc.text("Szállító:", 15, 65);
+    doc.text("WatchLux", 15, 71);
+    doc.text("Mezőtúr, Stromfeld Aurél u. 7.", 15, 76);
+    doc.text("service@watchlux.hu", 15, 81);
+    doc.text("+36 20 627 0071", 15, 86);
+    doc.text("Adószám: 12345678-2-12", 15, 91);
+  
+    doc.text("Vevő:", 110, 65);
+    doc.text(`Név: ${savedShipping.name}`, 110, 71);
+doc.text(`Cím: ${savedShipping.postalCode} ${savedShipping.city}`, 110, 76);
+doc.text(`Utca: ${savedShipping.address}`, 110, 81);
+doc.text(`Email: ${savedShipping.email}`, 110, 86);
+doc.text(`Telefonszám: ${savedShipping.phone}`, 110, 91);
+if (savedShipping.taxId) {
+  doc.text(`Adószám: ${savedShipping.taxId}`, 110, 96);
+}
 
-    doc.setFont(undefined, "bold");
-    doc.text("Számla információk:", 14, 94);
-    doc.setFont(undefined, "normal");
-    doc.text(`Számla azonosító: ${invoiceId}`, 14, 100);
-    doc.text(`Teljesítés dátuma: ${orderDate}`, 14, 106);
-    doc.text(`Kiállítás dátuma: ${formattedDate}`, 14, 112);
-    doc.text(`Fizetési határidő: ${dueDate}`, 14, 118);
-    doc.text(`Fizetési mód: Banki átutalás`, 14, 124);
+    // Szürke háttér mező
+// Szürke háttér doboz
+doc.setFillColor(230);
+doc.rect(15, 105, pageWidth - 30, 10, "F");
 
-    
-    doc.line(105, 40, 105, 135);
-    let y = 50;
-    doc.setFont(undefined, "normal");
-    doc.text("Vevő:", 120, y);
-    doc.setFont(undefined, "bold");
-    doc.text(savedShipping.name, 120, (y += 6));
-    doc.setFont(undefined, "normal");
-    doc.text(`${savedShipping.postalCode} ${savedShipping.city}`, 120, (y += 6));
-    doc.text(savedShipping.address, 120, (y += 6));
-    doc.text(savedShipping.email, 120, (y += 6));
-    doc.text(savedShipping.phone, 120, (y += 6));
-    if (savedShipping.taxId) {
-      doc.text(`Adószám: ${savedShipping.taxId}`, 120, (y += 6));
-    }
+doc.setTextColor(0);
+doc.setFontSize(9);
 
+// 3 egyenlő szélességű oszlop 20 mm-es margóval
+const leftMargin = 20;
+const colWidth = (pageWidth - 2 * leftMargin) / 3;
+
+doc.text(`Teljesítés dátuma: ${orderDate}`, leftMargin, 112);
+doc.text(`Kiállítás dátuma: ${formattedDate}`, leftMargin + colWidth, 112);
+doc.text(`Fizetési határidő: ${dueDate}`, leftMargin + colWidth * 2, 112);
+
+
+
+
+
+  
+    // Tétel táblázat
     const tableData = orderCart.map((item) => {
       const qty = item.mennyiseg || 1;
       const brutto = Number(item.ar);
@@ -94,50 +102,66 @@ const OrderSummary = () => {
       const totalNetto = +(netto * qty).toFixed(2);
       const totalBrutto = +(brutto * qty).toFixed(2);
       const afa = +(totalBrutto - totalNetto).toFixed(2);
-
       return [
         item.megnevezes,
         `${qty} db`,
         `${netto.toLocaleString("hu-HU")} Ft`,
-        `27%`,
+        "27%",
         `${afa.toLocaleString("hu-HU")} Ft`,
-        `${totalBrutto.toLocaleString("hu-HU")} Ft`,
+        `${totalBrutto.toLocaleString("hu-HU")} Ft`
       ];
     });
-
+  
     tableData.push([
-      "Szállítási díj", "1 alkalom", "0 Ft", "0%", "0 Ft", "0 Ft (Ingyenes)"
+      "Szállítási díj",
+      "1 alkalom",
+      "0 Ft",
+      "0%",
+      "0 Ft",
+      "0 Ft (Ingyenes)"
     ]);
-
+  
     autoTable(doc, {
-      startY: 140,
-      styles: { fontSize: 10 },
+      startY: 120,
+      head: [["Megnevezés", "Mennyiség", "Nettó egységár", "ÁFA", "ÁFA összeg", "Bruttó"]],
+      body: tableData,
+      styles: { fontSize: 10, font: "DejaVu" },
       headStyles: { fillColor: [50, 50, 50], textColor: [255, 255, 255] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
       columnStyles: {
         0: { cellWidth: 50 },
-        1: { cellWidth: 20 },
+        1: { cellWidth: 25 },
         2: { cellWidth: 30 },
         3: { cellWidth: 15 },
         4: { cellWidth: 30 },
         5: { cellWidth: 35 },
-      },
-      head: [["Megnevezés", "Mennyiség", "Nettó egységár", "ÁFA", "ÁFA összeg", "Bruttó"]],
-      body: tableData,
+      }
     });
-
+  
+    // Összesítő
     const nettoOsszesen = +(totalPrice / 1.27).toFixed(2);
     const afaOsszesen = +(totalPrice - nettoOsszesen).toFixed(2);
     const yEnd = doc.lastAutoTable.finalY + 10;
-
-    doc.setFont(undefined, "bold");
-    doc.text(`Nettó összesen: ${nettoOsszesen.toLocaleString("hu-HU")} Ft`, 14, yEnd);
-    doc.text(`ÁFA összesen: ${afaOsszesen.toLocaleString("hu-HU")} Ft`, 14, yEnd + 6);
+  
+    doc.setFontSize(11);
+    doc.setTextColor(0);
+    doc.text(`Nettó összesen: ${nettoOsszesen.toLocaleString("hu-HU")} Ft`, 15, yEnd);
+    doc.text(`ÁFA összesen: ${afaOsszesen.toLocaleString("hu-HU")} Ft`, 15, yEnd + 6);
+  
     doc.setFontSize(14);
-    doc.setTextColor(50, 50, 150);
-    doc.text(`Fizetendő végösszeg: ${Number(totalPrice).toLocaleString("hu-HU")} Ft`, 14, yEnd + 16);
-
+    doc.setTextColor(30, 30, 180);
+    doc.text(
+      `Fizetendő végösszeg: ${Number(totalPrice).toLocaleString("hu-HU")} Ft`,
+      15,
+      yEnd + 16
+    );
+  
     doc.save(`szamla_${invoiceId}.pdf`);
   };
+  
+  
+  
+  
 
   return (
     <div className="checkout-page">
