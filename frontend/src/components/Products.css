@@ -259,7 +259,7 @@ body {
   position: relative;
 }
 
-/* Vékony vonal elválasztás a szűrők között */
+/* Vékony vonal elválasztás a szűrők között *
 .filters-container label:not(:first-of-type)::before {
   content: "";
   position: absolute;
