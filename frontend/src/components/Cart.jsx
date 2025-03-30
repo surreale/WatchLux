@@ -37,7 +37,7 @@ const Cart = () => {
 
   const handleProceedToCheckout = () => {
     saveCartToLocalStorage();
-    localStorage.setItem("cartBackup", JSON.stringify(cart)); // 🔥 Kosár mentése
+    localStorage.setItem("cartBackup", JSON.stringify(cart)); 
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
     if (isLoggedIn) {
@@ -49,7 +49,10 @@ const Cart = () => {
 
   return (
     <div className="cart-page">
-      <h2 className="cl">Kosár</h2>
+      <h2 className="cl">
+  Kosár <span role="img" aria-label="cart">🛒</span>
+</h2>
+
       {cart.length === 0 ? (
         <p className="cl">A kosár üres.</p>
       ) : (
@@ -63,49 +66,53 @@ const Cart = () => {
                 onClick={() => navigate(`/product/${item.oraaz}`)}
               />
               <div className="cart-details">
-                <h3 className="clickable" onClick={() => navigate(`/product/${item.oraaz}`)}>
-                  {item.megnevezes}
-                </h3>
-                <hr />
-                <p>Ár: {item.ar} Ft</p>
-                <div className="quantity-control">
-                  <label htmlFor={`quantity-${item.oraaz}`}>Mennyiség:</label>
-                  <input
-                    id={`quantity-${item.oraaz}`}
-                    type="number"
-                    min="1"
-                    max="20"
-                    value={item.mennyiseg || 1}
-                    onChange={(e) => {
-                      const newQuantity = Number(e.target.value);
-                      if (newQuantity >= 1 && newQuantity <= 20) {
-                        updateCartQuantity(item.oraaz, newQuantity);
-                      }
-                    }}
-                  />
-                  <span> db</span>
-                </div>
-                <p>Összesen: {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft</p>
-                <button className="remove-button" onClick={() => removeFromCart(item.oraaz)}>
-                  Törlés
-                </button>
-              </div>
+  <h3 className="clickable" onClick={() => navigate(`/product/${item.oraaz}`)}>
+    {item.megnevezes}
+  </h3>
+  <hr />
+  <div className="info-row">
+    <p>Ár: {item.ar} Ft</p>
+    <div className="quantity-control">
+      <label htmlFor={`quantity-${item.oraaz}`}>Mennyiség:</label>
+      <input
+        id={`quantity-${item.oraaz}`}
+        type="number"
+        min="1"
+        max="20"
+        value={item.mennyiseg || 1}
+        onChange={(e) => {
+          const newQuantity = Number(e.target.value);
+          if (newQuantity >= 1 && newQuantity <= 20) {
+            updateCartQuantity(item.oraaz, newQuantity);
+          }
+        }}
+      />
+      <span> db</span>
+    </div>
+    <p>Összesen: {Number(item.ar) * (Number(item.mennyiseg) || 1)} Ft</p>
+  </div>
+  <button className="remove-button" onClick={() => removeFromCart(item.oraaz)}>
+    Törlés
+  </button>
+</div>
+
             </div>
           ))}
         </div>
       )}
 
-      <button className="checkout-button" onClick={() => navigate("/products")}>
-        Vásárlás folytatása
-      </button>
+     
 
       {cart.length > 0 && (
         <div className="cart-summary">
-          <h3>Összesen: {totalPrice.toLocaleString()} Ft</h3>
-          <button className="fizetes" onClick={handleProceedToCheckout}>
-            Tovább a fizetéshez
-          </button>
-        </div>
+        <h3>Összesen: {totalPrice.toLocaleString()} Ft</h3>
+        <button className="fizetes" onClick={handleProceedToCheckout}>
+          Tovább a fizetéshez
+        </button>
+        <button className="checkout-button" onClick={() => navigate("/products")}>
+          Vásárlás folytatása
+        </button>
+      </div>
       )}
 
 {showModal && (

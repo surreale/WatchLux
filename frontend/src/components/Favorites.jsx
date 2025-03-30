@@ -9,7 +9,9 @@ const Favorites = () => {
 
   return (
     <div className="favorites-page">
-      <h1 className="cl fav">Kedvencek</h1>
+      <h1 className="cl fav">
+  Kedvencek <span role="img" aria-label="heart">❤️</span>
+</h1>
       {favorites.length === 0 ? (
         <p className="cl">Nincsenek kedvenc termékek.</p>
       ) : (
