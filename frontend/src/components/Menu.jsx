@@ -7,11 +7,9 @@ import Logo from "./logo.png";
 import Login from "./Login";
 import Register from "./Register";
 import SearchIcon from "./search.png";
-import Kosar from "./kosar.jpeg";
-import Felhasznalo from "./felhasznalo.jpeg";
-import Kedvencek from "./kedvencek.jpeg";
 import HeroText from "./HeroText";
 import Profile from "./Profile";
+import { AiOutlineHeart, AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 
 import "./Menu.css";
 import "./toast.css";
@@ -142,36 +140,40 @@ function Menu() {
             </Form>
 
             <div className="d-flex align-items-center user-cart-container">
-              <div className="user-icon user-menu-container position-relative">
-                <img src={Felhasznalo} alt="Felhasználó" className="user-icon" onClick={toggleUserMenu} />
-                {showUserMenu && (
-                  <div className="user-menu-dropdown position-absolute bg-white rounded shadow">
-                    <ul className="list-unstyled mb-0">
-                      {isLoggedIn ? (
-                        <>
-                          <li className="menu-item" onClick={handleProfileShow}>Profilom</li>
-                          <li className="menu-item" onClick={handleLogout}>Kijelentkezés</li>
-                        </>
-                      ) : (
-                        <>
-                          <li className="menu-item" onClick={handleRegisterShow}>Regisztráció</li>
-                          <li className="menu-item" onClick={handleLoginShow}>Bejelentkezés</li>
-                        </>
-                      )}
-                    </ul>
-                  </div>
-                )}
-              </div>
+  {/* Felhasználó ikon */}
+  <div className="user-menu-container position-relative">
+    <AiOutlineUser className="icon" onClick={toggleUserMenu} />
+    {showUserMenu && (
+      <div className="user-menu-dropdown position-absolute bg-white rounded shadow">
+        <ul className="list-unstyled mb-0">
+          {isLoggedIn ? (
+            <>
+              <li className="menu-item" onClick={handleProfileShow}>Profilom</li>
+              <li className="menu-item" onClick={handleLogout}>Kijelentkezés</li>
+            </>
+          ) : (
+            <>
+              <li className="menu-item" onClick={handleRegisterShow}>Regisztráció</li>
+              <li className="menu-item" onClick={handleLoginShow}>Bejelentkezés</li>
+            </>
+          )}
+        </ul>
+      </div>
+    )}
+  </div>
 
-              <Nav.Link as={Link} to="/kedvencek" className="position-relative">
-                <img src={Kedvencek} alt="Kedvencek" className="kosar-icon" />
-              </Nav.Link>
+  {/* Kedvencek ikon */}
+  <Nav.Link as={Link} to="/kedvencek" className="position-relative">
+    <AiOutlineHeart className="icon" />
+  </Nav.Link>
 
-              <Nav.Link as={Link} to="/cart" className="position-relative">
-                <img src={Kosar} alt="Kosár" className="kosar-icon" />
-                {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
-              </Nav.Link>
-            </div>
+  {/* Kosár ikon */}
+  <Nav.Link as={Link} to="/cart" className="position-relative">
+    <AiOutlineShoppingCart className="icon" />
+    {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
+  </Nav.Link>
+</div>
+
           </Navbar.Collapse>
         </Container>
       </Navbar>
