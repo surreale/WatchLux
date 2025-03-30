@@ -54,7 +54,13 @@ const Cart = () => {
 </h2>
 
       {cart.length === 0 ? (
-        <p className="cl">A kosár üres.</p>
+         <>
+         <p className="cl">A kosár üres.</p>
+         <button className="back" onClick={() => navigate("/products")}>
+           Vissza
+         </button>
+       </>
+        
       ) : (
         <div className="cart-items">
           {cart.map((item) => (
@@ -67,6 +73,7 @@ const Cart = () => {
               />
               <div className="cart-details">
   <h3 className="clickable" onClick={() => navigate(`/product/${item.oraaz}`)}>
+  
     {item.megnevezes}
   </h3>
   <hr />
