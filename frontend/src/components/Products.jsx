@@ -812,7 +812,7 @@ function Products() {
           </button>
 
           <button className="filter-clear-button" onClick={() => { handleClearFilters(); scrollToTop(); }}>
-            Törlés
+           Szűrés törlése
           </button>
 
         </div>
