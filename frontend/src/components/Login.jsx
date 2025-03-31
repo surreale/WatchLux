@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./toast.css";
-import "./Cart.css"; // közös modal stílus
+import "./Cart.css"; 
 
 export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
     const [email, setEmail] = useState("");
@@ -44,7 +44,7 @@ export default function Login({ showLogin, handleLoginClose, onLoginSuccess }) {
                 localStorage.setItem("isLoggedIn", "true");
                 localStorage.setItem("userId", response.data.user.vasarloaz);
             
-                // 🧹 Vendégként megadott adatok törlése
+               
                 localStorage.removeItem("savedBilling");
                 localStorage.removeItem("savedShipping");
             

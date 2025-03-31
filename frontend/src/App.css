@@ -1,5 +1,5 @@
 body{
- /*background-image: url('/assets/film.jpg'); */
+ 
  background-size: cover;
 }
 
@@ -42,7 +42,7 @@ body{
   }
 }
 .product-image {
-  max-width: 100%; /* A kép maximális szélessége */
-  border-radius: 10px; /* Lekerekített sarkok */
-  margin-bottom: 10px; /* Alsó margó */
+  max-width: 100%;
+  border-radius: 10px; 
+  margin-bottom: 10px; 
 }

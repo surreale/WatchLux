@@ -1,7 +1,7 @@
-// Profile.jsx
+
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "./Cart.css"; // Modal stílus
+import "./Cart.css"; 
 
 export default function Profile({ showProfile, handleProfileClose }) {
   const [userData, setUserData] = useState({ nev: "", tel: "", email: "" });

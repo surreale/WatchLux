@@ -138,7 +138,7 @@ router.post("/address", async (req, res) => {
   
       res.status(201).json({ message: "Számlázási adatok elmentve!", id: result.insertId });
     } catch (error) {
-      console.error("❌ Hiba a számlázási adatok mentésekor:", error);
+      console.error(" Hiba a számlázási adatok mentésekor:", error);
       res.status(500).json({ error: "Szerverhiba a számlázási adatok mentésekor." });
     }
   });
@@ -164,14 +164,14 @@ router.post("/address", async (req, res) => {
     }
   });
   
-  // routes/auth.js (vagy egy külön rendelés route-ba is lehet tenni)
+  
 router.get("/orders/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
     const orders = await db.getOrdersByUserId(userId);
     res.json(orders);
   } catch (error) {
-    console.error("❌ Hiba a rendelések lekérésekor:", error);
+    console.error(" Hiba a rendelések lekérésekor:", error);
     res.status(500).json({ error: "Nem sikerült lekérni a rendeléseket." });
   }
 });

@@ -260,7 +260,7 @@ body {
   color: #49bf8c;
 }
 .icon {
-  font-size: 30px;   /* nagyobb ikonméret */
+  font-size: 30px;   
   color: #333;
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
@@ -268,7 +268,7 @@ body {
 }
 
 .icon:hover {
-  color: #49bf8c;   /* szín változás hoverre */
+  color: #49bf8c;   
   transform: scale(1.1);
   opacity: 0.9;
 }

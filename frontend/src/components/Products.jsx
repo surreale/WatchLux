@@ -279,7 +279,7 @@ function Products() {
   useEffect(() => {
     axios.get("http://localhost:8080/ora/kristalyuvegek")
       .then((response) => {
-        console.log("🔍 Kristályüveg típusok API válasza:", response.data);
+        console.log(" Kristályüveg típusok API válasza:", response.data);
         setKristalyuvegek(response.data);
       })
       .catch(() => {
@@ -290,7 +290,7 @@ function Products() {
   useEffect(() => {
     axios.get("http://localhost:8080/ora/szamlaptipusok")
       .then((response) => {
-        console.log("🔍 Számlaptípusok API válasza:", response.data);
+        console.log(" Számlaptípusok API válasza:", response.data);
         setSzamlaptipusok(response.data);
       })
       .catch(() => {
@@ -301,7 +301,7 @@ function Products() {
   useEffect(() => {
     axios.get("http://localhost:8080/ora/oraformak")
       .then((response) => {
-        console.log("🔍 Óraformák API válasza:", response.data);
+        console.log(" Óraformák API válasza:", response.data);
         setOraformak(response.data);
       })
       .catch(() => {
@@ -312,7 +312,7 @@ function Products() {
   useEffect(() => {
     axios.get("http://localhost:8080/ora/szijszinek")
       .then((response) => {
-        console.log("🔍 Szíjak színeinek API válasza:", response.data);
+        console.log(" Szíjak színeinek API válasza:", response.data);
         setSzijszinek(response.data);
       })
       .catch(() => {
@@ -323,7 +323,7 @@ function Products() {
   useEffect(() => {
     axios.get("http://localhost:8080/ora/szijak")
       .then((response) => {
-        console.log("🔍 Szíjak anyagának API válasza:", response.data);
+        console.log(" Szíjak anyagának API válasza:", response.data);
         setSzijak(response.data);
       })
       .catch(() => {
@@ -334,7 +334,7 @@ function Products() {
   useEffect(() => {
     axios.get("http://localhost:8080/ora/maxcsuklomili")
       .then((response) => {
-        console.log("🔍 Maximális csuklóméretek API válasza:", response.data);
+        console.log(" Maximális csuklóméretek API válasza:", response.data);
         setMaxCsuklomilik(response.data);
       })
       .catch(() => {

@@ -242,7 +242,7 @@ const Checkout = () => {
                 </label>
 
                 <div className="shipping-section">
-                  <h3>Szállítási adatok</h3>
+                  <h3>Szállítási adatok (Ingyenes GLS szállítás)</h3>
                   <form className="shipping-form">
                     {["name", "email", "address", "city", "postalCode", "phone"].map((field) => (
                       <input

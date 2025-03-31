@@ -62,7 +62,7 @@ function Menu() {
   const handleProfileClose = () => setShowProfile(false);
 
   const handleLogout = () => {
-    // 🔐 Törlés localStorage-ból
+    
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userId");
     localStorage.removeItem("cart");
@@ -71,13 +71,13 @@ function Menu() {
     localStorage.removeItem("savedBilling");
     localStorage.removeItem("savedShipping");
 
-    // 🧹 Kosár törlése contextből is
+   
     clearCart();
 
     setIsLoggedIn(false);
     setShowUserMenu(false);
 
-    // ✅ Visszajelzés + navigáció
+    
     setShowToast({ visible: true, message: "Sikeres kijelentkezés!", type: "error" });
     setTimeout(() => {
       setShowToast({ visible: false, message: "", type: "" });
@@ -93,7 +93,7 @@ function Menu() {
 
   return (
     <>
-      {/* Hero szöveg megjelenítése csak főoldalon */}
+      
       {!location.pathname.startsWith("/product/") &&
         location.pathname !== "/products" &&
         location.pathname !== "/cart" &&
@@ -140,7 +140,7 @@ function Menu() {
             </Form>
 
             <div className="d-flex align-items-center user-cart-container">
-  {/* Felhasználó ikon */}
+  
   <div className="user-menu-container position-relative">
     <AiOutlineUser className="icon" onClick={toggleUserMenu} />
     {showUserMenu && (
@@ -162,12 +162,12 @@ function Menu() {
     )}
   </div>
 
-  {/* Kedvencek ikon */}
+  
   <Nav.Link as={Link} to="/kedvencek" className="position-relative">
     <AiOutlineHeart className="icon" />
   </Nav.Link>
 
-  {/* Kosár ikon */}
+  
   <Nav.Link as={Link} to="/cart" className="position-relative">
     <AiOutlineShoppingCart className="icon" />
     {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
@@ -178,7 +178,7 @@ function Menu() {
         </Container>
       </Navbar>
 
-      {/* Modális ablakok */}
+     
       <Login
         showLogin={showLogin}
         handleLoginClose={handleLoginClose}
@@ -187,7 +187,7 @@ function Menu() {
       <Register showRegister={showRegister} handleRegisterClose={handleRegisterClose} />
       <Profile showProfile={showProfile} handleProfileClose={handleProfileClose} />
 
-      {/* Toast üzenet */}
+     
       {showToast.visible && <div className={`toast-container ${showToast.type} show`}>{showToast.message}</div>}
     </>
   );

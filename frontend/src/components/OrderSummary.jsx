@@ -17,7 +17,7 @@ const OrderSummary = () => {
     const doc = new jsPDF("p", "mm", "a4");
     const pageWidth = doc.internal.pageSize.getWidth();
   
-    // Font betöltése
+    
     const dejaVuFont = await fetch("/fonts/dejavu-base64.txt").then(res => res.text());
     doc.addFileToVFS("DejaVuSans.ttf", dejaVuFont);
     doc.addFont("DejaVuSans.ttf", "DejaVu", "normal");
@@ -28,7 +28,7 @@ const OrderSummary = () => {
     const orderDate = formattedDate;
     const dueDate = formattedDate;
   
-    // Logó beillesztése
+    
     const logoImg = await fetch("/logo152.png")
       .then(res => res.blob())
       .then(blob => new Promise(resolve => {
@@ -38,7 +38,7 @@ const OrderSummary = () => {
       }));
     doc.addImage(logoImg, "PNG", 15, 10, 25, 25);
   
-    // Cégnév és adatok
+   
     doc.setFontSize(16);
     doc.text("WatchLux", 45, 15);
     doc.setFontSize(10);
@@ -46,14 +46,14 @@ const OrderSummary = () => {
     doc.text("service@watchlux.hu | +36 20 627 0071", 45, 26);
     doc.text("Adószám: 12345678-2-12 | Bankszámlaszám: 12345678-12345678-12345678", 45, 31);
   
-    // Számla cím és azonosító
+    
     doc.setFontSize(22);
     doc.text("Számla", pageWidth / 2, 45, { align: "center" });
     doc.setFontSize(12);
     doc.setTextColor(100);
     doc.text(`Számla azonosító: ${invoiceId}`, pageWidth - 70, 52);
   
-    // Szállító és Vevő blokk
+    
     doc.setTextColor(0);
     doc.setFontSize(11);
     doc.text("Szállító:", 15, 65);
@@ -73,15 +73,14 @@ if (savedShipping.taxId) {
   doc.text(`Adószám: ${savedShipping.taxId}`, 110, 96);
 }
 
-    // Szürke háttér mező
-// Szürke háttér doboz
+   
 doc.setFillColor(230);
 doc.rect(15, 105, pageWidth - 30, 10, "F");
 
 doc.setTextColor(0);
 doc.setFontSize(9);
 
-// 3 egyenlő szélességű oszlop 20 mm-es margóval
+
 const leftMargin = 20;
 const colWidth = (pageWidth - 2 * leftMargin) / 3;
 
@@ -94,7 +93,7 @@ doc.text(`Fizetési határidő: ${dueDate}`, leftMargin + colWidth * 2, 112);
 
 
   
-    // Tétel táblázat
+    
     const tableData = orderCart.map((item) => {
       const qty = item.mennyiseg || 1;
       const brutto = Number(item.ar);
@@ -138,7 +137,7 @@ doc.text(`Fizetési határidő: ${dueDate}`, leftMargin + colWidth * 2, 112);
       }
     });
   
-    // Összesítő
+    
     const nettoOsszesen = +(totalPrice / 1.27).toFixed(2);
     const afaOsszesen = +(totalPrice - nettoOsszesen).toFixed(2);
     const yEnd = doc.lastAutoTable.finalY + 10;
